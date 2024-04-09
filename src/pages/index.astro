@@ -1,11 +1,21 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Card from '../components/Card.astro';
+import { db, Usuarios } from 'astro:db';
+
+const usuarios = await db.select().from(Usuarios);
 ---
 
 <Layout title="Welcome to Astro.">
 	<main>
-		
+		<h2>Usuarios</h2>
+        {
+            usuarios.map(({nombreUsuario}) => (
+              <article>
+                <p>Usuario: {nombreUsuario}</p>
+              </article>
+            ))
+          }
 	</main>
 </Layout>
 <script>
