@@ -23,12 +23,12 @@ export default async function seed() {
     await db.insert(Libros).values([
         {
             idLibro: 1,
-            tituloLibro: "El campamento",
-            nombreAutor: "Blue Jeans",
+            tituloLibro: "Como no escribí nuestra historia",
+            nombreAutor: "Elisabeth Benavent",
             portadaLibro: "../public/imagenes/LibroPrueba-removebg-preview.png",
             sinopsisLibro: "lorem ipsum",
             nPaginasLibro: 100,
-            categoriaLibro: "Suspense",
+            categoriaLibro: "Romance",
             fechaPubLibro: new Date("2020-11-12") // date no sé si es correcto	
         }
     ]);
