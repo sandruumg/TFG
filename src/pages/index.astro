@@ -15,16 +15,16 @@ const libros = await db.select().from(Libros);
             usuarios.map(({nombreUsuario}) => (
               <article>
                 <p>Usuario: {nombreUsuario}</p>
-                <iframe title="" allowfullscreen style="border:none;" width="300" height="300" src="https://www.pacdora.com/share?filter_url=ps3aycnabf&source=code" ></iframe>
               </article>
             ))
         }
         {
-            libros.map(({tituloLibro, nombreAutor, portadaLibro}) => (
+            libros.map(({tituloLibro, nombreAutor, portadaLibro, fechaPubLibro}) => (
               <article>
                 <p>Titulo: {tituloLibro}</p>
                 <p>Autor: {nombreAutor}</p>
                 <img src={portadaLibro} alt={`Portada de ${tituloLibro}`}>
+                <p>Fecha: {fechaPubLibro}</p>
               </article>
             ))
         }
