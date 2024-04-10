@@ -11,13 +11,27 @@ const Usuarios = defineTable({
   }
 })
 
+const Libros = defineTable({
+  columns:{
+    idLibro: column.number({primaryKey: true}),
+    tituloLibro: column.text(),
+    nombreAutor: column.text(),    
+    portadaLibro: column.text(),
+    sinopsisLibro: column.text(),
+    nPaginasLibro: column.number(),
+    categoriaLibro: column.text(),
+    fechaPubLibro: column.date()
+  }
+})
 
 
 
 
 
+
+export { Usuarios, Libros };
 
 
 export default defineDb({
-  tables: {Usuarios}
+  tables: {Usuarios, Libros}
 });

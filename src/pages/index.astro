@@ -10,18 +10,15 @@ const usuarios = await db.select().from(Usuarios);
 	<main>
 		<h2>Usuarios</h2>
         {
-            JSON.stringify(usuarios)
-        }
-        {
             usuarios.map(({nombreUsuario}) => (
               <article>
-                <p>Hola</p>
-                <p>Hola holaaa</p>
                 <p>Usuario: {nombreUsuario}</p>
               </article>
             ))
           }
 	</main>
+
+    
 </Layout>
 <script>
     function getAllBooks() {
