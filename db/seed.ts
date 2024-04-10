@@ -29,7 +29,7 @@ export default async function seed() {
             sinopsisLibro: "lorem ipsum",
             nPaginasLibro: 100,
             categoriaLibro: "Suspense",
-            fechaPubLibro: new Date("2020-11-12") // date no sé si es correcto
+            fechaPubLibro: new Date("2020-11-12") // date no sé si es correcto	
         }
     ]);
 }
