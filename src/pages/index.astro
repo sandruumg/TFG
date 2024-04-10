@@ -1,9 +1,11 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Card from '../components/Card.astro';
-import { db, Usuarios } from 'astro:db';
+import { db, Usuarios, Libros } from 'astro:db';
 
 const usuarios = await db.select().from(Usuarios);
+const libros = await db.select().from(Libros);
+
 ---
 
 <Layout title="Welcome to Astro.">
@@ -16,7 +18,16 @@ const usuarios = await db.select().from(Usuarios);
                 <iframe title="" allowfullscreen style="border:none;" width="300" height="300" src="https://www.pacdora.com/share?filter_url=ps3aycnabf&source=code" ></iframe>
               </article>
             ))
-          }
+        }
+        {
+            libros.map(({tituloLibro, nombreAutor, portadaLibro}) => (
+              <article>
+                <p>Titulo: {tituloLibro}</p>
+                <p>Autor: {nombreAutor}</p>
+                <img src={portadaLibro} alt={`Portada de ${tituloLibro}`}>
+              </article>
+            ))
+        }
 	</main>
 
     
