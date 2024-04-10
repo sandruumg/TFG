@@ -25,11 +25,11 @@ export default async function seed() {
             idLibro: 1,
             tituloLibro: "El campamento",
             nombreAutor: "Blue Jeans",
-            portadaLibro: "img",
+            portadaLibro: "../public/imagenes/LibroPrueba-removebg-preview.png",
             sinopsisLibro: "lorem ipsum",
             nPaginasLibro: 100,
             categoriaLibro: "Suspense",
-            fechaPubLibro: new Date("2020-11-12") // date no sé si es correcto
+            fechaPubLibro: new Date("2020-11-12") // date no sé si es correcto	
         }
     ]);
 }
