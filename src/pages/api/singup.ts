@@ -52,7 +52,7 @@ export async function POST(context:APIContext): Promise<Response> {
             nombreUsuario: nombreUsuario,
             apellidoUsuario: apellidoUsuario,
             correoUsuario: correoUsuario,
-            contraseñaUsuario: contraseñaUsuario,
+            contraseñaUsuario: hashedPass,
         },]);
     
       // Generate session
