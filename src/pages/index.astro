@@ -19,11 +19,12 @@ const libros = await db.select().from(Libros);
             ))
         }
         {
-            libros.map(({tituloLibro, nombreAutor, portadaLibro, fechaPubLibro}) => (
+            libros.map(({tituloLibro, nombreAutor, portadaLibro, fechaPubLibro, fondoLibro}) => (
               <article>
                 <p>Titulo: {tituloLibro}</p>
                 <p>Autor: {nombreAutor}</p>
                 <img src={portadaLibro} alt={`Portada de ${tituloLibro}`}>
+                <img src={fondoLibro} alt={`Portada de ${fondoLibro}`}>
                 <p>Fecha: {fechaPubLibro}</p>
               </article>
             ))

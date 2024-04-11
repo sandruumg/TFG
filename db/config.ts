@@ -17,6 +17,7 @@ const Libros = defineTable({
     tituloLibro: column.text(),
     nombreAutor: column.text(),    
     portadaLibro: column.text(),
+    fondoLibro: column.text(),
     sinopsisLibro: column.text(),
     nPaginasLibro: column.number(),
     categoriaLibro: column.text(),
