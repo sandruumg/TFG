@@ -1,8 +1,9 @@
 import type { APIContext, APIRoute } from 'astro';
-import {generateId} from "lucia";
-import {Argon2id} from "oslo/password";
-import { db, Usuarios, Libros} from 'astro:db';
-import { lucia } from './auth';
+import { lucia } from "./auth";
+import { generateId } from "lucia";
+import { Argon2id } from "oslo/password";
+import { db, User, Session} from 'astro:db';
+
 
 export async function POST(context:APIContext): Promise<Response> {
     //Leer los datos del formulario
@@ -46,7 +47,7 @@ export async function POST(context:APIContext): Promise<Response> {
       const userId = generateId(15);
       const hashedPass = await new Argon2id().hash(contraseñaUsuario);
 
-      await db.insert(Usuarios).values([{
+      await db.insert(User).values([{
             idUsuario: userId,
             aliasUsuario: aliasUsuario,
             nombreUsuario: nombreUsuario,
