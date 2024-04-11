@@ -1,7 +1,7 @@
-import { db, Usuarios, Libros } from 'astro:db';
+import { db, User, Libros } from 'astro:db';
 
 export default async function seed() {
-    await db.insert(Usuarios).values([
+    await db.insert(User).values([
         {
             idUsuario: 1234,
             aliasUsuario: "Prueba1",

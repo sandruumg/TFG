@@ -1,9 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Card from '../components/Card.astro';
-import { db, Usuarios, Libros } from 'astro:db';
+import { db, User, Libros } from 'astro:db';
 
-const usuarios = await db.select().from(Usuarios);
+const usuarios = await db.select().from(User);
 const libros = await db.select().from(Libros);
 
 ---
