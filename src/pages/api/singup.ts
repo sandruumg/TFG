@@ -12,10 +12,10 @@ export async function POST(context:APIContext): Promise<Response> {
     const nombreUsuario = formData.get("nombreUsuario");
     const apellidoUsuario = formData.get("apellidoUsuario");
     const correoUsuario = formData.get("correoUsuario");
-    const contraseñaUsuario = formData.get("contraseñaUsuario");
+    const password = formData.get("password");
 
     //Validaciones datos formulario
-    if (!aliasUsuario || !contraseñaUsuario) {
+    if (!aliasUsuario || !password) {
         return new Response("El nombre de usuario y contraseña son obligatorios", { status: 400 });
       }
       if (typeof aliasUsuario !== "string" || aliasUsuario.length < 4) {
@@ -35,9 +35,14 @@ export async function POST(context:APIContext): Promise<Response> {
           status: 400,
         });
       }
+      if (typeof correoUsuario !== "string") {
+        return new Response("El correo debe tener al menos 4 caracteres", {
+          status: 400,
+        });
+      }
 
       //Añadir restriccion para correo 
-      if (typeof contraseñaUsuario !== "string" || contraseñaUsuario.length < 4) {
+      if (typeof password !== "string" || password.length < 4) {
         return new Response("La contraseña debe tener como minimo 4 caracteres", {
           status: 400,
         });
@@ -45,16 +50,18 @@ export async function POST(context:APIContext): Promise<Response> {
     
       //Insert 
       const userId = generateId(15);
-      const hashedPass = await new Argon2id().hash(contraseñaUsuario);
+      const hashedPass = await new Argon2id().hash(password);
 
-      await db.insert(User).values([{
-            idUsuario: userId,
+      await db.insert(User).values([
+        {
+            id: userId,
             aliasUsuario: aliasUsuario,
             nombreUsuario: nombreUsuario,
             apellidoUsuario: apellidoUsuario,
             correoUsuario: correoUsuario,
-            contraseñaUsuario: hashedPass,
-        },]);
+            password: hashedPass,
+        }
+      ]);
     
       // Generate session
       const session = await lucia.createSession(userId, {});

@@ -2,19 +2,19 @@ import { defineDb, defineTable, column } from 'astro:db';
 
 const User = defineTable({
   columns:{
-    idUsuario: column.text({primaryKey: true}),
+    id: column.text({primaryKey: true}),
     aliasUsuario: column.text({unique: true}),
     nombreUsuario: column.text(),    
     apellidoUsuario: column.text(),
     correoUsuario: column.text({unique: true}),
-    contraseñaUsuario: column.text()
+    password: column.text()
   }
 })
 
 const Session = defineTable({
   columns:{
-    idUsuario: column.number({optional: false, unique: true}),
-    userId: column.text({optional: false, references: ()=>User.columns.idUsuario}),
+    id: column.text({optional: false, unique: true}),
+    userId: column.text({optional: false, references: ()=>User.columns.id}),
     expiresAt: column.number({optional: false}),
   },
 });

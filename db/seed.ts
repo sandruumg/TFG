@@ -3,20 +3,20 @@ import { db, User, Libros } from 'astro:db';
 export default async function seed() {
     await db.insert(User).values([
         {
-            idUsuario: '1234',
+            id: '1234',
             aliasUsuario: "Prueba1",
             nombreUsuario: "Prueba",
             apellidoUsuario: "Prueba",
             correoUsuario: "prueba@prueba.com",
-            contraseñaUsuario: "1234"
+            password: "1234"
         },
         {
-            idUsuario: '1',
+            id: '1',
             aliasUsuario: "Prueba2",
             nombreUsuario: "Prueba2",
             apellidoUsuario: "Prueb2",
             correoUsuario: "prueba2@prueba.com",
-            contraseñaUsuario: "12344"
+            password: "12344"
         }
     ]);
 
