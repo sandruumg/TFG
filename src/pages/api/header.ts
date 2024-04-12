@@ -22,7 +22,13 @@ export async function POST(context:APIContext): Promise<Response> {
     return new Response("No se ha encontrado ningun libro", { status: 400 });
   }
 
-  return context.redirect("/");
+  return new Response(JSON.stringify(libroEncontrado), {
+    status: 200,
+    statusText: "OK",
+    headers: {
+      'Content-Type': 'application/json',
+    }
+  });
 }
 
 
