@@ -1,7 +1,7 @@
 // header.js
 import type { APIContext, APIRoute } from 'astro';
-import { db, eq } from 'astro:db';
-import {Libros} from 'astro:db';
+import { db, eq, Libros } from 'astro:db';
+
 
 export async function POST(context:APIContext): Promise<Response> {
   const formData = await context.request.formData();
@@ -12,8 +12,11 @@ export async function POST(context:APIContext): Promise<Response> {
   if (!buscador) {
     return new Response("No has buscado nada", { status: 400 });
   }
-
+  if (typeof buscador !== "string") {
+    return new Response("El buscador no es una cadena");
+  }
   const libroEncontrado = await db.select().from(Libros).where(eq(Libros.tituloLibro,buscador));
+  
 
   if (!libroEncontrado) {
     return new Response("No se ha encontrado ningun libro", { status: 400 });
