@@ -10,15 +10,15 @@ const libros = await db.select().from(Libros);
 
 <Layout title="Welcome to Astro.">
 	<main>
-		<h2>Usuarios</h2>
+		<!-- <h2>Usuarios</h2>
         {
             usuarios.map(({nombreUsuario}) => (
               <article>
                 <p>Usuario: {nombreUsuario}</p>
               </article>
             ))
-        }
-        {
+        } -->
+        <!-- {
             libros.map(({tituloLibro, nombreAutor, portadaLibro, fechaPubLibro, fondoLibro}) => (
               <article>
                 <p>Titulo: {tituloLibro}</p>
@@ -28,19 +28,25 @@ const libros = await db.select().from(Libros);
                 <p>Fecha: {fechaPubLibro}</p>
               </article>
             ))
-        }
+        } -->
+        <h1>Resultados de búsqueda</h1>
+        <ul id="resultadoBusqueda">
+          <!-- Aquí se mostrarán los resultados -->
+        </ul>
 	</main>
 
     
 </Layout>
 <script>
-    function getAllBooks() {
-        fetch('/api/books')
-        .then(response => response.json())
-        .then(data => {
-        	console.log(data);
-        })
-        .catch(error => console.error('Error:', error));
-    }
-	getAllBooks();
-  </script>
+  //   function getAllBooks() {
+  //       fetch('/api/books')
+  //       .then(response => response.json())
+  //       .then(data => {
+  //       	console.log(data);
+  //       })
+  //       .catch(error => console.error('Error:', error));
+  //   }
+	// getAllBooks();
+</script>
+<script src="../scripts/buscador.js"></script>
+

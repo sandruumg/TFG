@@ -22,7 +22,7 @@ export async function POST(context:APIContext): Promise<Response> {
     return new Response("No se ha encontrado ningun libro", { status: 400 });
   }
 
-  return context.redirect("/src/pages/index.astro");
+  return context.redirect("/");
 }
 
 
