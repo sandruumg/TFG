@@ -308,7 +308,7 @@ export default async function seed() {
             fechaPubLibro: new Date("2019-11-27") // date no sé si es correcto	
         },
         {
-            idLibro: 26,
+            idLibro: 27,
             tituloLibro: "Los peligros de fumar en la cama",
             nombreAutor: "Mariana Enriquez",
             portadaLibro: "../public/imagenes/fumarEnCama-removebg-preview.png",
