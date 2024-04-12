@@ -77,7 +77,7 @@ export async function POST(context:APIContext): Promise<Response> {
       );
 
       //Si el usuario existe, sale mensjae de error
-      
+
       return context.redirect("/");
 
 }
