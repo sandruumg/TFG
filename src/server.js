@@ -44,7 +44,7 @@ app.listen(PORT, () => {
 import express from 'express';
 import { buscarLibroPorTitulo } from './buscarLibro'; // Importa la función de búsqueda de libros
 
-const app = express();
+// const app = express();
 
 app.get('/buscar-libro', async (req, res) => {
     const titulo = req.query.titulo;
