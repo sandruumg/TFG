@@ -19,7 +19,8 @@ document.getElementById('formularioBusqueda').addEventListener('submit', async f
   
       // Actualiza el DOM para mostrar los datos recibidos
       const bookInfoContainer = document.getElementById('bookInfoContainer');
-      bookInfoContainer.innerHTML = ''; // Borra cualquier contenido existente en el contenedor
+      const main = document.getElementById('main');
+      main.innerHTML = ''; // Borra cualquier contenido existente en el contenedor
   
       // Itera sobre los datos recibidos y crea elementos HTML para mostrar la información
       data.forEach(book => {
@@ -35,7 +36,7 @@ document.getElementById('formularioBusqueda').addEventListener('submit', async f
         `;
         bookInfoContainer.appendChild(bookElement);
       });
-  
+      main.appendChild(bookInfoContainer);
     } catch (error) {
       console.error('Error en la solicitud AJAX:', error);
     }
