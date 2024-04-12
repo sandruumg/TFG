@@ -1,5 +1,5 @@
 import type { APIContext, APIRoute } from 'astro';
-import { lucia } from "./auth";
+import { lucia } from "../../auth";
 import { generateId } from "lucia";
 import { Argon2id } from "oslo/password";
 import { db, User, Session} from 'astro:db';
@@ -13,10 +13,14 @@ export async function POST(context:APIContext): Promise<Response> {
     const apellidoUsuario = formData.get("apellidoUsuario");
     const correoUsuario = formData.get("correoUsuario");
     const password = formData.get("password");
-
+    
+    //Select para ver si existe el correo o alias
+    //si no existe se crea, se hacen las validaciones se inserta y se crea la cookie
     //Validaciones datos formulario
-    if (!aliasUsuario || !password) {
-        return new Response("El nombre de usuario y contraseña son obligatorios", { status: 400 });
+    if (!aliasUsuario || !password || !correoUsuario) {
+        return new Response("El nombre de usuario, contraseña y correo son obligatorios", { 
+          status: 400 
+        });
       }
       if (typeof aliasUsuario !== "string" || aliasUsuario.length < 4) {
         return new Response("El nombre de usuario debe tener al menos 4 caracteres", {
@@ -71,6 +75,9 @@ export async function POST(context:APIContext): Promise<Response> {
         sessionCookie.value,
         sessionCookie.attributes
       );
+
+      //Si el usuario existe, sale mensjae de error
+      
       return context.redirect("/");
 
 }
