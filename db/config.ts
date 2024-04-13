@@ -9,7 +9,7 @@ const User = defineTable({
     correoUsuario: column.text({unique: true}),
     password: column.text()
   }
-})
+});
 
 const Session = defineTable({
   columns:{
@@ -31,9 +31,35 @@ const Libros = defineTable({
     categoriaLibro: column.text(),
     fechaPubLibro: column.date()
   }
-})
+});
 
-export {User, Session, Libros};
+const RankingLibros = defineTable({
+  columns:{
+    id: column.number({ primaryKey: true }),
+    idLibro: column.number({ references: () => Libros.columns.idLibro}),
+    idUsuario: column.text({ references: () => User.columns.id}),
+    estrellas: column.number()
+  }
+});
+
+const ListaSeguimiento = defineTable({
+  columns:{
+    id: column.number({ primaryKey: true }),
+    idLibro: column.number({ references: () => Libros.columns.idLibro}),
+    idUsuario: column.text({ references: () => User.columns.id})
+  }
+});
+
+const ListaTerminados = defineTable({
+  columns:{
+    id: column.number({ primaryKey: true }),
+    idLibro: column.number({ references: () => Libros.columns.idLibro}),
+    idUsuario: column.text({ references: () => User.columns.id}),
+    fechaTerminado: column.date()
+  }
+});
+
+export {User, Session, Libros, RankingLibros, ListaSeguimiento, ListaTerminados};
 
 export default defineDb({
   tables: {

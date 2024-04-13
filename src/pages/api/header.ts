@@ -1,6 +1,7 @@
 // header.js
 import type { APIContext, APIRoute } from 'astro';
 import { db, eq, Libros } from 'astro:db';
+import { like } from 'drizzle-orm';
 
 
 export async function POST(context:APIContext): Promise<Response> {
@@ -15,7 +16,7 @@ export async function POST(context:APIContext): Promise<Response> {
   if (typeof buscador !== "string") {
     return new Response("El buscador no es una cadena");
   }
-  const libroEncontrado = await db.select().from(Libros).where(eq(Libros.tituloLibro,buscador));
+  const libroEncontrado = await db.select().from(Libros).where(like(Libros.tituloLibro, `%${buscador}%`));
   
 
   if (!libroEncontrado) {
