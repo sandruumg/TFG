@@ -2,15 +2,20 @@
 import Layout from '../layouts/Layout.astro';
 import Card from '../components/Card.astro';
 import { db, User, Libros } from 'astro:db';
+import { eq } from 'astro:db';
 
 const usuarios = await db.select().from(User);
 const libros = await db.select().from(Libros);
+
+const user = Astro.locals.user;
+console.log(user);
 
 ---
 
 <Layout title="Welcome to Astro.">
 	<main id="main">
 		<h2>Usuarios</h2>
+    <h1></h1>
         <!-- {
             usuarios.map(({nombreUsuario}) => (
               <article>
@@ -30,7 +35,9 @@ const libros = await db.select().from(Libros);
             ))
         } -->
         <h1 class="mx-[77px] my-10 text-3xl font-bold" id="busquedaUsuario"></h1>
-        <div class="flex flex-row flex-wrap mx-[77px] my-10 gap-10" id="bookInfoContainer"></div>
+        <div class="flex flex-row justify-center flex-wrap mx-[77px] my-10 gap-10" id="bookInfoContainer"></div>
+        <!-- esto habra que ponerlo en el header para que aparezcan cerrar sesion en su perfil si hay usuario  -->
+        {user && <form  method="post" action="/api/signout"><button>Sign out</button></form>}
 	</main>
 
     
@@ -47,5 +54,5 @@ const libros = await db.select().from(Libros);
 	// getAllBooks();
 </script>
 <script src="../scripts/buscador.js"></script>
-
+<script src="/src/scripts/sesion.js"></script>
 

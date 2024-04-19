@@ -1,8 +1,9 @@
 import type { APIContext, APIRoute } from 'astro';
 import { lucia } from "../../auth";
-import { generateId } from "lucia";
+import { Cookie, generateId } from "lucia";
 import { Argon2id } from "oslo/password";
 import { db, User, Session} from 'astro:db';
+
 
 
 export async function POST(context:APIContext): Promise<Response> {
@@ -67,8 +68,7 @@ export async function POST(context:APIContext): Promise<Response> {
         }
       ]);
     
-      // Generate session
-      const session = await lucia.createSession(userId, {});
+      const session = await lucia.createSession(userId,{});
       const sessionCookie = lucia.createSessionCookie(session.id);
       context.cookies.set(
         sessionCookie.name,
@@ -76,8 +76,8 @@ export async function POST(context:APIContext): Promise<Response> {
         sessionCookie.attributes
       );
 
+      return context.redirect("/");
       //Si el usuario existe, sale mensjae de error
 
-      return context.redirect("/");
 
 }
