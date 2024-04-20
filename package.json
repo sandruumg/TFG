@@ -17,6 +17,7 @@
     "@lucia-auth/adapter-drizzle": "^1.0.7",
     "@neondatabase/serverless": "^0.9.0",
     "astro": "^4.5.16",
+    "bootstrap": "^5.3.3",
     "drizzle-orm": "^0.30.8",
     "lucia": "^3.1.1",
     "oslo": "^1.2.0",
@@ -24,6 +25,7 @@
     "typescript": "^5.4.4"
   },
   "devDependencies": {
+    "daisyui": "^4.10.2",
     "drizzle-kit": "^0.20.14"
   }
 }

@@ -1,0 +1,26 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+---
+
+<Layout title="Información del libro">
+    <section>
+      <h1>Esta es la información del libro</h1>
+      <p id="bookInfo"></p>
+    </section>
+  </Layout>
+
+
+  <script>
+    const params = new URLSearchParams(location.search);
+    const nombreAutor = params.get('nombreAutor');
+    const tituloLibro = params.get('tituloLibro');
+    // Mostrar la información del libro en pantalla
+    const infoDiv = document.getElementById('bookInfo');
+    if (infoDiv) {
+        infoDiv.innerHTML = `
+            <p>autor: ${nombreAutor}</p>
+            <p>titulo: ${tituloLibro}</p>
+        `;
+    }
+  </script>

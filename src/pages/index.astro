@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Card from '../components/Card.astro';
+import CarouselNovedades from '../components/CarouselNovedades.astro';
+import CarouselRanking from '../components/CarouselRanking.astro';
 import { db, User, Libros } from 'astro:db';
 import { eq } from 'astro:db';
 
@@ -15,6 +16,9 @@ console.log(user);
 <Layout title="Welcome to Astro.">
 	<main id="main">
 		<h2>Usuarios</h2>
+    <CarouselNovedades/>
+    <br><br><br>
+    <CarouselRanking/>
     <h1></h1>
         <!-- {
             usuarios.map(({nombreUsuario}) => (
