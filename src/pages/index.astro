@@ -2,14 +2,21 @@
 import Layout from '../layouts/Layout.astro';
 import CarouselNovedades from '../components/CarouselNovedades.astro';
 import CarouselRanking from '../components/CarouselRanking.astro';
-import { db, User, Libros } from 'astro:db';
+import { db, User, Session, Libros } from 'astro:db';
 import { eq } from 'astro:db';
 
 const usuarios = await db.select().from(User);
+const sesion = await db.select().from(Session);
 const libros = await db.select().from(Libros);
 
-const user = Astro.locals.user;
-console.log(user);
+if(Astro.locals.user){
+  const user = Astro.locals.user;
+  const usuarios = await db.select().from(User).where(eq(User.id, user.id));
+  const [infoUser] = usuarios;
+  const alias = infoUser.aliasUsuario;
+  
+  console.log(sesion);
+}
 
 ---
 
@@ -41,7 +48,6 @@ console.log(user);
         <h1 class="mx-[77px] my-10 text-3xl font-bold" id="busquedaUsuario"></h1>
         <div class="flex flex-row justify-center flex-wrap mx-[77px] my-10 gap-10" id="bookInfoContainer"></div>
         <!-- esto habra que ponerlo en el header para que aparezcan cerrar sesion en su perfil si hay usuario  -->
-        {user && <form  method="post" action="/api/signout"><button>Sign out</button></form>}
 	</main>
 
     

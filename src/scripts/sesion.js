@@ -16,9 +16,8 @@ document.getElementById('login-form').addEventListener('submit', async function(
         const login = await response.json();
         
       // Actualiza el DOM para mostrar los datos recibidos
-        const usuarioConectado = document.getElementById('btn-login');
-        usuarioConectado.innerHTML = '';
-        usuarioConectado.innerHTML='Hola, ' +login+'!';
+      window.location.reload();
+
     
     
     
