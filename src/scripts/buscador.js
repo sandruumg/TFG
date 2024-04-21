@@ -21,10 +21,10 @@ document.getElementById('formularioBusqueda').addEventListener('submit', async f
       const bookInfoContainer = document.getElementById('bookInfoContainer');
       const main = document.getElementById('main');
       const busquedaUsuario = document.getElementById('busquedaUsuario');
-      const buscador = document.getElementById('buscador').value;
+      const valorbuscador = document.getElementById('buscador').value;
       main.innerHTML = ''; // Borra cualquier contenido existente en el contenedor
       bookInfoContainer.innerHTML='';
-      busquedaUsuario.innerHTML= `"${buscador}"`;
+      busquedaUsuario.innerHTML= `"${valorbuscador}"`;
 
       main.appendChild(busquedaUsuario);
       // Itera sobre los datos recibidos y crea elementos HTML para mostrar la información
