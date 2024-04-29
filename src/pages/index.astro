@@ -2,6 +2,8 @@
 import Layout from '../layouts/Layout.astro';
 import CarouselNovedades from '../components/CarouselNovedades.astro';
 import CarouselRanking from '../components/CarouselRanking.astro';
+import CarouselPruebas from '../components/CarouselPruebas.astro';
+import Banner from '../components/Banner.astro';
 import { db, User, Session, Libros } from 'astro:db';
 import { eq } from 'astro:db';
 
@@ -22,10 +24,13 @@ if(Astro.locals.user){
 
 <Layout title="Welcome to Astro.">
 	<main id="main">
+    <CarouselPruebas/>
     <CarouselNovedades/>
     <br><br><br>
     <CarouselRanking/>
     <h1></h1>
+    <br><br><br>
+    <Banner/>
         <!-- {
             usuarios.map(({nombreUsuario}) => (
               <article>

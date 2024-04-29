@@ -1,6 +1,7 @@
 ---
 import Header from "../components/Header.astro";
 import '@fontsource/bebas-neue'; 
+import '@fontsource/open-sans/300.css';
 interface Props {
 	title: string;
 }
@@ -34,14 +35,46 @@ const { title } = Astro.props;
 			rgb(var(--accent-light)) 30%,
 			white 60%
 		);
+		--primary: #242A33;
+		--secondary: #9ADCB9;
+		--secondary-dark: #5AC7AA;
+		--tertiary: #E5BB85;
+		--quaternary: #D1D0CB;
 	}
 	html {
 		font-family: 'Bebas Neue' ,sans-serif;
 		background: #fff;
 		background-size: 224px;
+		letter-spacing: 2px;
+
+	}
+	.fuente-1{
+		font-family: 'Bebas Neue' ,sans-serif;
 	}
 	.fuente-2{
 		font-family: 'Open Sans', sans-serif;
+	}
+	.bg-gradient{
+		background: linear-gradient(to right, var(--primary), #3D3D3D);
+		padding: 3vw 6vw 3vw 6vw; 
+		color: white;
+	}
+
+	.bg-button-registro{
+		height: 3em;
+		font-size: 1.4em !important;
+		font-weight: 300;
+		background-color: var(--secondary) !important;
+		padding: 1vw 2vw 1vw 2vw !important;
+		border-radius: 6px !important;
+		border: none;
+		color: white !important;
+	}
+	.bg-button-registro:hover{
+		background-color: var(--secondary-dark) !important;
+	}
+	.carousel{
+		scrollbar-width: 10vw !important;
 	}
 	code {
 		font-family:
