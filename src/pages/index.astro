@@ -3,6 +3,8 @@ import Layout from '../layouts/Layout.astro';
 import CarouselRanking from '../components/CarouselRanking.astro';
 import CarouselPruebas from '../components/CarouselPruebas.astro';
 import Banner from '../components/Banner.astro';
+import Categ from '../components/Categ.astro';
+import Lectores from '../components/RankingLectores.astro';
 import { db, User, Session, Libros } from 'astro:db';
 import { eq } from 'astro:db';
 
@@ -29,6 +31,8 @@ if(Astro.locals.user){
     <h1></h1>
     <br><br><br>
     <Banner/>
+    <Categ/>
+    <Lectores/>
         <!-- {
             usuarios.map(({nombreUsuario}) => (
               <article>
