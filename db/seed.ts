@@ -1,4 +1,4 @@
-import { db, User, Libros } from 'astro:db';
+import { db, User, Libros, ListaSeguimiento } from 'astro:db';
 
 export default async function seed() {
     await db.insert(User).values([
@@ -319,5 +319,18 @@ export default async function seed() {
             fechaPubLibro: new Date("2017-02-01") // date no sé si es correcto	
         }
 		
+    ]);
+    
+    await db.insert(ListaSeguimiento).values([
+        {
+            id: 1,
+            idLibro: 1,
+            idUsuario: "1234"
+        },
+        {
+            id: 2,
+            idLibro: 2,
+            idUsuario: "1234"
+        }
     ]);
 }

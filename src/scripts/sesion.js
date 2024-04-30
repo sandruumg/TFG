@@ -1,11 +1,3 @@
-//para el boton de sign in del menu
-document.getElementById("btn-login").addEventListener("click", function () {
-    document.getElementById("modal").style.display = "block";    
-});
-document.getElementById("close-modal").addEventListener("click", function () {
-    document.getElementById("modal").style.display = "none";    
-});
-
 //para recuperar los datos de la api
 document.getElementById('login-form').addEventListener('submit', async function(event) {
     event.preventDefault(); // Evita que el formulario se envíe de forma tradicional

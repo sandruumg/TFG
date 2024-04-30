@@ -65,6 +65,8 @@ export default defineDb({
   tables: {
     User,
     Session, 
-    Libros
+    Libros,
+    ListaSeguimiento,
+    ListaTerminados
   }
 });

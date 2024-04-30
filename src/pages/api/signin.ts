@@ -32,7 +32,7 @@ export async function POST(context: APIContext):Promise<Response> {
     //Si te logeas con google no tienes contraseña por eso en la tabla la contraseña es opcional
    
 
-   const validarPassword = await new Argon2id().verify(usuariosEncontrados.password, password);
+  //  const validarPassword = await new Argon2id().verify(usuariosEncontrados.password, password);
    
    if (!usuariosEncontrados.password) {
         return new Response("Contraseña invalida", { status: 400,});

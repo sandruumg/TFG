@@ -1,0 +1,110 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { db, User, Session, Libros, ListaSeguimiento, ListaTerminados } from 'astro:db';
+import { eq } from 'astro:db';
+
+const user = Astro.locals.user!;
+const usuarios = await db.select().from(User).where(eq(User.id, user.id));
+const [infoUser] = usuarios;
+const alias = infoUser.aliasUsuario;
+const id = infoUser.id;
+Astro.props.userAlias = alias;
+Astro.props.userId = id;
+
+const { userAlias, userId } = Astro.props;
+
+const seguimiento = await db.select().from(ListaSeguimiento).innerJoin(Libros, eq(ListaSeguimiento.idLibro, Libros.idLibro)).where(eq(ListaSeguimiento.idUsuario, userId));
+
+---
+
+<Layout title="Mi perfil">
+    <section class="bg-gray-800">
+      <div class="flex items-center ml-[11%] p-10">
+        <div class="">
+          <img src="/users/userChica.png" alt="">
+        </div>
+        <div>
+          <h1 class="text-white text-4xl ml-10">{userAlias}</h1>
+        </div>
+      </div>
+    </section>
+    <section>
+      <div class="border border-gray-200 text-xl flex justify-around items-center p-6">
+            <button type="button" id="seguir" data-userId={userId} class="boton hover:border-b-2 hover:border-accent">Lista seguimiento</button>
+            <button type="button" id="fav" data-valor="Favoritos" class="boton  hover:border-b-2 hover:border-accent">Favoritos</button>
+            <button type="button" id="fin" data-userId={userId} class="boton hover:border-b-2 hover:border-accent">Añadir a seguimiento</button>
+      </div>
+    </section>
+    <section class="m-10">
+      <div id="resultadoConsulta">
+      </div>
+    </section>
+  </Layout>
+
+  <script>
+    document.querySelectorAll('.boton').forEach(boton => {
+      if(boton.id === 'seguir'){
+        let userId = boton.getAttribute('data-userId')!;
+        boton.addEventListener('click', ()=>{getFollows(userId)});
+      } else if(boton.id === 'fin'){
+        let userId = boton.getAttribute('data-userId')!;
+        boton.addEventListener('click', ()=>{getFinish(userId)});
+      }
+    });
+
+    function mostrarDataEnPantalla(data: any) {
+      const resultadoDiv = document.getElementById('resultadoConsulta');
+      if (resultadoDiv) {
+        resultadoDiv.innerHTML = '';
+        data.forEach((dato: any) => {
+          const titulo = document.createElement('p'); 
+          titulo.textContent = dato.Titulo; 
+          resultadoDiv.appendChild(titulo);
+        });
+      }
+    }
+
+
+
+    async function getFollows(userId:string){
+      try {
+        const response = await fetch(`/api/follow/${userId}`);
+        
+        if (response.ok) {
+          const data = await response.json();
+          mostrarDataEnPantalla(data);
+        } else {
+          console.error('Error en la solicitud:', response.statusText);
+        }
+        
+      } catch (error) {
+                console.error('Error en la solicitud:', error);
+      }
+    }
+
+    async function getFinish(userId:string){
+      try {
+        const response = await fetch(`/api/follow/${userId}`, { 
+          method: 'POST', 
+          body: JSON.stringify({libro: "harry"}),
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          }
+        });
+            
+        if (response.ok) {
+          const data = await response.json();
+          console.log('Respuesta del servidor:', data);
+        } else {
+          console.error('Error en la solicitud:', response.statusText);
+        }
+      } catch (error) {
+                console.error('Error en la solicitud:', error);
+      }
+    } 
+
+  </script>
+
+<!-- <script src="/src/scripts/seguimiento.js"></script> -->
+  

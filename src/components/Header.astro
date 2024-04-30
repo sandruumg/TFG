@@ -24,8 +24,8 @@ const { user } = Astro.props;
             </a>
             <div class="flex items-center lg:order-2">
               <a href="#" class="text-white hover:bg-gray-500 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2">Lista de seguimiento</a>
-              {user !== undefined && <form  method="post" action="/api/signout"><button class="text-white">Sign out</button></form>}
-              {user !== undefined && <button class="text-white">{user}</button>}
+              {user !== undefined && <form  method="post" action="/api/signout"><button class="text-white mr-6">Sign out</button></form>}
+              {user !== undefined && <a href="perfil" class="text-white">{user}</a>}
               {user === undefined &&  <button id="btn-login" class="btn" onclick="my_modal_3.showModal()">Log in</button>}
              
               <dialog id="my_modal_3" class="modal text-xl">
@@ -75,6 +75,7 @@ const { user } = Astro.props;
                         <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                       </svg>
                     </div>
+                    <!-- necesitamos el value -->
                     <input type="text" id="buscador" name="buscador" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Search">
                   </div>
                   <button class="text-white">Buscar</button>

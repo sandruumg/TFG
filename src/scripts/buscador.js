@@ -1,7 +1,8 @@
 // Realiza una solicitud AJAX para enviar el formulario y obtener los datos
 document.getElementById('formularioBusqueda').addEventListener('submit', async function(event) {
     event.preventDefault(); // Evita que el formulario se envíe de forma tradicional
-    
+    // window.location.href = `/buscador?title=${valor}`;
+    // return; 
     const formData = new FormData(this);
   
     try {
