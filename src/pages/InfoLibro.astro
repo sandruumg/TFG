@@ -6,25 +6,61 @@ import Sinopsis from '../components/Sinopsis.astro';
 ---
 
 <Layout title="Información del libro">
-    <section>
-      <h1>Esta es la información del libro</h1>
-      <p id="bookInfo"></p>
-    </section>
     <InformacionLibro/>
     <Sinopsis/>
-  </Layout>
+</Layout>
 
 
   <script>
     const params = new URLSearchParams(location.search);
-    const nombreAutor = params.get('nombreAutor');
-    const tituloLibro = params.get('tituloLibro');
-    // Mostrar la información del libro en pantalla
-    const infoDiv = document.getElementById('bookInfo');
-    if (infoDiv) {
-        infoDiv.innerHTML = `
-            <p>autor: ${nombreAutor}</p>
-            <p>titulo: ${tituloLibro}</p>
-        `;
+    const idLibro = params.get('idLibro');
+    try {
+        const response = await fetch(`/api/${idLibro}`);
+        if (response.ok) {
+          const data = await response.json();
+          mostrarLibroEnPantalla(data);
+        } else {
+          console.error('Error en la solicitud:', response.statusText);
+        }
+    } catch (error) {
+      console.error('Error en la solicitud:', error);
+    }
+
+    function mostrarLibroEnPantalla(data: any) {
+      const seccionInfoLibro = document.getElementById('seccionInfoLibro');
+      const seccionSinopsis = document.getElementById('seccionSinopsis');
+      var nombreLibro = document.getElementById('nombreLibro');
+      var nombreAutor = document.getElementById('nombreAutor');
+      var imagenLibro = document.getElementById('imagenLibro');
+      var sinopsisLibro = document.getElementById('sinopsisLibro');
+      var numPaginasLibro = document.getElementById('numPaginasLibro');
+      var fechaPubliLibro = document.getElementById('fechaPubliLibro');
+      var generoLibro = document.getElementById('generoLibro');
+
+      if (seccionInfoLibro && seccionSinopsis) {
+        data.forEach((libro: any) => {
+          if(imagenLibro && nombreLibro && nombreAutor && sinopsisLibro && numPaginasLibro && fechaPubliLibro && generoLibro){
+            nombreLibro.innerHTML = libro.tituloLibro;
+            nombreAutor.innerHTML = libro.nombreAutor;
+            imagenLibro.setAttribute('src', libro.portadaLibro);
+            seccionInfoLibro.style.backgroundImage = "url('" + libro.fondoLibro + "')";
+            sinopsisLibro.innerHTML = libro.sinopsisLibro;
+            numPaginasLibro.innerHTML = libro.nPaginasLibro;
+            generoLibro.innerHTML = libro.categoriaLibro;
+
+            var fechaPubLibro = formatearFecha(libro.fechaPubLibro);
+            fechaPubliLibro.innerHTML = fechaPubLibro;
+          }
+        });
+      }
+    }
+
+    function formatearFecha(fechaPubLibro: Date){
+      var fecha = new Date(fechaPubLibro);
+      var dia = fecha.getDate();
+      var mes = fecha.getMonth() + 1;
+      var año = fecha.getFullYear();
+      var fechaFormateada = (dia < 10 ? '0' : '') + dia + '-' + (mes < 10 ? '0' : '') + mes + '-' + año;
+      return fechaFormateada;
     }
   </script>
