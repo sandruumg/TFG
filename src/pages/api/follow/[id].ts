@@ -14,8 +14,8 @@ export const GET = async ({ params }:{params:{id:string}}) => {
     }else{
         seguimiento =  await db.select({
             Titulo: Libros.tituloLibro, 
-            Categoria: Libros.categoriaLibro,
             Autor: Libros.nombreAutor,
+            Imagen: Libros.portadaLibro,
         }).from(ListaSeguimiento).innerJoin(Libros, eq(ListaSeguimiento.idLibro, Libros.idLibro)).where(eq(ListaSeguimiento.idUsuario, params.id));
     }
     console.log(seguimiento);

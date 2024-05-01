@@ -474,6 +474,16 @@ export default async function seed() {
             id: 2,
             idLibro: 2,
             idUsuario: "1234"
+        },
+        {
+            id: 3,
+            idLibro: 3,
+            idUsuario: "1234"
+        },
+        {
+            id: 4,
+            idLibro: 4,
+            idUsuario: "1234"
         }
     ]);
 }

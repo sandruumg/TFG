@@ -36,7 +36,7 @@ const seguimiento = await db.select().from(ListaSeguimiento).innerJoin(Libros, e
       </div>
     </section>
     <section class="m-10">
-      <div id="resultadoConsulta">
+      <div id="resultadoConsulta" class="flex flex-col justify-center">
       </div>
     </section>
   </Layout>
@@ -52,18 +52,53 @@ const seguimiento = await db.select().from(ListaSeguimiento).innerJoin(Libros, e
       }
     });
 
+    // function mostrarDataEnPantalla(data: any) {
+    //   const resultadoDiv = document.getElementById('resultadoConsulta');
+    //   if (resultadoDiv) {
+    //     resultadoDiv.innerHTML = '';
+    //     data.forEach((dato: any) => {
+    //       const infoLibro = document.createElement('div'); 
+    //       infoLibro.innerHTML = dato.Titulo; 
+    //       resultadoDiv.appendChild(titulo);
+    //     });
+    //   }
+    // }
     function mostrarDataEnPantalla(data: any) {
       const resultadoDiv = document.getElementById('resultadoConsulta');
+      const titulo = document.createElement('h1');
+      titulo.innerText = 'Lista de seguimiento';
+      titulo.style.fontSize = '5vh';
+      
       if (resultadoDiv) {
         resultadoDiv.innerHTML = '';
+        resultadoDiv.appendChild(titulo);
         data.forEach((dato: any) => {
-          const titulo = document.createElement('p'); 
-          titulo.textContent = dato.Titulo; 
-          resultadoDiv.appendChild(titulo);
+          const infoLibro = document.createElement('div'); 
+          infoLibro.innerHTML =  `
+          <div class="cursor-pointer p-3 flex m-5 justify-around bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
+            <div class="flex justify-center items-center w-full mx-[10%]">
+              <div class="w-40 flex justify-center">
+                <img class="w-24" src="${dato.Imagen}" alt="">
+              </div>
+              <div class="w-full flex flex-col p-4">
+                <h5 class="text-lg font-bold text-gray-900">${dato.Titulo}</h5>
+                <p class="text-sm text-gray-500">${dato.Autor}</p>
+              </div>
+            </div>
+            
+            <div class="flex justify-center items-center gap-3">
+              <button>Terminado</button>
+              <button>Favorito</button>
+              <button>Eliminar</button>
+            </div>
+          </div>
+
+          `;
+          
+          resultadoDiv.appendChild(infoLibro);
         });
       }
     }
-
 
 
     async function getFollows(userId:string){
