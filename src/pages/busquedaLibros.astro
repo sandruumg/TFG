@@ -1,0 +1,56 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+---
+
+
+
+<Layout title="Búsqueda de libros">
+    <h1 class="mx-[77px] my-10 text-3xl font-bold" id="busquedaUsuario"></h1>
+    <div class="flex flex-row justify-center flex-wrap mx-[77px] my-10 gap-10" id="bookInfoContainer"></div>
+</Layout>
+
+
+<script>
+    const params = new URLSearchParams(location.search);
+    const buscador = params.get('buscador');
+
+    try {
+        const response = await fetch(`/api/buscador/${buscador}`);
+        if (response.ok) {
+          const data = await response.json();
+          mostrarLibrosBusqueda(data);
+        } else {
+          console.error('Error en la solicitud:', response.statusText);
+        }
+    } catch (error) {
+      console.error('Error en la solicitud:', error);
+    }
+
+
+    function mostrarLibrosBusqueda(data: any) {
+        const bookInfoContainer = document.getElementById('bookInfoContainer');
+        const busquedaUsuario = document.getElementById('busquedaUsuario');
+        if(bookInfoContainer && busquedaUsuario){
+            bookInfoContainer.innerHTML='';
+            busquedaUsuario.innerHTML= `"${buscador}"`;
+            data.forEach((libro: any) => {
+                const bookElement = document.createElement('div');
+                bookElement.classList.add('card');
+                bookElement.style.width = '20vw';
+                bookElement.style.height = '50vh';
+                bookElement.innerHTML = `
+                    <a href="InfoLibro?idLibro=${libro.idLibro}" class="text-center flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
+                        <div class="flex-shrink-0 my-5 w-20 md:w-30">
+                            <img class="object-cover w-full h-40 md:h-auto md:w-full md:rounded-none md:rounded-l-lg" src="${libro.portadaLibro}" alt="">
+                        </div>
+                        <div style="height:18vh" class="flex flex-col justify-evenly p-4 leading-normal flex-grow">
+                            <h5 class="mb-2 fuente-1 text-1xl tracking-tight text-gray-900 dark:text-white">${libro.tituloLibro}</h5>
+                            <p class="mb-3 fuente-2 text-sm text-gray-700 dark:text-gray-400">${libro.nombreAutor}</p>
+                        </div>
+                    </a>`;
+                bookInfoContainer.appendChild(bookElement);
+            });
+        }
+    }
+</script>
