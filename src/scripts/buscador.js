@@ -3,5 +3,5 @@ document.getElementById('formularioBusqueda').addEventListener('submit', async f
     event.preventDefault(); // Evita que el formulario se envíe de forma tradicional
 
     const buscador = document.getElementById('buscador').value;
-    window.location.href = "busquedaLibros?buscador=" + encodeURIComponent(buscador);;
+    window.location.href = "busquedaLibros?buscador=" + encodeURIComponent(buscador);
 });

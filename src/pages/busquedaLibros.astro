@@ -14,26 +14,46 @@ import Layout from '../layouts/Layout.astro';
 <script>
     const params = new URLSearchParams(location.search);
     const buscador = params.get('buscador');
+    const categ = params.get('categ');
 
-    try {
-        const response = await fetch(`/api/buscador/${buscador}`);
-        if (response.ok) {
-          const data = await response.json();
-          mostrarLibrosBusqueda(data);
-        } else {
-          console.error('Error en la solicitud:', response.statusText);
+    if(buscador != null){
+        try {
+            const response = await fetch(`/api/buscador/${buscador}`);
+            if (response.ok) {
+            const data = await response.json();
+            mostrarLibrosBusqueda(data);
+            } else {
+            console.error('Error en la solicitud:', response.statusText);
+            }
+        } catch (error) {
+        console.error('Error en la solicitud:', error);
         }
-    } catch (error) {
-      console.error('Error en la solicitud:', error);
     }
 
+    if(categ != null){
+        try {
+            const response = await fetch(`/api/buscadorPorCateg/${categ}`);
+            if (response.ok) {
+            const data = await response.json();
+            mostrarLibrosBusqueda(data);
+            } else {
+            console.error('Error en la solicitud:', response.statusText);
+            }
+        } catch (error) {
+        console.error('Error en la solicitud:', error);
+        }
+    }
 
     function mostrarLibrosBusqueda(data: any) {
         const bookInfoContainer = document.getElementById('bookInfoContainer');
         const busquedaUsuario = document.getElementById('busquedaUsuario');
         if(bookInfoContainer && busquedaUsuario){
             bookInfoContainer.innerHTML='';
-            busquedaUsuario.innerHTML= `"${buscador}"`;
+            if(buscador != null){
+                busquedaUsuario.innerHTML= `"${buscador}"`;
+            }else if(categ != null){
+                busquedaUsuario.innerHTML= `"${categ}"`;
+            }
             data.forEach((libro: any) => {
                 const bookElement = document.createElement('div');
                 bookElement.classList.add('card');
@@ -51,6 +71,11 @@ import Layout from '../layouts/Layout.astro';
                     </a>`;
                 bookInfoContainer.appendChild(bookElement);
             });
+            if(data.length == 0){
+                const noResultados = document.createElement('div');
+                noResultados.innerHTML = "No se han encontrado resultados para esta búsqueda";
+                bookInfoContainer.appendChild(noResultados);
+            }
         }
     }
 </script>

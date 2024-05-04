@@ -1,4 +1,4 @@
-import { db, Libros, like} from 'astro:db';
+import { db, Libros, like, eq} from 'astro:db';
 
 export const GET = async ({ params }:{params:{buscador:string}}) => {
     
@@ -10,6 +10,15 @@ export const GET = async ({ params }:{params:{buscador:string}}) => {
         });
     }else{
         librosEncontrados = await db.select().from(Libros).where(like(Libros.tituloLibro, `%${params.buscador}%`));
+
+        if(librosEncontrados.length == 0){
+            librosEncontrados = await db.select().from(Libros).where(like(Libros.nombreAutor, `%${params.buscador}%`));
+        }
+
+        if(librosEncontrados.length == 0){
+            librosEncontrados = await db.select().from(Libros).where(like(Libros.categoriaLibro, `%${params.buscador}%`));
+        }
+
     }
     return new Response(
         JSON.stringify(librosEncontrados), {

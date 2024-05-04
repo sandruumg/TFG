@@ -5,9 +5,14 @@ const librosTotales = await db.select({ value: count() }).from(Libros);
 
 var cantidadLibros = librosTotales[0].value;
 const listaLibros = [];
+let numRandom: any[] = [];
+var random = 0;
 for (let i = 0; i < 7; i++) {
-    const random = Math.floor(Math.random() * cantidadLibros) + 1;
-
+    do {
+        random = Math.floor(Math.random() * cantidadLibros) + 1;
+    } while (numRandom.includes(random));
+    
+    numRandom.push(random);
     const libro = await db.select().from(Libros).where(eq(Libros.idLibro, random));
     listaLibros.push(libro[0]);
 }
@@ -16,7 +21,7 @@ const librosNovedades = await db.select().from(Libros).orderBy(desc(Libros.fecha
 
 ---
 <section class="flex items-center justify-center">
-    <div class="w-2/3 carousel carousel-center bg-slate-900">
+    <div class="overflow-x-auto w-2/3 carousel carousel-center bg-slate-900">
         {
             listaLibros.map(({portadaLibro, idLibro, fondoLibro})=>(
             <a href=`InfoLibro?idLibro=${idLibro}`>
