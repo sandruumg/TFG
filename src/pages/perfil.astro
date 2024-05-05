@@ -31,8 +31,8 @@ const seguimiento = await db.select().from(ListaSeguimiento).innerJoin(Libros, e
     <section>
       <div class="border border-gray-200 text-xl flex justify-around items-center p-6">
             <button type="button" id="seguir" data-userId={userId} class="boton hover:border-b-2 hover:border-accent">Lista seguimiento</button>
-            <button type="button" id="fav" data-valor="Favoritos" class="boton  hover:border-b-2 hover:border-accent">Favoritos</button>
-            <button type="button" id="fin" data-userId={userId} class="boton hover:border-b-2 hover:border-accent">Añadir a seguimiento</button>
+            <button type="button" id="valoraciones" data-valor="Favoritos" class="boton  hover:border-b-2 hover:border-accent">Valoraciones</button>
+            <button type="button" id="fin" data-userId={userId} class="boton hover:border-b-2 hover:border-accent">Libros terminados</button>
       </div>
     </section>
     <section class="m-10">
@@ -40,7 +40,6 @@ const seguimiento = await db.select().from(ListaSeguimiento).innerJoin(Libros, e
       </div>
     </section>
   </Layout>
-
   <script>
     document.querySelectorAll('.boton').forEach(boton => {
       if(boton.id === 'seguir'){
@@ -48,22 +47,16 @@ const seguimiento = await db.select().from(ListaSeguimiento).innerJoin(Libros, e
         boton.addEventListener('click', ()=>{getFollows(userId)});
       } else if(boton.id === 'fin'){
         let userId = boton.getAttribute('data-userId')!;
-        boton.addEventListener('click', ()=>{getFinish(userId)});
+        boton.addEventListener('click', ()=>{getTerminados(userId)});
+      }else if(boton.id === 'valoraciones'){
+        let userId = boton.getAttribute('data-userId')!;
+        boton.addEventListener('click', ()=>{});
       }
     });
+    
+    /************************LISTA SEGUMIENTO*****************************/
 
-    // function mostrarDataEnPantalla(data: any) {
-    //   const resultadoDiv = document.getElementById('resultadoConsulta');
-    //   if (resultadoDiv) {
-    //     resultadoDiv.innerHTML = '';
-    //     data.forEach((dato: any) => {
-    //       const infoLibro = document.createElement('div'); 
-    //       infoLibro.innerHTML = dato.Titulo; 
-    //       resultadoDiv.appendChild(titulo);
-    //     });
-    //   }
-    // }
-    function mostrarDataEnPantalla(data: any) {
+    function mostrarDataEnPantalla(data: any, userId: any) {
       const resultadoDiv = document.getElementById('resultadoConsulta');
       const titulo = document.createElement('h1');
       titulo.innerText = 'Lista de seguimiento';
@@ -72,56 +65,63 @@ const seguimiento = await db.select().from(ListaSeguimiento).innerJoin(Libros, e
       if (resultadoDiv) {
         resultadoDiv.innerHTML = '';
         resultadoDiv.appendChild(titulo);
-        data.forEach((dato: any) => {
-          const infoLibro = document.createElement('div'); 
-          infoLibro.innerHTML =  `
-          <div class="cursor-pointer p-3 flex m-5 justify-around bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
-            <div class="flex justify-center items-center w-full mx-[10%]">
-              <div class="w-40 flex justify-center">
-                <img class="w-24" src="${dato.Imagen}" alt="">
-              </div>
-              <div class="w-full flex flex-col p-4">
-                <h5 class="text-lg font-bold text-gray-900">${dato.Titulo}</h5>
-                <p class="text-sm text-gray-500">${dato.Autor}</p>
-              </div>
-            </div>
-            
-            <div class="flex justify-center items-center gap-3">
-              <button>Terminado</button>
-              <button>Favorito</button>
-              <button>Eliminar</button>
-            </div>
-          </div>
 
-          `;
+        data.forEach((dato: any) => {
+          const container = document.createElement('div');
+          container.classList.add('cursor-pointer', 'p-3', 'flex', 'm-5', 'justify-around', 'bg-white', 'border', 'border-gray-200', 'rounded-lg', 'shadow');
+          resultadoDiv.appendChild(container);
+
+          const divDerecha = document.createElement('div');
+          divDerecha.classList.add('flex', 'justify-center', 'items-center', 'w-full', 'mx-[10%]');
+          container.appendChild(divDerecha);
+
+          const divImg = document.createElement('div');
+          divImg.classList.add('w-40', 'flex', 'justify-center');
+          divImg.innerHTML = `<img class="w-24" src="${dato.Imagen}">`;
+          divDerecha.appendChild(divImg);
+
+          const divText = document.createElement('div');
+          divText.classList.add('w-full', 'flex', 'flex-col', 'p-4');
+          divText.innerHTML = `<h5 class="text-lg font-bold text-gray-900">${dato.Titulo}</h5><p class="text-sm text-gray-500">${dato.Autor}</p>`;
+          divDerecha.appendChild(divText);
+
+          const divButtons = document.createElement('div');
+          divButtons.classList.add('flex', 'justify-center', 'items-center', 'gap-3', 'm-5');
+          container.appendChild(divButtons);
+          const insertBtn = document.createElement('button'); 
+          insertBtn.setAttribute('data-userId', userId);
+          insertBtn.setAttribute('data-libroId', dato.idLibro);
+          insertBtn.id = 'eliminar'+ dato.idLibro;
+          insertBtn.classList.add('w-10', 'bg-gray-300', 'rounded-full', 'p-2', 'hover:bg-accent');
+          insertBtn.innerHTML = '<svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21a9 9 0 1 1 0-18c1.052 0 2.062.18 3 .512M7 9.577l3.923 3.923 8.5-8.5M17 14v6m-3-3h6"/></svg>';
+          insertBtn.addEventListener('click', ()=>{
+            getFinish(userId, dato.idLibro);
+          });
+          divButtons.appendChild(insertBtn);
           
-          resultadoDiv.appendChild(infoLibro);
+          const deleteBtn = document.createElement('button'); 
+          deleteBtn.setAttribute('data-userId', userId);
+          deleteBtn.setAttribute('data-libroId', dato.idLibro);
+          deleteBtn.id = 'eliminar'+ dato.idLibro;
+          deleteBtn.classList.add('bg-gray-300', 'rounded-lg', 'hover:bg-red-300');
+          deleteBtn.innerHTML ='<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="35" height="35" viewBox="0 0 50 50"><path d="M 21.857422 7 C 20.282422 7 19 8.2824219 19 9.8574219 L 19 13 L 10.5 13 C 10.224 13 10 13.224 10 13.5 C 10 13.776 10.224 14 10.5 14 L 12.925781 14 L 14.292969 38.607422 C 14.399969 40.509422 15.974906 42 17.878906 42 L 32.121094 42 C 34.025094 42 35.601031 40.510375 35.707031 38.609375 L 37.074219 14 L 39.5 14 C 39.776 14 40 13.776 40 13.5 C 40 13.224 39.776 13 39.5 13 L 31 13 L 31 9.8574219 C 31 8.2824219 29.717578 7 28.142578 7 L 21.857422 7 z M 21.857422 8 L 28.142578 8 C 29.166578 8 30 8.8334219 30 9.8574219 L 30 13 L 20 13 L 20 9.8574219 C 20 8.8334219 20.832422 8 21.857422 8 z M 13.927734 14 L 36.072266 14 L 34.708984 38.552734 C 34.631984 39.924734 33.495094 41 32.121094 41 L 17.878906 41 C 16.504906 41 15.368016 39.925734 15.291016 38.552734 L 13.927734 14 z M 19.169922 19 C 18.894922 19.009 18.6775 19.241578 18.6875 19.517578 L 19.242188 35.517578 C 19.252187 35.787578 19.473188 35.998047 19.742188 35.998047 L 19.761719 35.998047 C 20.036719 35.989047 20.252188 35.758422 20.242188 35.482422 L 19.6875 19.482422 C 19.6785 19.206422 19.436922 18.962 19.169922 19 z M 25 19 C 24.724 19 24.5 19.224 24.5 19.5 L 24.5 35.431641 C 24.5 35.707641 24.724 35.931641 25 35.931641 C 25.276 35.931641 25.5 35.707641 25.5 35.431641 L 25.5 19.5 C 25.5 19.224 25.276 19 25 19 z M 30.830078 19 C 30.545078 18.98 30.3225 19.207422 30.3125 19.482422 L 29.755859 35.482422 C 29.745859 35.758422 29.963281 35.989047 30.238281 35.998047 L 30.255859 35.998047 C 30.524859 35.998047 30.745859 35.787578 30.755859 35.517578 L 31.3125 19.517578 C 31.3225 19.241578 31.105078 19.009 30.830078 19 z"></path></svg>';
+          deleteBtn.addEventListener('click', ()=>{
+            getDelete(userId, dato.idLibro);
+          });
+          divButtons.appendChild(deleteBtn);
+
         });
       }
     }
 
-
-    async function getFollows(userId:string){
+    /*Funcion para peticion api. 
+    Borra los libros de la lista de seguimiento
+    /DELETE/[ID].TS*/
+    async function getDelete(userId:string, libroId:string){
       try {
-        const response = await fetch(`/api/follow/${userId}`);
-        
-        if (response.ok) {
-          const data = await response.json();
-          mostrarDataEnPantalla(data);
-        } else {
-          console.error('Error en la solicitud:', response.statusText);
-        }
-        
-      } catch (error) {
-                console.error('Error en la solicitud:', error);
-      }
-    }
-
-    async function getFinish(userId:string){
-      try {
-        const response = await fetch(`/api/follow/${userId}`, { 
-          method: 'POST', 
-          body: JSON.stringify({libro: "harry"}),
+        const response = await fetch(`/api/delete/${userId}`, { 
+          method: 'DELETE', 
+          body: JSON.stringify({libroId}),
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
@@ -131,6 +131,7 @@ const seguimiento = await db.select().from(ListaSeguimiento).innerJoin(Libros, e
         if (response.ok) {
           const data = await response.json();
           console.log('Respuesta del servidor:', data);
+          window.location.href = `/perfil`;
         } else {
           console.error('Error en la solicitud:', response.statusText);
         }
@@ -138,8 +139,120 @@ const seguimiento = await db.select().from(ListaSeguimiento).innerJoin(Libros, e
                 console.error('Error en la solicitud:', error);
       }
     } 
+  /*Funcion para peticion api. 
+    Inserta los libros en lista de terminados.
+    /INSERT/[ID].TS*/
+    async function getFinish(userId:string, libroId:string){
+      try {
+        const response = await fetch(`/api/insert/${userId}`, { 
+          method: 'POST', 
+          body: JSON.stringify({libroId}),
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          }
+        });
+            
+        if (response.ok) {
+          const data = await response.json();
+          console.log(data);
+        } else {
+          console.error('Error en la solicitud:', response.statusText);
+        }
+      } catch (error) {
+                console.error('Error en la solicitud:', error);
+      }
+    } 
+    /*Funcion para peticion api. 
+    Muestra los libros de la lista de seguimiento del usuario
+    /FOLLOW/[ID].TS*/
+    async function getFollows(userId:string){
+      try {
+        const response = await fetch(`/api/follow/${userId}`);
+        
+        if (response.ok) {
+          const data = await response.json();
+          mostrarDataEnPantalla(data, userId);
+        } else {
+          console.error('Error en la solicitud:', response.statusText);
+        }
+        
+      } catch (error) {
+                console.error('Error en la solicitud:', error);
+      }
+    }
+
+    /*****************************************************/
+
+
+    /**************************LISTA TERMINADOS***************************/
+
+    function mostrarTerminados(data: any, userId: any) {
+      const resultadoDiv = document.getElementById('resultadoConsulta');
+      resultadoDiv?.classList.add('flex')
+      const titulo = document.createElement('h1');
+      titulo.innerText = 'Mis libros terminados';
+      titulo.style.fontSize = '5vh';
+      
+      if (resultadoDiv) {
+        resultadoDiv.innerHTML = '';
+        resultadoDiv.appendChild(titulo);
+        const allBooks = document.createElement('div');
+        allBooks.classList.add('cursor-pointer', 'flex', 'justify-center', 'items-center', 'flex-wrap');
+        resultadoDiv.appendChild(allBooks);
+       
+        data.forEach((dato: any) => {
+
+          const container = document.createElement('div');
+          container.classList.add('flex', 'flex-col', 'justify-center', 'items-center', 'mx-20', 'my-5', 'z-10');
+          allBooks.appendChild(container);
+
+          const divImg = document.createElement('div');
+          divImg.classList.add('w-40', 'flex', 'justify-center');
+          divImg.innerHTML = `<img class="w-24" src="${dato.Imagen}">`;
+          container.appendChild(divImg);
+          let fecha =new Date(dato.Fecha);
+          let anio = fecha.getFullYear();
+          let mes = fecha.getMonth();
+          
+          const nombreMeses = [
+                'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+                'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+            ];
+            const nombreMes = nombreMeses[mes];
+
+          const divText = document.createElement('div');
+          divText.classList.add('w-full', 'flex', 'flex-col', 'p-4', 'justify-center', 'items-center');
+          divText.innerHTML = `<h5 class="text-lg font-bold text-gray-900">${nombreMes}</h5><h5 class="text-lg font-bold text-gray-900">${anio}</h5>`;
+          container.appendChild(divText);
+
+        });        
+      }
+    }
+
+     /*Funcion para peticion api. 
+    Muestra todos los libros terminados del usuario. 
+    /FINISH/[ID].TS*/
+    async function getTerminados(userId:string){
+      try {
+        const response = await fetch(`/api/finish/${userId}`);
+        
+        if (response.ok) {
+          const data = await response.json();
+          mostrarTerminados(data, userId);
+        }  else {
+          console.error('Error en la solicitud:', response.statusText);
+        }
+        
+      } catch (error) {
+          console.error('Error en la solicitud:', error);
+      }
+    }
+
+    /*Funcion para peticion api. 
+    Muestra todas las valoraciones del usuario ordenadas. 
+    /REVIEWS/[ID].TS*/
+   
 
   </script>
 
-<!-- <script src="/src/scripts/seguimiento.js"></script> -->
-  

@@ -19,12 +19,14 @@ import Sinopsis from '../components/Sinopsis.astro';
     const params = new URLSearchParams(location.search);
     const nombreAutor = params.get('nombreAutor');
     const tituloLibro = params.get('tituloLibro');
+    const id = params.get('libro');
     // Mostrar la información del libro en pantalla
     const infoDiv = document.getElementById('bookInfo');
     if (infoDiv) {
         infoDiv.innerHTML = `
             <p>autor: ${nombreAutor}</p>
             <p>titulo: ${tituloLibro}</p>
+            <p>titulo: ${id}</p>
         `;
     }
   </script>

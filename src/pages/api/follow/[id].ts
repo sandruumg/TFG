@@ -1,6 +1,4 @@
-import type { APIContext, APIRoute } from 'astro';
 import { db, eq, Libros, ListaSeguimiento} from 'astro:db';
-import { like } from 'drizzle-orm';
 
 //Obtener toda la lista de seguimiento
 export const GET = async ({ params }:{params:{id:string}}) => {
@@ -16,6 +14,7 @@ export const GET = async ({ params }:{params:{id:string}}) => {
             Titulo: Libros.tituloLibro, 
             Autor: Libros.nombreAutor,
             Imagen: Libros.portadaLibro,
+            idLibro: Libros.idLibro,
         }).from(ListaSeguimiento).innerJoin(Libros, eq(ListaSeguimiento.idLibro, Libros.idLibro)).where(eq(ListaSeguimiento.idUsuario, params.id));
     }
     console.log(seguimiento);
@@ -27,17 +26,6 @@ export const GET = async ({ params }:{params:{id:string}}) => {
           }
         }
       );
-    
-    // console.log(params)
-    // return new Response(
-    //     JSON.stringify('nada'), {
-    //       status: 200,
-    //       headers: {
-    //         "Content-Type": "application/json"
-    //       }
-    //     }
-    // );
-    
 }
 
 //Boton para añadir un libro al seguimiento del usuario

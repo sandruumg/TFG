@@ -1,4 +1,4 @@
-import { db, User, Libros, ListaSeguimiento } from 'astro:db';
+import { db, User, Libros, ListaSeguimiento, ListaTerminados } from 'astro:db';
 
 export default async function seed() {
     await db.insert(User).values([
@@ -484,6 +484,42 @@ export default async function seed() {
             id: 4,
             idLibro: 4,
             idUsuario: "1234"
+        },
+        {
+            id: 5,
+            idLibro: 5,
+            idUsuario: "1234"
+        }, 
+        {
+            id: 6,
+            idLibro: 6,
+            idUsuario: "1234"
+        }, 
+        {
+            id: 7,
+            idLibro: 7,
+            idUsuario: "1234"
+        }, 
+        {
+            id: 8,
+            idLibro: 8,
+            idUsuario: "1234"
+        }, 
+        {
+            id: 9,
+            idLibro: 9,
+            idUsuario: "1234"
+        }, 
+        {
+            id: 10,
+            idLibro: 10,
+            idUsuario: "1234"
+        }, 
+        {
+            id: 11,
+            idLibro: 2,
+            idUsuario: "1234"
         }
     ]);
+      
 }
