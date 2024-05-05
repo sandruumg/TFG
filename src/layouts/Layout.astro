@@ -50,8 +50,10 @@ const { title } = Astro.props;
 		letter-spacing: 2px;
 
 	}
+
 	.fuente-1{
 		font-family: 'Bebas Neue' ,sans-serif;
+		letter-spacing: 1px
 	}
 	.fuente-2{
 		font-family: 'Open Sans', sans-serif;
@@ -81,8 +83,10 @@ const { title } = Astro.props;
 		background-color: var(--secondary-dark) !important;
 	}
 	.carousel{
-		scrollbar-width: 10vw !important;
+		scrollbar-width:thin;
+		scrollbar-color: var(--secondary-dark) var(--quaternary);
 	}
+
 	code {
 		font-family:
 			Menlo,

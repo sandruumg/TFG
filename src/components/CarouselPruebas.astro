@@ -1,83 +1,60 @@
+---
+import { db, Libros, eq, desc, count } from 'astro:db';
+
+const librosTotales = await db.select({ value: count() }).from(Libros);
+
+var cantidadLibros = librosTotales[0].value;
+const listaLibros = [];
+let numRandom: any[] = [];
+var random = 0;
+for (let i = 0; i < 7; i++) {
+    do {
+        random = Math.floor(Math.random() * cantidadLibros) + 1;
+    } while (numRandom.includes(random));
+    
+    numRandom.push(random);
+    const libro = await db.select().from(Libros).where(eq(Libros.idLibro, random));
+    listaLibros.push(libro[0]);
+}
+
+const librosNovedades = await db.select().from(Libros).orderBy(desc(Libros.fechaPubLibro)).limit(3);
+
+---
 <section class="flex items-center justify-center">
-    <div class="w-2/3 carousel carousel-center bg-slate-900">
-        <div class="carousel-item" style="width: 33.5vw; height:42vw">
-            <img class="w-80 h-61 object-cover" src="/public/imagenes fondo/delitoFondo.png" style="width: 33.5vw;" alt="Pizza" />
-            <img src="/imagenes/delito (1).png" class="rounded-box transition-transform hover:scale-110" style="margin-top: 285px;left: -209px; ;position: relative; top:-1vw;" />
+    <div class="overflow-x-auto w-2/3 carousel carousel-center bg-slate-900">
+        {
+            listaLibros.map(({portadaLibro, idLibro, fondoLibro})=>(
+            <a href=`InfoLibro?idLibro=${idLibro}`>
+                <div class="carousel-item" style="width: 33.5vw; height:42vw">
+                    <img class="w-80 h-61 object-cover" src={fondoLibro} style="width: 33.5vw;" alt="" />
+                    <img src={portadaLibro} class="rounded-box transition-transform hover:scale-110" style="margin-top: 285px;left: -209px; ;position: relative; top:-1vw;" />
 
-        </div> 
-        <div class="carousel-item" style="width: 33.5vw; height:42vw;">
-            <img class="w-80 h-61 object-cover" src="/public/imagenes fondo/castigoFondo.png" style="width: 33.5vw;" alt="Pizza" />
-            <img src="/imagenes/castigo (1) (1).png" class="rounded-box transition-transform hover:scale-110" style="margin-top: 285px;left: -209px; ;position: relative; top:-1vw;" />
-        </div> 
-        <div class="carousel-item"style="width: 33.5vw; height:42vw;">
-            <img class="w-80 h-61 object-cover" src="/public/imagenes fondo/comoNoFondo.png" style="width: 33.5vw;" alt="Pizza" />
-            <img src="/imagenes/ComoNoEscribiNuestraHistoria.png" class="rounded-box transition-transform hover:scale-110" style="margin-top: 285px;left: -209px; ;position: relative; top:-1vw;" />
-        </div> 
-        <div class="carousel-item"style="width: 33.5vw; height:42vw;">
-            <img class="w-80 h-61 object-cover" src="/public/imagenes fondo/comoNoFondo.png" style="width: 33.5vw;" alt="Pizza" />
-            <img src="/imagenes/ComoNoEscribiNuestraHistoria.png" class="rounded-box transition-transform hover:scale-110" style="margin-top: 285px;left: -209px; ;position: relative; top:-1vw;" />
-
-        </div> 
-        <div class="carousel-item"style="width: 33.5vw; height:42vw;">
-            <img class="w-80 h-61 object-cover" src="/public/imagenes fondo/comoNoFondo.png" style="width: 33.5vw;" alt="Pizza" />
-            <img src="/imagenes/ComoNoEscribiNuestraHistoria.png" class="rounded-box transition-transform hover:scale-110" style="margin-top: 285px;left: -209px; ;position: relative; top:-1vw;" />
-
-        </div> 
-        <div class="carousel-item"style="width: 33.5vw; height:42vw;">
-            <img class="w-80 h-61 object-cover" src="/public/imagenes fondo/comoNoFondo.png" style="width: 33.5vw;" alt="Pizza" />
-            <img src="/imagenes/ComoNoEscribiNuestraHistoria.png" class="rounded-box transition-transform hover:scale-110" style="margin-top: 285px;left: -209px; ;position: relative; top:-1vw;" />
-
-        </div> 
-        <div class="carousel-item"style="width: 33.5vw; height:42vw;">
-            <img class="w-80 h-61 object-cover" src="/public/imagenes fondo/comoNoFondo.png" style="width: 33.5vw;" alt="Pizza" />
-            <img src="/imagenes/ComoNoEscribiNuestraHistoria.png" class="rounded-box transition-transform hover:scale-110" style="margin-top: 285px;left: -209px; ;position: relative; top:-1vw;" />
-
-        </div>
+                </div> 
+            </a>
+            ))
+        }
     </div>
     
     <div class="w-1/3">
         <h1 class="fuente-1 text-tertiary text-4xl ms-5 ps-8 mb-5 mt-2">Novedades</h1>
         <ul class="menu w-100 rounded-box">
-            <li class="active:bg-tertiary !important">
-                <a >
-                    <div class="flex items-center justify-between pb-2">
-                        <div class="" style="margin-left:4vw;">
-                            <p class="fuente-2 uppercase" style="font-size:1.2em">El arte de engañar al karma</p>
-                            <p class="fuente-2 text-neutral-400">Elisabet Benavent</p>
+        {
+            librosNovedades.map(({tituloLibro, nombreAutor, portadaLibro, idLibro}) =>(
+                <li class="active:bg-tertiary !important">
+                    <a href=`InfoLibro?idLibro=${idLibro}`>
+                        <div class="flex items-center justify-between pb-2">
+                            <div class="" style="margin-left:4vw; width:17vw;">
+                                <p class="fuente-2 uppercase" style="font-size:1.2em">{tituloLibro}</p>
+                                <p class="fuente-2 text-neutral-400">{nombreAutor}</p>
+                            </div>
+                            <div>
+                                <img class="ml-4 mr-16" style="width: 67px;height: 124px;" src={portadaLibro} alt="">
+                            </div>
                         </div>
-                        <div>
-                            <img class="ml-4 mr-16" style="width: 67px;height: 124px;" src="/public/imagenes/Karma.png" alt="">
-                        </div>
-                    </div>
-                </a>
-            </li>
-            <li>
-                <a>
-                    <div class="flex items-center justify-between pb-2">
-                        <div class="" style="margin-left:4vw;">
-                            <p class="fuente-2 uppercase" style="font-size:1.2em">El arte de engañar al karma</p>
-                            <p class="fuente-2 text-neutral-400">Elisabet Benavent</p>
-                        </div>
-                        <div>
-                            <img class="ml-4 mr-16" style="width: 67px;height: 124px;" src="/public/imagenes/Karma.png" alt="">
-                        </div>
-                    </div>
-                </a>
-            </li>               
-            <li>
-                <a>
-                    <div class="flex items-center justify-between pb-2">
-                        <div class="" style="margin-left:4vw;">
-                            <p class="fuente-2 uppercase" style="font-size:1.2em">El arte de engañar al karma</p>
-                            <p class="fuente-2 text-neutral-400">Elisabet Benavent</p>
-                        </div>
-                        <div>
-                            <img class="ml-4 mr-16" style="width: 67px;height: 124px;" src="/public/imagenes/Karma.png" alt="">
-                        </div>
-                    </div>
-                </a>
-            </li>
+                    </a>
+                </li>
+            ))
+        }
           </ul>
     </div>
-
 </section>

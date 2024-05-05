@@ -6,27 +6,103 @@ import Sinopsis from '../components/Sinopsis.astro';
 ---
 
 <Layout title="Información del libro">
-    <section>
-      <h1>Esta es la información del libro</h1>
-      <p id="bookInfo"></p>
-    </section>
     <InformacionLibro/>
     <Sinopsis/>
-  </Layout>
+    
+</Layout>
 
 
-  <script>
-    const params = new URLSearchParams(location.search);
-    const nombreAutor = params.get('nombreAutor');
-    const tituloLibro = params.get('tituloLibro');
-    const id = params.get('libro');
-    // Mostrar la información del libro en pantalla
-    const infoDiv = document.getElementById('bookInfo');
-    if (infoDiv) {
-        infoDiv.innerHTML = `
-            <p>autor: ${nombreAutor}</p>
-            <p>titulo: ${tituloLibro}</p>
-            <p>titulo: ${id}</p>
-        `;
+<script>
+  const params = new URLSearchParams(location.search);
+  const idLibro = params.get('idLibro');
+  try {
+      const response = await fetch(`/api/informacionLibro/${idLibro}`);
+      if (response.ok) {
+        const data = await response.json();
+        mostrarLibroEnPantalla(data);
+        obtenerMasLibrosAutor(data[0].nombreAutor);
+      } else {
+        console.error('Error en la solicitud:', response.statusText);
+      }
+  } catch (error) {
+    console.error('Error en la solicitud:', error);
+  }
+
+  function mostrarLibroEnPantalla(data: any) {
+    const seccionInfoLibro = document.getElementById('seccionInfoLibro');
+    const seccionSinopsis = document.getElementById('seccionSinopsis');
+    var nombreLibro = document.getElementById('nombreLibro');
+    var nombreAutor = document.getElementById('nombreAutor');
+    var imagenLibro = document.getElementById('imagenLibro');
+    var sinopsisLibro = document.getElementById('sinopsisLibro');
+    var numPaginasLibro = document.getElementById('numPaginasLibro');
+    var fechaPubliLibro = document.getElementById('fechaPubliLibro');
+    var generoLibro = document.getElementById('generoLibro');
+    var nombreAutorSelect;
+
+    if (seccionInfoLibro && seccionSinopsis) {
+      data.forEach((libro: any) => {
+        if(imagenLibro && nombreLibro && nombreAutor && sinopsisLibro && numPaginasLibro && fechaPubliLibro && generoLibro){
+          nombreLibro.innerHTML = libro.tituloLibro;
+          nombreAutor.innerHTML = libro.nombreAutor;
+          nombreAutorSelect = libro.nombreAutor;
+          imagenLibro.setAttribute('src', libro.portadaLibro);
+          seccionInfoLibro.style.backgroundImage = "url('" + libro.fondoLibro + "')";
+          sinopsisLibro.innerHTML = libro.sinopsisLibro;
+          numPaginasLibro.innerHTML = libro.nPaginasLibro;
+          generoLibro.innerHTML = libro.categoriaLibro;
+
+          var fechaPubLibro = formatearFecha(libro.fechaPubLibro);
+          fechaPubliLibro.innerHTML = fechaPubLibro;
+        }
+      });
     }
-  </script>
+  }
+
+  function formatearFecha(fechaPubLibro: Date){
+    var fecha = new Date(fechaPubLibro);
+    var dia = fecha.getDate();
+    var mes = fecha.getMonth() + 1;
+    var año = fecha.getFullYear();
+    var fechaFormateada = (dia < 10 ? '0' : '') + dia + '-' + (mes < 10 ? '0' : '') + mes + '-' + año;
+    return fechaFormateada;
+  }
+
+  async function obtenerMasLibrosAutor (nombreAutor: String){
+    try {
+      const response = await fetch(`/api/masLibrosAutor/${nombreAutor}`);
+      if (response.ok) {
+        const data = await response.json();
+        mostrarMasLibrosDelAutor(data);
+      } else {
+        console.error('Error en la solicitud:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error en la solicitud:', error);
+    }
+  }
+
+  function mostrarMasLibrosDelAutor(data: any){
+    const divLibrosAutor = document.getElementById('divLibrosAutor');
+    if(divLibrosAutor){
+      divLibrosAutor.innerHTML = '';
+      data.forEach((libro: any) => {
+        if(libro.idLibro != idLibro){
+          divLibrosAutor.innerHTML += `
+          <div class="carousel-item" data-bs-interval="10000">
+              <a href="InfoLibro?idLibro=${libro.idLibro}">
+                  <img src="${libro.portadaLibro}" class="rounded-box transition-transform hover:scale-110" style="margin-top: 35px;margin-left: 24px;width: 149px;height: 240px;position: relative;z-index: 0;" />
+              </a>
+          </div>`;
+        }
+      });
+    }
+  }
+
+  var botonVolver = document.getElementById("botonVolver");
+  if(botonVolver){
+    botonVolver.addEventListener("click", function() {
+        window.history.back();
+    });
+  }
+</script>

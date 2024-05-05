@@ -9,6 +9,7 @@ export default {
 				'secondary-dark': '#5AC7AA',
 				'tertiary':'#E5BB85',
 				'quaternary':'#D1D0CB',
+				'custom-grey':'#E4E5E6',
 				'custom-brown': '#5C4C43',
 				'custom-pink': '#D6C7C9',
 				'custom-blue': '#2E9CAF',
