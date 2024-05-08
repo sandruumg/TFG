@@ -168,7 +168,7 @@ const { userAlias, userId } = Astro.props;
   }
 
   function toastError(errorMessage:string){
-      let toast = document.getElementById('toastError');
+      let toast = document.getElementById('toastE');
       let msjT =document.getElementById('msjToastE'); 
       if(msjT){
         msjT.innerText = errorMessage;
@@ -215,7 +215,7 @@ const { userAlias, userId } = Astro.props;
     } catch (error) {
         console.error('Error en la solicitud:', error);
         let errorMessage = 'Error al añadir a lista de seguimiento';
-          toastError(errorMessage);
+        toastError(errorMessage);
     }
   }
 
@@ -232,12 +232,18 @@ const { userAlias, userId } = Astro.props;
           
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
+        let msj = 'Añadido a lista de terminados!'
+        toastSuccess(msj); 
       } else {
-        console.error('Error en la solicitud:', response.statusText);
+        if(response.status === 404){
+          let errorMessage = 'Error al añadir a lista de terminados';
+          toastError(errorMessage);
+        }
       }
     } catch (error) {
-              console.error('Error en la solicitud:', error);
+        console.error('Error en la solicitud:', error);
+        let errorMessage = 'Error al añadir a lista de terminados';
+        toastError(errorMessage);
     }
   } 
 </script>
