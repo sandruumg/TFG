@@ -41,13 +41,26 @@ const seguimiento = await db.select().from(ListaSeguimiento).innerJoin(Libros, e
     </section>
   </Layout>
   <script>
+    function updateStyleBtn(){
+      document.querySelectorAll('.boton').forEach(boton => {
+        boton.classList.remove('border-b-2','border-accent', 'font-bold');
+      });
+    }
     document.querySelectorAll('.boton').forEach(boton => {
       if(boton.id === 'seguir'){
         let userId = boton.getAttribute('data-userId')!;
-        boton.addEventListener('click', ()=>{getFollows(userId)});
+        boton.addEventListener('click', ()=>{
+          updateStyleBtn();
+          boton.classList.add('border-b-2','border-accent', 'font-bold');
+          getFollows(userId);
+        });
       } else if(boton.id === 'fin'){
         let userId = boton.getAttribute('data-userId')!;
-        boton.addEventListener('click', ()=>{getTerminados(userId)});
+        boton.addEventListener('click', ()=>{
+          updateStyleBtn();
+          boton.classList.add('border-b-2','border-accent', 'font-bold');
+          getTerminados(userId)
+        });
       }else if(boton.id === 'valoraciones'){
         let userId = boton.getAttribute('data-userId')!;
         boton.addEventListener('click', ()=>{});
@@ -55,19 +68,27 @@ const seguimiento = await db.select().from(ListaSeguimiento).innerJoin(Libros, e
     });
     
     /************************LISTA SEGUMIENTO*****************************/
+    window.onload = function() {
+      const seguirBtn = document.getElementById('seguir');
+      if (seguirBtn) {
+        seguirBtn.click(); // Simular clic en el botón de seguir
+      }
+    };
 
     function mostrarDataEnPantalla(data: any, userId: any) {
       const resultadoDiv = document.getElementById('resultadoConsulta');
       const titulo = document.createElement('h1');
       titulo.innerText = 'Lista de seguimiento';
       titulo.style.fontSize = '5vh';
-      
+
       if (resultadoDiv) {
         resultadoDiv.innerHTML = '';
         resultadoDiv.appendChild(titulo);
 
-        data.forEach((dato: any) => {
-          const container = document.createElement('div');
+        if(data.length > 0){
+          data.forEach((dato: any) => {
+          const container = document.createElement('a');
+          container.href = 'InfoLibro?idLibro='+dato.idLibro;
           container.classList.add('cursor-pointer', 'p-3', 'flex', 'm-5', 'justify-around', 'bg-white', 'border', 'border-gray-200', 'rounded-lg', 'shadow');
           resultadoDiv.appendChild(container);
 
@@ -111,6 +132,12 @@ const seguimiento = await db.select().from(ListaSeguimiento).innerJoin(Libros, e
           divButtons.appendChild(deleteBtn);
 
         });
+        }else{
+          const msj = document.createElement('div');
+          msj.innerText = 'No se han encontrado libros terminados';
+          resultadoDiv.appendChild(msj);
+        }
+        
       }
     }
 
@@ -201,8 +228,8 @@ const seguimiento = await db.select().from(ListaSeguimiento).innerJoin(Libros, e
         allBooks.classList.add('cursor-pointer', 'flex', 'justify-center', 'items-center', 'flex-wrap');
         resultadoDiv.appendChild(allBooks);
        
-        data.forEach((dato: any) => {
-
+        if(data.length > 0){
+          data.forEach((dato: any) => {
           const container = document.createElement('div');
           container.classList.add('flex', 'flex-col', 'justify-center', 'items-center', 'mx-20', 'my-5', 'z-10');
           allBooks.appendChild(container);
@@ -226,7 +253,14 @@ const seguimiento = await db.select().from(ListaSeguimiento).innerJoin(Libros, e
           divText.innerHTML = `<h5 class="text-lg font-bold text-gray-900">${nombreMes}</h5><h5 class="text-lg font-bold text-gray-900">${anio}</h5>`;
           container.appendChild(divText);
 
-        });        
+          });        
+        }else{
+          const msj = document.createElement('div');
+          msj.innerText = 'No se han encontrado libros terminados';
+          resultadoDiv.appendChild(msj);
+        }
+
+        
       }
     }
 
