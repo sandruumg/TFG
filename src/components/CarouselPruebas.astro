@@ -24,10 +24,10 @@ const librosNovedades = await db.select().from(Libros).orderBy(desc(Libros.fecha
     <div class="overflow-x-auto w-2/3 carousel carousel-center bg-slate-900">
         {
             listaLibros.map(({portadaLibro, idLibro, fondoLibro})=>(
-            <a href=`InfoLibro?idLibro=${idLibro}`>
+            <a href=`InfoLibro?idLibro={idLibro}`>
                 <div class="carousel-item" style="width: 33.5vw; height:42vw">
                     <img class="w-80 h-61 object-cover" src={fondoLibro} style="width: 33.5vw;" alt="" />
-                    <img src={portadaLibro} class="rounded-box transition-transform hover:scale-110" style="margin-top: 285px;left: -209px; ;position: relative; top:-1vw;" />
+                    <img src={portadaLibro} class="rounded-box transition-transform hover:scale-110 relative -left-2/3 -top-10 mt-72"/>
 
                 </div> 
             </a>
