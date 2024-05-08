@@ -33,7 +33,6 @@ export const POST = async ({ params, request }:{params:{id:string}, request:Requ
         }
       );
     }else{
-      
       return new Response(null, {
         status: 404,
         statusText: 'Not found'

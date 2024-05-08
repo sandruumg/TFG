@@ -18,9 +18,12 @@ const { userAlias, userId } = Astro.props;
 ---
 
 <Layout title="Información del libro">
+  
     <InformacionLibro/>
     <Sinopsis/>
-    
+   
+      
+
 </Layout>
 
 
@@ -123,7 +126,6 @@ const { userAlias, userId } = Astro.props;
     if(boton.id === 'seguir'){
       let userId = boton.getAttribute('data-userId')!;
       boton.addEventListener('click', ()=>{
-        alert(userId);
         if(idLibro && userId){
           getFollows(userId, idLibro);
         }
@@ -142,6 +144,52 @@ const { userAlias, userId } = Astro.props;
     }
   });
 
+  function toastSuccess(msj:string){
+      let toast = document.getElementById('toast');
+      let msjT =document.getElementById('msjToast'); 
+      if(msjT){
+        msjT.innerText = msj;
+      }
+      if(toast){
+        toast.style.display = 'block';
+        setTimeout(function() {
+          let opacity = 1;
+          let interval = setInterval(function() {
+          if (opacity <= 0) {
+            clearInterval(interval); 
+              toast.style.display = 'none';
+          } else {
+            opacity -= 0.4; 
+            toast.style.opacity = opacity.toString();
+          }
+        }, 100);
+      }, 3000);
+    }
+  }
+
+  function toastError(errorMessage:string){
+      let toast = document.getElementById('toastError');
+      let msjT =document.getElementById('msjToastE'); 
+      if(msjT){
+        msjT.innerText = errorMessage;
+      }
+      if(toast){
+        toast.style.display = 'block';
+        setTimeout(function() {
+          let opacity = 1;
+          let interval = setInterval(function() {
+          if (opacity <= 0) {
+            clearInterval(interval); 
+              toast.style.display = 'none';
+          } else {
+            opacity -= 0.4; 
+            toast.style.opacity = opacity.toString();
+          }
+        }, 100);
+      }, 3000);
+    }
+  }
+
   async function getFollows(userId:string, idLibro:string){
     try {
       const response = await fetch(`/api/insertSeguimiento/${userId}`, 
@@ -156,12 +204,18 @@ const { userAlias, userId } = Astro.props;
           
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
+        let msj = 'Añadido a lista de seguimiento!'
+        toastSuccess(msj);        
       } else {
-        console.error('Error en la solicitud:', response.statusText);
+        if(response.status === 404){
+          let errorMessage = 'Error al añadir a lista de seguimiento';
+          toastError(errorMessage);
+        }
       }
     } catch (error) {
-              console.error('Error en la solicitud:', error);
+        console.error('Error en la solicitud:', error);
+        let errorMessage = 'Error al añadir a lista de seguimiento';
+          toastError(errorMessage);
     }
   }
 
