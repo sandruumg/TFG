@@ -2,7 +2,19 @@
 import Layout from '../layouts/Layout.astro';
 import InformacionLibro from '../components/InformacionLibro.astro';
 import Sinopsis from '../components/Sinopsis.astro';
+import { db, User, Session, Libros, ListaSeguimiento, ListaTerminados } from 'astro:db';
+import { eq } from 'astro:db';
 
+if(Astro.locals.user){
+    const user = Astro.locals.user!;
+    const usuarios = await db.select().from(User).where(eq(User.id, user.id));
+    const [infoUser] = usuarios;
+    const alias = infoUser.aliasUsuario;
+    const id = infoUser.id;
+    Astro.props.userAlias = alias;
+    Astro.props.userId = id;
+}
+const { userAlias, userId } = Astro.props;
 ---
 
 <Layout title="Información del libro">
@@ -15,6 +27,7 @@ import Sinopsis from '../components/Sinopsis.astro';
 <script>
   const params = new URLSearchParams(location.search);
   const idLibro = params.get('idLibro');
+
   try {
       const response = await fetch(`/api/informacionLibro/${idLibro}`);
       if (response.ok) {
@@ -105,4 +118,72 @@ import Sinopsis from '../components/Sinopsis.astro';
         window.history.back();
     });
   }
+
+  document.querySelectorAll('.boton').forEach(boton => {
+    if(boton.id === 'seguir'){
+      let userId = boton.getAttribute('data-userId')!;
+      boton.addEventListener('click', ()=>{
+        alert(userId);
+        if(idLibro && userId){
+          getFollows(userId, idLibro);
+        }
+      });
+    } else if(boton.id === 'fin'){
+      let userId = boton.getAttribute('data-userId')!;
+      boton.addEventListener('click', ()=>{
+
+        if(idLibro && userId){
+        getFinish(userId, idLibro)
+        }
+      });
+    }else if(boton.id === 'valoraciones'){
+      let userId = boton.getAttribute('data-userId')!;
+      boton.addEventListener('click', ()=>{});
+    }
+  });
+
+  async function getFollows(userId:string, idLibro:string){
+    try {
+      const response = await fetch(`/api/insertSeguimiento/${userId}`, 
+      { 
+        method: 'POST', 
+        body: JSON.stringify({idLibro}),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      });
+          
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+      } else {
+        console.error('Error en la solicitud:', response.statusText);
+      }
+    } catch (error) {
+              console.error('Error en la solicitud:', error);
+    }
+  }
+
+  async function getFinish(userId:string, idLibro:string){
+    try {
+      const response = await fetch(`/api/insert/${userId}`, { 
+        method: 'POST', 
+        body: JSON.stringify({idLibro}),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      });
+          
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+      } else {
+        console.error('Error en la solicitud:', response.statusText);
+      }
+    } catch (error) {
+              console.error('Error en la solicitud:', error);
+    }
+  } 
 </script>

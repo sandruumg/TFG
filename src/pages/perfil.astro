@@ -13,8 +13,6 @@ Astro.props.userId = id;
 
 const { userAlias, userId } = Astro.props;
 
-const seguimiento = await db.select().from(ListaSeguimiento).innerJoin(Libros, eq(ListaSeguimiento.idLibro, Libros.idLibro)).where(eq(ListaSeguimiento.idUsuario, userId));
-
 ---
 
 <Layout title="Mi perfil">

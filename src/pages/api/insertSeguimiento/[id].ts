@@ -1,9 +1,9 @@
-import { db, eq, and, Libros, ListaSeguimiento, ListaTerminados} from 'astro:db';
-
+import { db, eq, and, ListaSeguimiento} from 'astro:db';
 
 //Boton para añadir un libro al seguimiento del usuario
 export const POST = async ({ params, request }:{params:{id:string}, request:Request}) => {
   //Comprobar que se han enviado datos en el body
+  
   const body = await request.json();
   let consulta;
   if(!body){
@@ -11,27 +11,21 @@ export const POST = async ({ params, request }:{params:{id:string}, request:Requ
       status: 404,
       statusText: 'Not found'
     });
+    
   }else{
     //Coger los datos del body
     const idUsuario = params.id;
-    let idLibro;
-    if(body.libroId){
-      idLibro = body.libroId;
-    }else if(body.idLibro){
-      idLibro = body.idLibro;
-    }
-    const fechaTerminado = new Date();
-    const allTerminados = await db.select().from(ListaTerminados).where(and(eq(ListaTerminados.idUsuario, idUsuario), eq(ListaTerminados.idLibro, idLibro)));
-
-    if(allTerminados.length == 0){
-      consulta = await db.insert(ListaTerminados).values({
+    const idLibro = body.idLibro;
+    const allSeguimiento = await db.select().from(ListaSeguimiento).where(and(eq(ListaSeguimiento.idUsuario, idUsuario), eq(ListaSeguimiento.idLibro, idLibro)));
+    
+    if(allSeguimiento.length == 0){
+      consulta = await db.insert(ListaSeguimiento).values({
         idLibro,
-        idUsuario,
-        fechaTerminado
+        idUsuario
       }).execute();
 
       return new Response(
-        JSON.stringify({Respuesta:'Libro añadido a lista terminados'}), {
+        JSON.stringify({Respuesta:'Libro añadido a lista seguimiento'}), {
           status: 200,
           headers: {
             "Content-Type": "application/json"
@@ -39,13 +33,11 @@ export const POST = async ({ params, request }:{params:{id:string}, request:Requ
         }
       );
     }else{
+      
       return new Response(null, {
         status: 404,
         statusText: 'Not found'
       });
-    }
-   
-
-   
+    }   
   }
 }
