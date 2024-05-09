@@ -2,6 +2,21 @@
     <div class="bg-gradient">
         <h1 class="fuente-1 text-5xl">Unete a nuestra comunidad</h1>
         <p class="fuente-2 my-5">Lorem ipsum dolor sit amet consectetur adipiscing elit vulputate, laoreet ultrices penatibus nunc dui porta vestibulum. Nisl facilisi conubia enim venenatis ut, dictumst praesent metus bibendum, dapibus eleifend malesuada etiam.</p>
-        <button class="btn fuente-1 bg-button-registro">REGISTRATE</button>
+        <a id="open-modal-link">
+            <button class="btn fuente-1 bg-button-registro">REGISTRATE</button>
+        </a>
     </div>
 </section>
+
+<script>
+    const openModal = document.getElementById('open-modal-link');
+    const modal = document.getElementById('my_modal_3') as HTMLDialogElement;
+
+    if (openModal && modal) {
+        openModal.addEventListener('click', function (event) {
+            event.preventDefault();
+            modal.showModal();
+        })
+    }
+    
+</script>
