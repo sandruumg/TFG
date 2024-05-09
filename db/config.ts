@@ -67,6 +67,7 @@ export default defineDb({
     Session, 
     Libros,
     ListaSeguimiento,
-    ListaTerminados
+    ListaTerminados,
+    RankingLibros
   }
 });

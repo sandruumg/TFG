@@ -245,5 +245,48 @@ const { userAlias, userId } = Astro.props;
         let errorMessage = 'Error al añadir a lista de terminados';
         toastError(errorMessage);
     }
-  } 
+  }
+
+/*****************************************/
+/*******************ESTRELLAS**********************/
+
+
+const puntuacion = document.querySelectorAll<HTMLInputElement>('input[type="radio"][name="rating-8"]');
+puntuacion.forEach(input => {
+    input.addEventListener('change', () => {
+      let userId = input.getAttribute('data-userId')!;
+        const estrellas = input.value;
+        console.log(estrellas);
+        console.log(userId);
+        console.log(idLibro);
+
+        if(idLibro){
+          getPuntuacion(userId, idLibro, estrellas);
+        }
+        
+    });
+});
+
+async function getPuntuacion(userId:string, idLibro:string, estrellas:string){
+    try {
+      const response = await fetch(`/api/insertPuntuacion/${userId}`, 
+      { 
+        method: 'POST', 
+        body: JSON.stringify({idLibro, estrellas}),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      });
+          
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);        
+      } else {
+        console.log('error');
+      }
+    } catch (error) {
+        console.log('error pero en catch');
+    }
+  }
 </script>

@@ -29,7 +29,7 @@ const { userAlias, userId } = Astro.props;
     <section>
       <div class="border border-gray-200 text-xl flex justify-around items-center p-6">
             <button type="button" id="seguir" data-userId={userId} class="boton hover:border-b-2 hover:border-accent">Lista seguimiento</button>
-            <button type="button" id="valoraciones" data-valor="Favoritos" class="boton  hover:border-b-2 hover:border-accent">Valoraciones</button>
+            <button type="button" id="valoraciones" data-userId={userId} data-valor="Favoritos" class="boton  hover:border-b-2 hover:border-accent">Valoraciones</button>
             <button type="button" id="fin" data-userId={userId} class="boton hover:border-b-2 hover:border-accent">Libros terminados</button>
       </div>
     </section>
@@ -61,7 +61,11 @@ const { userAlias, userId } = Astro.props;
         });
       }else if(boton.id === 'valoraciones'){
         let userId = boton.getAttribute('data-userId')!;
-        boton.addEventListener('click', ()=>{});
+        boton.addEventListener('click', ()=>{
+          updateStyleBtn();
+          boton.classList.add('border-b-2','border-accent', 'font-bold');
+          getValoraciones(userId);
+        });
       }
     });
     
@@ -354,11 +358,90 @@ const { userAlias, userId } = Astro.props;
           console.error('Error en la solicitud:', error);
       }
     }
-
+    /**************************************************/
+    /***********************LISTA VALORACIONES***************************/
     /*Funcion para peticion api. 
     Muestra todas las valoraciones del usuario ordenadas. 
     /REVIEWS/[ID].TS*/
-   
+   function mostrarValoraciones(data:any, userId:string){
+    const resultadoDiv = document.getElementById('resultadoConsulta');
+      resultadoDiv?.classList.add('flex')
+      const titulo = document.createElement('h1');
+      titulo.innerText = 'Mis valoraciones';
+      titulo.style.fontSize = '5vh';
+      
+      if (resultadoDiv) {
+        resultadoDiv.innerHTML = '';
+        resultadoDiv.appendChild(titulo);
+        const allBooks = document.createElement('div');
+        allBooks.classList.add('cursor-pointer', 'flex', 'flex-col');
+        resultadoDiv.appendChild(allBooks);
+       
+        if(data.length > 0){
+          data.forEach((dato:any) => {
+            const container = document.createElement('div');
+          container.classList.add('flex', 'mx-20', 'my-5', 'z-10');
+          allBooks.appendChild(container);
+
+          const divImg = document.createElement('div');
+          divImg.classList.add('w-40', 'flex', 'justify-center');
+          divImg.innerHTML = `<img class="w-24" src="${dato.Imagen}">`;
+          container.appendChild(divImg);
+
+          const div = document.createElement('div');
+          div.classList.add('w-full', 'flex', 'flex-col', 'p-4');
+          container.appendChild(div);
+
+          const divText = document.createElement('div');
+          divText.classList.add('flex', 'flex-col');
+          divText.innerHTML = `<h5 class="text-lg font-bold text-gray-900">${dato.Titulo}</h5><p class="text-sm text-gray-500">${dato.Autor}</p>`;
+          div.appendChild(divText);
+
+          const divEstrellas = document.createElement('div');
+          divEstrellas.classList.add('flex', 'mt-2');
+          for (let i = 0; i < dato.estrellas; i++) {
+            const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            svg.setAttribute("class", "w-8 h-8 text-yellow-400");
+            svg.setAttribute("aria-hidden", "true");
+            svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+            svg.setAttribute("width", "24");
+            svg.setAttribute("height", "24");
+            svg.setAttribute("fill", "currentColor");
+            svg.setAttribute("viewBox", "0 0 24 24");
+
+            const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            path.setAttribute("d", "M13.849 4.22c-.684-1.626-3.014-1.626-3.698 0L8.397 8.387l-4.552.361c-1.775.14-2.495 2.331-1.142 3.477l3.468 2.937-1.06 4.392c-.413 1.713 1.472 3.067 2.992 2.149L12 19.35l3.897 2.354c1.52.918 3.405-.436 2.992-2.15l-1.06-4.39 3.468-2.938c1.353-1.146.633-3.336-1.142-3.477l-4.552-.36-1.754-4.17Z");
+
+            svg.appendChild(path);
+            divEstrellas.appendChild(svg);
+          }
+         
+          div.appendChild(divEstrellas);
+          });        
+        }else{
+          const msj = document.createElement('div');
+          msj.innerText = 'No se han encontrado valoraciones';
+          resultadoDiv.appendChild(msj);
+        }
+
+        
+      }
+   }
+    async function getValoraciones(userId:string){
+      try {
+        const response = await fetch(`/api/valoraciones/${userId}`);
+        
+        if (response.ok) {
+          const data = await response.json();
+          mostrarValoraciones(data, userId);
+          console.log(data);
+        }  else {
+          console.error('Error en la solicitud:', response.statusText);
+        }
+        
+      } catch (error) {
+          console.error('Error en la solicitud:', error);
+      }    }
 
   </script>
 
