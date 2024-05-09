@@ -2,19 +2,35 @@
 import Layout from '../layouts/Layout.astro';
 import InformacionLibro from '../components/InformacionLibro.astro';
 import Sinopsis from '../components/Sinopsis.astro';
+import { db, User, Session, Libros, ListaSeguimiento, ListaTerminados } from 'astro:db';
+import { eq } from 'astro:db';
 
+if(Astro.locals.user){
+    const user = Astro.locals.user!;
+    const usuarios = await db.select().from(User).where(eq(User.id, user.id));
+    const [infoUser] = usuarios;
+    const alias = infoUser.aliasUsuario;
+    const id = infoUser.id;
+    Astro.props.userAlias = alias;
+    Astro.props.userId = id;
+}
+const { userAlias, userId } = Astro.props;
 ---
 
 <Layout title="Información del libro">
+  
     <InformacionLibro/>
     <Sinopsis/>
-    
+   
+      
+
 </Layout>
 
 
 <script>
   const params = new URLSearchParams(location.search);
   const idLibro = params.get('idLibro');
+
   try {
       const response = await fetch(`/api/informacionLibro/${idLibro}`);
       if (response.ok) {
@@ -105,4 +121,129 @@ import Sinopsis from '../components/Sinopsis.astro';
         window.history.back();
     });
   }
+
+  document.querySelectorAll('.boton').forEach(boton => {
+    if(boton.id === 'seguir'){
+      let userId = boton.getAttribute('data-userId')!;
+      boton.addEventListener('click', ()=>{
+        if(idLibro && userId){
+          getFollows(userId, idLibro);
+        }
+      });
+    } else if(boton.id === 'fin'){
+      let userId = boton.getAttribute('data-userId')!;
+      boton.addEventListener('click', ()=>{
+
+        if(idLibro && userId){
+        getFinish(userId, idLibro)
+        }
+      });
+    }else if(boton.id === 'valoraciones'){
+      let userId = boton.getAttribute('data-userId')!;
+      boton.addEventListener('click', ()=>{});
+    }
+  });
+
+  function toastSuccess(msj:string){
+      let toast = document.getElementById('toast');
+      let msjT =document.getElementById('msjToast'); 
+      if(msjT){
+        msjT.innerText = msj;
+      }
+      if(toast){
+        toast.style.display = 'block';
+        setTimeout(function() {
+          let opacity = 1;
+          let interval = setInterval(function() {
+          if (opacity <= 0) {
+            clearInterval(interval); 
+              toast.style.display = 'none';
+          } else {
+            opacity -= 0.4; 
+            toast.style.opacity = opacity.toString();
+          }
+        }, 100);
+      }, 3000);
+    }
+  }
+
+  function toastError(errorMessage:string){
+      let toast = document.getElementById('toastE');
+      let msjT =document.getElementById('msjToastE'); 
+      if(msjT){
+        msjT.innerText = errorMessage;
+      }
+      if(toast){
+        toast.style.display = 'block';
+        setTimeout(function() {
+          let opacity = 1;
+          let interval = setInterval(function() {
+          if (opacity <= 0) {
+            clearInterval(interval); 
+              toast.style.display = 'none';
+          } else {
+            opacity -= 0.4; 
+            toast.style.opacity = opacity.toString();
+          }
+        }, 100);
+      }, 3000);
+    }
+  }
+
+  async function getFollows(userId:string, idLibro:string){
+    try {
+      const response = await fetch(`/api/insertSeguimiento/${userId}`, 
+      { 
+        method: 'POST', 
+        body: JSON.stringify({idLibro}),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      });
+          
+      if (response.ok) {
+        const data = await response.json();
+        let msj = 'Añadido a lista de seguimiento!'
+        toastSuccess(msj);        
+      } else {
+        if(response.status === 404){
+          let errorMessage = 'Error al añadir a lista de seguimiento';
+          toastError(errorMessage);
+        }
+      }
+    } catch (error) {
+        console.error('Error en la solicitud:', error);
+        let errorMessage = 'Error al añadir a lista de seguimiento';
+        toastError(errorMessage);
+    }
+  }
+
+  async function getFinish(userId:string, idLibro:string){
+    try {
+      const response = await fetch(`/api/insert/${userId}`, { 
+        method: 'POST', 
+        body: JSON.stringify({idLibro}),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      });
+          
+      if (response.ok) {
+        const data = await response.json();
+        let msj = 'Añadido a lista de terminados!'
+        toastSuccess(msj); 
+      } else {
+        if(response.status === 404){
+          let errorMessage = 'Error al añadir a lista de terminados';
+          toastError(errorMessage);
+        }
+      }
+    } catch (error) {
+        console.error('Error en la solicitud:', error);
+        let errorMessage = 'Error al añadir a lista de terminados';
+        toastError(errorMessage);
+    }
+  } 
 </script>
