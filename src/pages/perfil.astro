@@ -85,12 +85,12 @@ const { userAlias, userId } = Astro.props;
 
         if(data.length > 0){
           data.forEach((dato: any) => {
-          const container = document.createElement('a');
-          container.href = 'InfoLibro?idLibro='+dato.idLibro;
+          const container = document.createElement('div');
           container.classList.add('cursor-pointer', 'p-3', 'flex', 'm-5', 'justify-around', 'bg-white', 'border', 'border-gray-200', 'rounded-lg', 'shadow');
           resultadoDiv.appendChild(container);
 
-          const divDerecha = document.createElement('div');
+          const divDerecha = document.createElement('a');
+          divDerecha.href = 'InfoLibro?idLibro='+dato.idLibro;
           divDerecha.classList.add('flex', 'justify-center', 'items-center', 'w-full', 'mx-[10%]');
           container.appendChild(divDerecha);
 
@@ -103,20 +103,30 @@ const { userAlias, userId } = Astro.props;
           divText.classList.add('w-full', 'flex', 'flex-col', 'p-4');
           divText.innerHTML = `<h5 class="text-lg font-bold text-gray-900">${dato.Titulo}</h5><p class="text-sm text-gray-500">${dato.Autor}</p>`;
           divDerecha.appendChild(divText);
+          
+          const divButtonsToast = document.createElement('div');
+          divButtonsToast.classList.add('flex', 'flex-col', 'justify-center', 'items-center');
+          divButtonsToast.id = 'divButtons'+dato.idLibro;
+          container.appendChild( divButtonsToast);
 
           const divButtons = document.createElement('div');
           divButtons.classList.add('flex', 'justify-center', 'items-center', 'gap-3', 'm-5');
-          container.appendChild(divButtons);
+          divButtonsToast.appendChild(divButtons);         
+
           const insertBtn = document.createElement('button'); 
           insertBtn.setAttribute('data-userId', userId);
           insertBtn.setAttribute('data-libroId', dato.idLibro);
           insertBtn.id = 'eliminar'+ dato.idLibro;
           insertBtn.classList.add('w-10', 'bg-gray-300', 'rounded-full', 'p-2', 'hover:bg-accent');
           insertBtn.innerHTML = '<svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21a9 9 0 1 1 0-18c1.052 0 2.062.18 3 .512M7 9.577l3.923 3.923 8.5-8.5M17 14v6m-3-3h6"/></svg>';
+          
           insertBtn.addEventListener('click', ()=>{
-            getFinish(userId, dato.idLibro);
+            const idLibro = insertBtn.getAttribute('data-libroId');
+            if(idLibro){
+              getFinish(userId, idLibro);
+            }            
           });
-          divButtons.appendChild(insertBtn);
+            divButtons.appendChild(insertBtn);
           
           const deleteBtn = document.createElement('button'); 
           deleteBtn.setAttribute('data-userId', userId);
@@ -124,6 +134,7 @@ const { userAlias, userId } = Astro.props;
           deleteBtn.id = 'eliminar'+ dato.idLibro;
           deleteBtn.classList.add('bg-gray-300', 'rounded-lg', 'hover:bg-red-300');
           deleteBtn.innerHTML ='<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="35" height="35" viewBox="0 0 50 50"><path d="M 21.857422 7 C 20.282422 7 19 8.2824219 19 9.8574219 L 19 13 L 10.5 13 C 10.224 13 10 13.224 10 13.5 C 10 13.776 10.224 14 10.5 14 L 12.925781 14 L 14.292969 38.607422 C 14.399969 40.509422 15.974906 42 17.878906 42 L 32.121094 42 C 34.025094 42 35.601031 40.510375 35.707031 38.609375 L 37.074219 14 L 39.5 14 C 39.776 14 40 13.776 40 13.5 C 40 13.224 39.776 13 39.5 13 L 31 13 L 31 9.8574219 C 31 8.2824219 29.717578 7 28.142578 7 L 21.857422 7 z M 21.857422 8 L 28.142578 8 C 29.166578 8 30 8.8334219 30 9.8574219 L 30 13 L 20 13 L 20 9.8574219 C 20 8.8334219 20.832422 8 21.857422 8 z M 13.927734 14 L 36.072266 14 L 34.708984 38.552734 C 34.631984 39.924734 33.495094 41 32.121094 41 L 17.878906 41 C 16.504906 41 15.368016 39.925734 15.291016 38.552734 L 13.927734 14 z M 19.169922 19 C 18.894922 19.009 18.6775 19.241578 18.6875 19.517578 L 19.242188 35.517578 C 19.252187 35.787578 19.473188 35.998047 19.742188 35.998047 L 19.761719 35.998047 C 20.036719 35.989047 20.252188 35.758422 20.242188 35.482422 L 19.6875 19.482422 C 19.6785 19.206422 19.436922 18.962 19.169922 19 z M 25 19 C 24.724 19 24.5 19.224 24.5 19.5 L 24.5 35.431641 C 24.5 35.707641 24.724 35.931641 25 35.931641 C 25.276 35.931641 25.5 35.707641 25.5 35.431641 L 25.5 19.5 C 25.5 19.224 25.276 19 25 19 z M 30.830078 19 C 30.545078 18.98 30.3225 19.207422 30.3125 19.482422 L 29.755859 35.482422 C 29.745859 35.758422 29.963281 35.989047 30.238281 35.998047 L 30.255859 35.998047 C 30.524859 35.998047 30.745859 35.787578 30.755859 35.517578 L 31.3125 19.517578 C 31.3225 19.241578 31.105078 19.009 30.830078 19 z"></path></svg>';
+          
           deleteBtn.addEventListener('click', ()=>{
             getDelete(userId, dato.idLibro);
           });
@@ -137,6 +148,68 @@ const { userAlias, userId } = Astro.props;
         }
         
       }
+    }
+
+
+    function createToast(ok:boolean, libroId:string){
+      const div = document.getElementById('divButtons'+libroId);
+      if(ok === true){
+        if(div){
+          const toast = document.createElement('div');
+          toast.innerHTML = `
+          <div role="alert" class="w-48">
+              <div class="flex justify-between shadow rounded-lg bg-green-100">
+                  <div class="flex justify-center items-center gap-2 m-2">
+                      <div class="bg-green-300 p-1 rounded-lg ">
+                         <svg class="w-6 h-6 text-green-500 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                            <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm13.707-1.293a1 1 0 0 0-1.414-1.414L11 12.586l-1.793-1.793a1 1 0 0 0-1.414 1.414l2.5 2.5a1 1 0 0 0 1.414 0l4-4Z" clip-rule="evenodd"/>
+                         </svg>          
+                      </div>
+                      <span class="text-sm text-green-500">Libro terminado!</span>
+                  </div>
+              </div>                       
+          </div>
+          `;
+          div.appendChild(toast);
+          removeToast(toast, div);
+        }        
+        
+      }else{
+        if(div){
+          const toast = document.createElement('div');
+          toast.innerHTML = `
+          <div role="alert" class="w-48">
+            <div class="flex justify-between shadow rounded-lg bg-red-100">
+              <div class="flex justify-center items-center gap-2 m-2">
+                <div class="bg-red-300 p-1 rounded-lg ">
+                  <svg class="w-6 h-6 text-red-500 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                    <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm7.707-3.707a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 1 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12l2.293-2.293a1 1 0 0 0-1.414-1.414L12 10.586 9.707 8.293Z" clip-rule="evenodd"/>
+                  </svg> 
+                </div>
+                <span class=" text-red-500">Error al añadir</span>
+            </div>                       
+          </div>
+          `;
+          div.appendChild(toast);
+          removeToast(toast, div);
+        }
+      }
+    }
+
+    function removeToast(toast:HTMLDivElement, div:HTMLElement){
+      setTimeout(function() {
+          let opacity = 1;
+          let interval = setInterval(function() {
+          if (opacity <= 0) {
+            clearInterval(interval); 
+              div.removeChild(toast);
+              toast.remove();
+            } else {
+            opacity -= 0.4; 
+            toast.style.opacity = opacity.toString();
+          }
+        }, 100);
+      }, 3000);
     }
 
     /*Funcion para peticion api. 
@@ -180,12 +253,13 @@ const { userAlias, userId } = Astro.props;
             
         if (response.ok) {
           const data = await response.json();
-          console.log(data);
-        } else {
-          console.error('Error en la solicitud:', response.statusText);
+          console.log(data); 
+          createToast(true, libroId);
+        }else{
+          createToast(false, libroId);
         }
       } catch (error) {
-                console.error('Error en la solicitud:', error);
+        createToast(false, libroId);
       }
     } 
     /*Funcion para peticion api. 
