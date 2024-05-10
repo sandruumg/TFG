@@ -1,7 +1,17 @@
 import { defineDb, defineTable, column } from 'astro:db';
 
-const User = defineTable({
+const Usuarios = defineTable({
   deprecated: true,
+  columns:{
+    id: column.text({primaryKey: true}),
+    aliasUsuario: column.text({unique: true}),
+    nombreUsuario: column.text(),    
+    apellidoUsuario: column.text(),
+    correoUsuario: column.text({unique: true}),
+    password: column.text()
+  }
+});
+const User = defineTable({
   columns:{
     id: column.text({primaryKey: true}),
     aliasUsuario: column.text({unique: true}),
