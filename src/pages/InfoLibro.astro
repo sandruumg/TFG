@@ -55,10 +55,11 @@ const { userAlias, userId } = Astro.props;
     var fechaPubliLibro = document.getElementById('fechaPubliLibro');
     var generoLibro = document.getElementById('generoLibro');
     var nombreAutorSelect;
+    var estrellas = document.getElementById('estrellas');
 
     if (seccionInfoLibro && seccionSinopsis) {
       data.forEach((libro: any) => {
-        if(imagenLibro && nombreLibro && nombreAutor && sinopsisLibro && numPaginasLibro && fechaPubliLibro && generoLibro){
+        if(imagenLibro && nombreLibro && nombreAutor && sinopsisLibro && numPaginasLibro && fechaPubliLibro && generoLibro && estrellas){
           nombreLibro.innerHTML = libro.tituloLibro;
           nombreAutor.innerHTML = libro.nombreAutor;
           nombreAutorSelect = libro.nombreAutor;
@@ -67,7 +68,14 @@ const { userAlias, userId } = Astro.props;
           sinopsisLibro.innerHTML = libro.sinopsisLibro;
           numPaginasLibro.innerHTML = libro.nPaginasLibro;
           generoLibro.innerHTML = libro.categoriaLibro;
-
+          if(libro.cantidadEstrellas === undefined){
+            estrellas.innerHTML = '0%';
+            estrellas.style.setProperty("--value", "0");
+          }else{
+            var porcentaje = (libro.cantidadEstrellas / (libro.cantidadValoraciones * 5) * 100);
+            estrellas.innerHTML = porcentaje + '%';
+            estrellas.style.setProperty("--value", porcentaje.toString());
+          }
           var fechaPubLibro = formatearFecha(libro.fechaPubLibro);
           fechaPubliLibro.innerHTML = fechaPubLibro;
         }

@@ -1,5 +1,5 @@
 ---
-import { db, User, Session, Libros, ListaSeguimiento, ListaTerminados } from 'astro:db';
+import { db, User, Session, Libros, count, RankingLibros, asc } from 'astro:db';
 import { eq } from 'astro:db';
 if(Astro.locals.user){
     const user = Astro.locals.user!;
@@ -11,6 +11,13 @@ if(Astro.locals.user){
     Astro.props.userId = id;
 }
 const { userAlias, userId } = Astro.props;
+
+const puntuacionLibro = await db.select({ estrellas: count(RankingLibros.estrellas), id: RankingLibros.idLibro })
+                        .from(RankingLibros)
+                        .innerJoin(Libros, eq(RankingLibros.idLibro, Libros.idLibro))
+                        .groupBy(RankingLibros.idLibro)
+                        .orderBy(asc(count(RankingLibros.estrellas)))
+                        .limit(10);
 ---
 
 <section id="seccionInfoLibro" style="background-image: url('/imagenes fondo/comoNoFondo.png'); padding:5vw; height:34vw;" class="bg-cover">
@@ -27,7 +34,7 @@ const { userAlias, userId } = Astro.props;
                 <h3 id="nombreAutor" class="text-2xl text-white fuente-2"></h3>
             </div>
             <div class="flex flex-row items-center mt-10">
-                <div class="radial-progress bg-neutral-content text-secondary-dark border-4 border-neutral-content mr-5" style="--value:70;" role="progressbar">70%</div>
+                <div id="estrellas" class="radial-progress bg-neutral-content text-secondary-dark border-4 border-neutral-content mr-5" role="progressbar"></div>
                 <p class="fuente-2 text-white">Puntuación de los usuarios</p>            
                     <dialog id="my_modal_2" class="modal">
                         <div class="modal-box w-96">

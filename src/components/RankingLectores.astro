@@ -1,72 +1,32 @@
+---
+import { db, User, eq, desc, count, ListaTerminados, Libros } from 'astro:db';
+
+const librosTotales = await db.select({ value: count() }).from(Libros);
+
+var cantidadLibros = librosTotales[0].value;
+
+const librosRankingLectores = await db.select({ cantidad: count(ListaTerminados.idLibro), nombreUsuario: User.nombreUsuario })
+                        .from(User)
+                        .innerJoin(ListaTerminados, eq(ListaTerminados.idUsuario, User.id))
+                        .groupBy(User.id)
+                        .orderBy(desc(count(ListaTerminados.idLibro)))
+                        .limit(8);
+---
+
 <section class="pb-20">
     <h1 class="fuente-1 text-secondary-dark text-4xl ml-32 mt-24 my-5 py-5 ">Los más lectores</h1>
 
     <div class="grid justify-items-center grid-cols-2 ml-10">
-        <div class="flex flex-row items-center mb-8">
-            <img class="w-20" src="/imagenes/fotoLectora.webp" alt="">
-            <div class="ml-8 bg-gray-200 rounded-full h-2.5 dark:bg-gray-700" style=" width:25vw">
-                <div class="bg-tertiary h-2.5 rounded-full" style="width: 45%"></div>
-            </div>
-            <p class="ml-8">10 libros</p>
-        </div>
-        <div class="flex flex-row items-center mb-8">
-            <img class="w-20" src="/imagenes/fotoLectora.webp" alt="">
-            <div class="ml-8 bg-gray-200 rounded-full h-2.5 dark:bg-gray-700" style=" width:25vw">
-                <div class="bg-tertiary h-2.5 rounded-full" style="width: 45%"></div>
-            </div>
-            <p class="ml-8">10 libros</p>
-
-        </div>
-
-        <div class="flex flex-row items-center mb-8">
-            <img class="w-20" src="/imagenes/fotoLectora.webp" alt="">
-            <div class="ml-8 bg-gray-200 rounded-full h-2.5 dark:bg-gray-700" style=" width:25vw">
-                <div class="bg-tertiary h-2.5 rounded-full" style="width: 45%"></div>
-            </div>
-            <p class="ml-8">10 libros</p>
-
-        </div>
-
-        <div class="flex flex-row items-center  mb-8 ">
-            <img class="w-20" src="/imagenes/fotoLectora.webp" alt="">
-            <div class="ml-8 bg-gray-200 rounded-full h-2.5 dark:bg-gray-700" style=" width:25vw">
-                <div class="bg-tertiary h-2.5 rounded-full" style="width: 45%"></div>
-            </div>
-            <p class="ml-8">10 libros</p>
-
-        </div>
-        <div class="flex flex-row items-center  mb-8 ">
-            <img class="w-20" src="/imagenes/fotoLectora.webp" alt="">
-            <div class="ml-8 bg-gray-200 rounded-full h-2.5 dark:bg-gray-700" style=" width:25vw">
-                <div class="bg-tertiary h-2.5 rounded-full" style="width: 45%"></div>
-            </div>
-            <p class="ml-8">10 libros</p>
-
-        </div>
-        <div class="flex flex-row items-center  mb-8 ">
-            <img class="w-20" src="/imagenes/fotoLectora.webp" alt="">
-            <div class="ml-8 bg-gray-200 rounded-full h-2.5 dark:bg-gray-700" style=" width:25vw">
-                <div class="bg-tertiary h-2.5 rounded-full" style="width: 45%"></div>
-            </div>
-            <p class="ml-8">10 libros</p>
-
-        </div>
-        <div class="flex flex-row items-center  mb-8 ">
-            <img class="w-20" src="/imagenes/fotoLectora.webp" alt="">
-            <div class="ml-8 bg-gray-200 rounded-full h-2.5 dark:bg-gray-700" style=" width:25vw">
-                <div class="bg-tertiary h-2.5 rounded-full" style="width: 45%"></div>
-            </div>
-            <p class="ml-8">10 libros</p>
-
-        </div>
-        <div class="flex flex-row items-center mb-8 ">
-            <img class="w-20" src="/imagenes/fotoLectora.webp" alt="">
-            <div class="ml-8 bg-gray-200 rounded-full h-2.5 dark:bg-gray-700" style=" width:25vw">
-                <div class="bg-tertiary h-2.5 rounded-full" style="width: 45%"></div>
-            </div>
-            <p class="ml-8">10 libros</p>
-
-        </div>
+        {
+            librosRankingLectores.map(({cantidad, nombreUsuario}) =>(
+                <div class="flex flex-row items-center mb-8">
+                    <img class="w-20" src="/imagenes/fotoLectora.webp" alt="">
+                    <div class="ml-8 bg-gray-200 rounded-full h-2.5 dark:bg-gray-700" style=" width:25vw">
+                        <div class="bg-tertiary h-2.5 rounded-full" style={`width: ${(cantidad * 100) / cantidadLibros}%`}></div>
+                    </div>
+                    <p class="ml-8">{cantidad} libros</p>
+                </div>
+            ))
+        }
     </div>
-    
 </section>

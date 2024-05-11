@@ -1,7 +1,9 @@
 <footer class="footer px-36 py-10 bg-secondary text-base-content">
     <aside class="justify-items-center">
       <img class="w-40" src="/imagenes/logo.png" alt="">  
-      <button class="btn fuente-1 bg-button-registro">REGISTRATE</button>
+      <a id="open-modal-link-footer">
+        <button class="btn fuente-1 bg-button-registro">REGISTRATE</button>
+      </a>
     </aside> 
     <nav>
       <h6 class="footer-title text-quaternary">Services</h6> 
@@ -24,6 +26,19 @@
       <a class="link link-hover  text-quaternary">Cookie policy</a>
     </nav>
   </footer>
+
+  <script>
+    const openModal = document.getElementById('open-modal-link-footer');
+    const modal = document.getElementById('my_modal_3') as HTMLDialogElement;
+
+    if (openModal && modal) {
+        openModal.addEventListener('click', function (event) {
+            event.preventDefault();
+            modal.showModal();
+        })
+    }
+
+</script>
 
 
 

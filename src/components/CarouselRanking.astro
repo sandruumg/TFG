@@ -1,54 +1,28 @@
+---
+import { db, User, eq, asc, count, RankingLibros, Libros } from 'astro:db';
+
+const librosMasPopulares = await db.select({ estrellas: count(RankingLibros.estrellas), portadaLibro: Libros.portadaLibro, id: RankingLibros.idLibro })
+                        .from(RankingLibros)
+                        .innerJoin(Libros, eq(RankingLibros.idLibro, Libros.idLibro))
+                        .groupBy(RankingLibros.idLibro)
+                        .orderBy(asc(count(RankingLibros.estrellas)))
+                        .limit(10);
+
+---
+
 <section>
   <h1 class="fuente-1 text-secondary-dark text-4xl ml-32 my-5 py-5">Lo más popular</h1>
     <div class="carousel carousel-center p-3 space-x-10 rounded-box pb-12" style="width:100%; padding-left: 57px;">
-      <div class="carousel-item" data-bs-interval="10000" style="position: relative;">
-          <a href="InfoLibro">
-              <img src="/imagenes/perdioLaCordura-removebg-preview.png" class="rounded-box transition-transform hover:scale-110" style="margin-top: 35px;margin-left: 24px;width: 149px;height: 240px;position: relative;z-index: 0;" />
-          </a>
-          <div class="radial-progress bg-neutral-content text-secondary-dark border-4 border-neutral-content" style="--value:70;left: -200px;top: 85%;transform: translateY(-50%);" role="progressbar">70%</div>
-        </div> 
-        <div class="carousel-item" data-bs-interval="10000" style="position: relative;">
-          <a href="InfoLibro">
-              <img src="/imagenes/perdioLaCordura-removebg-preview.png" class="rounded-box transition-transform hover:scale-110" style="margin-top: 35px;margin-left: 24px;width: 149px;height: 240px;position: relative;z-index: 0;" />
-          </a>        
-          <div class="radial-progress bg-neutral-content text-secondary-dark border-4 border-neutral-content" style="--value:70;left: -200px;top: 85%;transform: translateY(-50%);" role="progressbar">70%</div>
-        </div> 
-        <div class="carousel-item" data-bs-interval="10000" style="position: relative;">
-          <a href="InfoLibro">
-              <img src="/imagenes/perdioLaCordura-removebg-preview.png" class="rounded-box transition-transform hover:scale-110" style="margin-top: 35px;margin-left: 24px;width: 149px;height: 240px;position: relative;z-index: 0;" />
-          </a>
-          <div class="radial-progress bg-neutral-content text-secondary-dark border-4 border-neutral-content" style="--value:70;left: -200px;top: 85%;transform: translateY(-50%);" role="progressbar">70%</div>
-        </div> 
-        <div class="carousel-item" data-bs-interval="10000" style="position: relative;">
-          <a href="InfoLibro">
-              <img src="/imagenes/perdioLaCordura-removebg-preview.png" class="rounded-box transition-transform hover:scale-110" style="margin-top: 35px;margin-left: 24px;width: 149px;height: 240px;position: relative;z-index: 0;" />
-          </a>
-          <div class="radial-progress bg-neutral-content text-secondary-dark border-4 border-neutral-content" style="--value:70;left: -200px;top: 85%;transform: translateY(-50%);" role="progressbar">70%</div>
-        </div> 
-        <div class="carousel-item" data-bs-interval="10000" style="position: relative;">
-          <a href="InfoLibro">
-              <img src="/imagenes/perdioLaCordura-removebg-preview.png" class="rounded-box transition-transform hover:scale-110" style="margin-top: 35px;margin-left: 24px;width: 149px;height: 240px;position: relative;z-index: 0;" />
-          </a>
-          <div class="radial-progress bg-neutral-content text-secondary-dark border-4 border-neutral-content" style="--value:70;left: -200px;top: 85%;transform: translateY(-50%);" role="progressbar">70%</div>
-        </div> 
-        <div class="carousel-item" data-bs-interval="10000" style="position: relative;">
-          <a href="InfoLibro">
-              <img src="/imagenes/perdioLaCordura-removebg-preview.png" class="rounded-box transition-transform hover:scale-110" style="margin-top: 35px;margin-left: 24px;width: 149px;height: 240px;position: relative;z-index: 0;" />
-          </a>
-          <div class="radial-progress bg-neutral-content text-secondary-dark border-4 border-neutral-content" style="--value:70;left: -200px;top: 85%;transform: translateY(-50%);" role="progressbar">70%</div>
-        </div> 
-        <div class="carousel-item" data-bs-interval="10000" style="position: relative;">
-          <a href="InfoLibro">
-              <img src="/imagenes/perdioLaCordura-removebg-preview.png" class="rounded-box transition-transform hover:scale-110" style="margin-top: 35px;margin-left: 24px;width: 149px;height: 240px;position: relative;z-index: 0;" />
-          </a>
-          <div class="radial-progress bg-neutral-content text-secondary-dark border-4 border-neutral-content" style="--value:70;left: -200px;top: 85%;transform: translateY(-50%);" role="progressbar">70%</div>
-        </div> 
-        <div class="carousel-item" data-bs-interval="10000" style="position: relative;">
-          <a href="InfoLibro">
-              <img src="/imagenes/perdioLaCordura-removebg-preview.png" class="rounded-box transition-transform hover:scale-110" style="margin-top: 35px;margin-left: 24px;width: 149px;height: 240px;position: relative;z-index: 0;" />
-          </a>
-          <div class="radial-progress bg-neutral-content text-secondary-dark border-4 border-neutral-content" style="--value:70;left: -200px;top: 85%;transform: translateY(-50%);" role="progressbar">70%</div>
-        </div>
+      {
+        librosMasPopulares.map(({estrellas, portadaLibro, id}) =>(
+            <div class="carousel-item" data-bs-interval="10000" style="position: relative;">
+                <a href=`InfoLibro?idLibro=${id}`>
+                    <img src={portadaLibro} class="rounded-box transition-transform hover:scale-110" style="margin-top: 35px;margin-left: 24px;width: 149px;height: 240px;position: relative;z-index: 0;" />
+                </a>
+                <div class="radial-progress bg-neutral-content text-secondary-dark border-4 border-neutral-content" style="--value:70;left: -200px;top: 85%;transform: translateY(-50%);" role="progressbar">70%</div>
+            </div> 
+        ))
+      }
     </div>
   
 </section>
