@@ -7,7 +7,7 @@ var cantidadLibros = librosTotales[0].value;
 const listaLibros = [];
 let numRandom: any[] = [];
 var random = 0;
-for (let i = 0; i < 7; i++) {
+for (let i = 0; i < 4; i++) {
     do {
         random = Math.floor(Math.random() * cantidadLibros) + 1;
     } while (numRandom.includes(random));
@@ -21,7 +21,7 @@ const librosNovedades = await db.select().from(Libros).orderBy(desc(Libros.fecha
 
 ---
 <section class="flex items-center justify-center">
-    <div class="overflow-x-auto w-2/3 carousel carousel-center bg-slate-900">
+    <!-- <div class="overflow-x-auto w-2/3 carousel carousel-center bg-slate-900">
         {
             listaLibros.map(({portadaLibro, idLibro, fondoLibro})=>(
             <a href=`InfoLibro?idLibro=${idLibro}`>
@@ -56,5 +56,97 @@ const librosNovedades = await db.select().from(Libros).orderBy(desc(Libros.fecha
             ))
         }
           </ul>
+    </div> -->
+
+    <div class="slider">
+        <div class="list">
+            {
+            listaLibros.map(({idLibro, fondoLibro, tituloLibro, nombreAutor, sinopsisLibro})=>(
+            <div class="item">
+                <img src={fondoLibro} alt="">
+                <div class="content">
+                    <div class="title">{tituloLibro}</div>
+                    <div class="type">{nombreAutor}</div>
+                    <div class="description">{sinopsisLibro}</div>
+                    <div class="button">
+                        <a href={`InfoLibro?idLibro=${idLibro}`}>Ver mas</a>
+                    </div>
+                </div>
+            </div>
+            
+            ))
+        }
+        </div>
+        
+        <div class="thumbnail">
+            {
+             listaLibros.map(({portadaLibro})=>(
+            <div class="item">
+                <img src={portadaLibro} alt="">
+            </div>
+            ))
+            }
+        </div>
+        <div class="nextPrev">
+            <button class="prev">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                </svg>
+            </button>
+            <button class="next">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                </svg>
+            </button>
+        </div>
+
     </div>
+
+
 </section>
+<script>
+	let nextBtn = document.querySelector('.next');
+    let prevBtn = document.querySelector('.prev');
+
+    let slider = document.querySelector('.slider');
+    let sliderList = document.querySelector('.slider .list');
+    let thumbnail = document.querySelector('.thumbnail');
+    let thumbnailItems = document.querySelectorAll('.item');
+
+    /*NEXT*/
+if(nextBtn && prevBtn && slider){
+    nextBtn.addEventListener('click', ()=>{
+        moveSlider('next');
+        slider.classList.remove('prev');
+    });
+
+    prevBtn.addEventListener('click', ()=>{
+        moveSlider('prev');
+        slider.classList.remove('next');
+    });
+}
+    function moveSlider(direction:string){
+        let sliderItems;
+
+        if(sliderList){
+            sliderItems = sliderList.querySelectorAll('.item');
+            let thumbnailItems = document.querySelectorAll('.thumbnail .item');
+            
+            if(sliderList && sliderItems && thumbnail && slider){
+                if(direction === 'next'){
+                    sliderList.appendChild(sliderItems[0]);
+                    thumbnail.appendChild(thumbnailItems[0]);
+                    slider.classList.add('next');                           
+                    
+
+                }else if(direction === 'prev'){
+                    sliderList.prepend(sliderItems[sliderItems.length-1]);
+                    thumbnail.prepend(thumbnailItems[thumbnailItems.length-1]);
+                    slider.classList.add('prev');
+                }
+            
+            }
+        }   
+    }
+
+</script>

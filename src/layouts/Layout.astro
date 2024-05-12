@@ -102,4 +102,122 @@ const { title } = Astro.props;
 			Courier New,
 			monospace;
 	}
+
+	.slider{
+		width: 100vw;
+		height: 90vh;
+		overflow: hidden;
+		position: relative;
+	}
+	.slider .list .item{
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		inset: 0 0 0 0;
+	}
+	 .slider .list .item img{
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	} 
+
+	.slider .list .item .content{
+		position: relative;
+		top: -90%;
+		width: 100em;
+		max-width: 80%;
+		left: 55%;
+		padding-right: 30%;
+		box-sizing: border-box;
+		color: white;
+		box-sizing: border-box;
+		transform: translateX(-60%);
+	}
+	.slider .list .item .content .title{
+		font-size: 4em;
+		font-weight: bold;
+		line-height: 1.3em;
+		
+	}
+	.slider .list .item .content .type{
+		font-size: 2em;
+		color: #5AC7AA;
+		font-weight: bold;
+		line-height: 1.3em;
+	}
+	.slider .list .item .content .description{
+		margin-top: 2em;
+		font-family: 'Open Sans', sans-serif;
+		width: 38em;
+	}
+
+	.slider .list .item .content .button{
+		margin-top: 2em;
+		z-index: 100;
+	}
+
+	.slider .list .item .content .button a{
+		background-color: #5AC7AA;
+		font-size: large;
+		padding: 1em;
+		border-radius: 10px;
+		transition: 0.5s;
+		cursor: pointer;
+	}
+	.slider .list .item .content .button a:hover{
+		background-color: #242A33;
+		font-size: large;
+		color:#5AC7AA;
+		transition: 0.5s;
+	}
+
+	.thumbnail{
+		display: flex;
+		position: absolute;
+		gap: 20px;
+		bottom: 50px;
+		width: max-content;
+		z-index: 100;
+		margin-left: 50em;
+	}
+	.thumbnail .item{
+		width: 15em;
+		height: 22em;
+		flex-shrink: 0;
+		position: relative;
+		margin-bottom: 5em;
+		
+	}
+	.thumbnail .item img{
+		object-fit: cover;
+		cursor: pointer;
+		
+	}
+	.nextPrev{
+		position: absolute;
+		top: 80%;
+		right: 55%;
+		z-index: 100;
+		width: 300px;
+		max-width: 30%;
+		gap: 10px;
+		align-items: center;
+	}
+	.nextPrev button{
+		padding: 1em;
+		border-radius: 50%;
+		background-color: #5AC7AA;
+		color: white;
+		transition: 0.5s;
+	}
+	.nextPrev button:hover{
+		padding: 1em;
+		border-radius: 50%;
+		background-color: #3D3D3D;
+		color: white;
+		transition: 0.5s;
+	}
+	.current{
+		transform: scale(1.2);
+	}
 </style>
