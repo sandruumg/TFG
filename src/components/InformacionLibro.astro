@@ -35,7 +35,7 @@ const puntuacionLibro = await db.select({ estrellas: count(RankingLibros.estrell
             </div>
             <div class="flex flex-row items-center mt-10">
                 <div id="estrellas" class="radial-progress bg-neutral-content text-secondary-dark border-4 border-neutral-content mr-5" role="progressbar"></div>
-                <p class="fuente-2 text-white">Puntuación de los usuarios</p>            
+                <p id="cantidadValoraciones" class="fuente-2 text-white"></p>            
                     <dialog id="my_modal_2" class="modal">
                         <div class="modal-box w-96">
                             <div class="rating rating-lg">
