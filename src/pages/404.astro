@@ -1,0 +1,32 @@
+---
+import Layout from '../layouts/Layout.astro';
+import CarouselRanking from '../components/CarouselRanking.astro';
+import CarouselPruebas from '../components/CarouselPruebas.astro';
+import Banner from '../components/Banner.astro';
+import Categ from '../components/Category.astro';
+import Lectores from '../components/RankingLectores.astro';
+import { db, User, Session, Libros } from 'astro:db';
+import { eq } from 'astro:db';
+
+const usuarios = await db.select().from(User);
+const sesion = await db.select().from(Session);
+const libros = await db.select().from(Libros);
+
+if(Astro.locals.user){
+  const user = Astro.locals.user;
+  const usuarios = await db.select().from(User).where(eq(User.id, user.id));
+  const [infoUser] = usuarios;
+  const alias = infoUser.aliasUsuario;
+  
+  console.log(sesion);
+}
+
+---
+
+<Layout title="Welcome to Astro.">
+	<main id="main">
+        <h1>error</h1>
+    </main>    
+
+    
+</Layout>
