@@ -20,50 +20,46 @@ for (let i = 0; i < 4; i++) {
 const librosNovedades = await db.select().from(Libros).orderBy(desc(Libros.fechaPubLibro)).limit(3);
 
 ---
-<section class="flex items-center justify-center">
-    <div class="slider">
-        <div class="list">
-            {
-            listaLibros.slice().reverse().map(({idLibro, fondoLibro, tituloLibro, nombreAutor, sinopsisLibro}, index)=>(
-            <div class={index === 3 ? "item actual" : "item hidden"}>
-                <img src={fondoLibro} alt="">
-                <div class="content">
-                    <div class="title">{tituloLibro}</div>
-                    <div class="type">{nombreAutor}</div>
-                    <div class="description">{sinopsisLibro}</div>
-                    <div class="button">
-                        <a href={`InfoLibro?idLibro=${idLibro}`}>Ver mas</a>
+<section class="">
+        <div class="flex justify-around items-center h-[90vh] relative">
+            <div class="list">
+                {
+                listaLibros.slice().reverse().map(({idLibro, fondoLibro, tituloLibro, nombreAutor, sinopsisLibro}, index)=>(
+                <div class={index === 3 ? "item actual" : "item hidden"}>
+                   <img src={fondoLibro} alt="">
+                    <div class="content">
+                        <div class="title">{tituloLibro}</div>
+                        <div class="type">{nombreAutor}</div>
+                        <div class="description">{sinopsisLibro}</div>
                     </div>
+                    
                 </div>
-            </div>
-            
-            ))
-        }
-        </div>
-        
-        <div class="thumbnail">
-            {
-             listaLibros.map(({portadaLibro}, index)=>(
-            <div class={index === 0 ? "item current":"item"}>
-                <img src={portadaLibro} alt="">
-            </div>
-            ))
+                
+                ))
             }
+            </div>
+            <div class="imagen flex items-center">
+                <button class="prev" id="prev">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                    </svg>
+                </button>
+                <div class="thumbnail">
+                    {
+                    listaLibros.map(({portadaLibro, idLibro}, index)=>(
+                    <div class={index === 0 ? "item current":"item hidden"} >
+                         <a href={`InfoLibro?idLibro=${idLibro}`}><img src={portadaLibro} alt=""></a>
+                    </div>
+                    ))
+                    }
+                </div>
+                <button class="next" id="next">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                    </svg>
+                </button>
+            </div>
         </div>
-        <div class="nextPrev">
-            <button class="prev" id="prev">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
-                </svg>
-            </button>
-            <button class="next" id="next">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-                </svg>
-            </button>
-        </div>
-
-    </div>
 
 
 </section>
@@ -89,8 +85,11 @@ const librosNovedades = await db.select().from(Libros).orderBy(desc(Libros.fecha
                     items[currentItem + 3].classList.add('actual');
                     currentItem = items.findIndex(item => item.classList.contains('actual'));
 
+                    
                     imagenes[currentImg].classList.remove('current');
+                    imagenes[currentImg].classList.add('hidden');
                     imagenes[currentImg-3].classList.add('current');
+                    imagenes[currentImg-3].classList.remove('hidden');
                     currentImg = imagenes.findIndex(imagen => imagen.classList.contains('current'));
 
                 }else{
@@ -101,7 +100,9 @@ const librosNovedades = await db.select().from(Libros).orderBy(desc(Libros.fecha
                     currentItem = items.findIndex(item => item.classList.contains('actual'));
 
                     imagenes[currentImg].classList.remove('current');
+                    imagenes[currentImg].classList.add('hidden');
                     imagenes[currentImg+1].classList.add('current');
+                    imagenes[currentImg+1].classList.remove('hidden');
                     currentImg = imagenes.findIndex(imagen => imagen.classList.contains('current'));
                 }
 
@@ -121,7 +122,9 @@ const librosNovedades = await db.select().from(Libros).orderBy(desc(Libros.fecha
                     currentItem = items.findIndex(item => item.classList.contains('actual'));
 
                     imagenes[currentImg].classList.remove('current');
+                    imagenes[currentImg].classList.add('hidden');
                     imagenes[currentImg+3].classList.add('current');
+                    imagenes[currentImg+3].classList.remove('hidden');
                     currentImg = imagenes.findIndex(imagen => imagen.classList.contains('current'));
 
                 }else{
@@ -131,7 +134,9 @@ const librosNovedades = await db.select().from(Libros).orderBy(desc(Libros.fecha
                     currentItem = items.findIndex(item => item.classList.contains('actual'));
 
                     imagenes[currentImg].classList.remove('current');
+                    imagenes[currentImg].classList.add('hidden');
                     imagenes[currentImg-1].classList.add('current');
+                    imagenes[currentImg-1].classList.remove('hidden');
                     currentImg = imagenes.findIndex(imagen => imagen.classList.contains('current'));
                 }
         })

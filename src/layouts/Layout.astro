@@ -103,60 +103,49 @@ const { title } = Astro.props;
 			monospace;
 	}
 
-	.slider{
-		width: 100vw;
-		height: 90vh;
-		overflow: hidden;
-		position: relative;
-	}
-	.slider .list .item{
+	.list .item{
 		width: 100%;
-		height: 100%;
+		height: 99%;
 		position: absolute;
 		inset: 0 0 0 0;
 	}
-	 .slider .list .item img{
+
+	.list .item img{
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
 	} 
 
-	.slider .list .item .content{
-		position: relative;
-		top: -95%;
-		width: 100em;
-		max-width: 80%;
-		left: 55%;
-		padding-right: 30%;
-		box-sizing: border-box;
-		color: white;
-		box-sizing: border-box;
-		transform: translateX(-60%);
+	.thumbnail {
+		width: 10vw;
 	}
-	.slider .list .item .content .title{
+	.content{
+		margin-left: 6vw;
+		font-size: 1vw;
+		position: absolute;
+		top: 10vw; 
+		color:#f6f6f6;
+		width: 50vw;
+	}
+	.title{
 		font-size: 3vw;
 		font-weight: bold;
-		line-height: 1.3em;
-		
 	}
-	.slider .list .item .content .type{
-		font-size: 2vw;
-		color: #5AC7AA;
+	.type{
+		font-size: 1.5vw;
 		font-weight: bold;
-		line-height: 1.3em;
+		color:#5AC7AA;
 	}
-	.slider .list .item .content .description{
-		margin-top: 2em;
-		font-family: 'Open Sans', sans-serif;
-		width: 45em;
+	.description{
+		margin-top: 1.2vw;
+		margin-bottom: 1.2vw;
 	}
-
-	.slider .list .item .content .button{
+	.list .item .content .button{
 		margin-top: 2em;
 		z-index: 100;
 	}
 
-	.slider .list .item .content .button a{
+	.list .item .content .button a{
 		background-color: #5AC7AA;
 		font-size: large;
 		padding: 1em;
@@ -164,61 +153,44 @@ const { title } = Astro.props;
 		transition: 0.5s;
 		cursor: pointer;
 	}
-	.slider .list .item .content .button a:hover{
+	.list .item .content .button a:hover{
 		background-color: #242A33;
 		font-size: large;
 		color:#5AC7AA;
 		transition: 0.5s;
 	}
+	
+	.imagen{
+		margin-left: 50vw;
+	}
 
-	.thumbnail{
-		display: flex;
-		/* flex-direction: row-reverse; */
-		position: absolute;
-		gap: 20px;
-		bottom: 50px;
-		width: max-content;
-		z-index: 100;
-		margin-left: 40vw;
+	.thumbnail .item {
+		width: 40vw;
 	}
-	.thumbnail .item{
-		width: 12em;
-		height: 18em;
-		flex-shrink: 0;
-		position: relative;
-		margin-bottom: 3em;
+	.thumbnail .item a img{
+		width: 100vw;
 	}
-	.thumbnail .item img{
-		object-fit: cover;
-		cursor: pointer;
-		
-	}
-	.nextPrev{
-		position: absolute;
-		top: 80%;
-		right: 55%;
-		z-index: 100;
-		width: 300px;
-		max-width: 30%;
-		gap: 10px;
-		align-items: center;
-	}
-	.nextPrev button{
+	.prev, .next{
 		padding: 1em;
 		border-radius: 50%;
-		background-color: #5AC7AA;
 		color: white;
-		transition: 0.5s;
+		z-index: 100;
 	}
-	.nextPrev button:hover{
+	.next{
+		margin-left: 25vw;
+	}
+	.prev{
+		margin-right: -5vw;
+	}
+	.prev:hover, .next:hover{
 		padding: 1em;
 		border-radius: 50%;
-		background-color: #3D3D3D;
+		background-color: #7e7d7d;
 		color: white;
 		transition: 0.5s;
 	}
 	.current{
-		transform: scale(1.2);
+		transform: scale(0.5);
 	}
 
 	.actual{
