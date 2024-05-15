@@ -83,7 +83,36 @@ const librosNovedades = await db.select().from(Libros).orderBy(desc(Libros.fecha
             console.log(currentItem);
             console.log(list.length);
             
+            if(currentItem === 3){
+                    items[currentItem].classList.remove('actual');
+                    items[currentItem].classList.add('hidden');
+                    items[currentItem-3].classList.add('actual');
+                    currentItem = items.findIndex(item => item.classList.contains('actual'));
+
+                    imagenes[currentImg].classList.remove('current');
+                    imagenes[currentImg+3].classList.add('current');
+                    currentImg = imagenes.findIndex(imagen => imagen.classList.contains('current'));
+
+                }else{
+                    items[currentItem].classList.remove('actual');
+                    items[currentItem].classList.add('hidden');
+                    items[currentItem+1].classList.add('actual');
+                    currentItem = items.findIndex(item => item.classList.contains('actual'));
+
+                    imagenes[currentImg].classList.remove('current');
+                    imagenes[currentImg-1].classList.add('current');
+                    currentImg = imagenes.findIndex(imagen => imagen.classList.contains('current'));
+                }
+                
+        })
+    }
+
+    if(prev){
+        prev.addEventListener('click', function(){
+            console.log(currentImg);
+            console.log(imagenes.length);
             
+                
                 if(currentItem === 0){
                     items[currentItem].classList.remove('actual');
                     items[currentItem].classList.add('hidden');
@@ -103,34 +132,6 @@ const librosNovedades = await db.select().from(Libros).orderBy(desc(Libros.fecha
 
                     imagenes[currentImg].classList.remove('current');
                     imagenes[currentImg+1].classList.add('current');
-                    currentImg = imagenes.findIndex(imagen => imagen.classList.contains('current'));
-                }
-        })
-    }
-
-    if(prev){
-        prev.addEventListener('click', function(){
-            console.log(currentImg);
-            console.log(imagenes.length);
-            
-                if(currentItem === 3){
-                    items[currentItem].classList.remove('actual');
-                    items[currentItem].classList.add('hidden');
-                    items[currentItem-3].classList.add('actual');
-                    currentItem = items.findIndex(item => item.classList.contains('actual'));
-
-                    imagenes[currentImg].classList.remove('current');
-                    imagenes[currentImg+3].classList.add('current');
-                    currentImg = imagenes.findIndex(imagen => imagen.classList.contains('current'));
-
-                }else{
-                    items[currentItem].classList.remove('actual');
-                    items[currentItem].classList.add('hidden');
-                    items[currentItem+1].classList.add('actual');
-                    currentItem = items.findIndex(item => item.classList.contains('actual'));
-
-                    imagenes[currentImg].classList.remove('current');
-                    imagenes[currentImg-1].classList.add('current');
                     currentImg = imagenes.findIndex(imagen => imagen.classList.contains('current'));
                 }
         })
