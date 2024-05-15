@@ -45,25 +45,25 @@ const { user } = Astro.props;
                     <button id="close-modal" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
                   </form>
                   <div class="flex flex-row justify-around items-center w-2/3 my-5 text-gray-900">
-                    <button id="inicioBtn" class="font-bold text-2xl my-5 text-accent">Inicia Sesión</button>
+                    <button id="inicioBtn" class="font-bold text-2xl my-5 text-secondary-dark">Inicia Sesión</button>
                     <button id="registroBtn" class="font-bold text-2xl my-5">Registrate</button>
                   </div>
                   <div class="flex justify-around w-[90%]">
                     <div id="formulario-login" class="w-[90%]">
                       <form id="login-form" class="flex flex-col justify-center	content-center gap-5">
-                        <input type="text" id="aliasUsuario" name="aliasUsuario" placeholder="Nombre de usuario" class="border-b-2 border-gray-200 hover:border-accent" required>
-                        <input type="password" id="password" name="password" placeholder="Contraseña" class="border-b-2 border-gray-200 hover:border-accent" required>
-                        <button type="submit" class="bg-accent text-white mt-10 p-3 rounded-lg">Iniciar sesion</button>
+                        <input type="text" id="aliasUsuario" name="aliasUsuario" placeholder="Nombre de usuario" class="border-b-2 border-gray-200 hover:border-secondary-dark fuente-2 text-base" required>
+                        <input type="password" id="password" name="password" placeholder="Contraseña" class="border-b-2 border-gray-200 hover:border-secondary-dark fuente-2 text-base" required>
+                        <button type="submit" class="bg-secondary-dark text-white mt-10 p-3 rounded-lg hover:bg-secondary transition duration-300 ease-in-out">Iniciar sesion</button>
                       </form>
                     </div>
                     <div id="formulario-register" class="w-[90%] hidden">
                       <form id="register-form" method="post" action="/api/signup" class="flex flex-col justify-center	content-center gap-5">
-                        <input type="text" id="aliasUsuarioR" name="aliasUsuario" placeholder="Nombre de usuario" class="border-b-2 border-gray-200 hover:border-accent caret-transparent" required>
-                        <input type="text" id="nombreUsuarioR" name="nombreUsuario" placeholder="Nombre" class="border-b-2 border-gray-200 hover:border-accent" required>
-                        <input type="text" id="apellidoUsuarioR" name="apellidoUsuario" placeholder="Apellidos" class="border-b-2 border-gray-200 hover:border-accent" required>
-                        <input type="email" id="correoUsuarioR" name="correoUsuario" placeholder="Correo electrónico" class="border-b-2 border-gray-200 hover:border-accent" required>
-                        <input type="password" id="passwordR" name="password" placeholder="Contraseña" class="border-b-2 border-gray-200 hover:border-accent" required>
-                        <button type="submit" class="bg-accent text-white mt-10 p-3 rounded-lg">Registrarse</button>
+                        <input type="text" id="aliasUsuarioR" name="aliasUsuario" placeholder="Nombre de usuario" class="border-b-2 border-gray-200 hover:border-secondary-dark caret-transparent fuente-2 text-base" required>
+                        <input type="text" id="nombreUsuarioR" name="nombreUsuario" placeholder="Nombre" class="border-b-2 border-gray-200 hover:border-secondary-dark fuente-2 text-base" required>
+                        <input type="text" id="apellidoUsuarioR" name="apellidoUsuario" placeholder="Apellidos" class="border-b-2 border-gray-200 hover:border-secondary-dark fuente-2 text-base" required>
+                        <input type="email" id="correoUsuarioR" name="correoUsuario" placeholder="Correo electrónico" class="border-b-2 border-gray-200 hover:border-secondary-dark fuente-2 text-base" required>
+                        <input type="password" id="passwordR" name="password" placeholder="Contraseña" class="border-b-2 border-gray-200 hover:border-secondary-dark fuente-2 text-base" required>
+                        <button type="submit" class="bg-secondary-dark text-white mt-10 p-3 rounded-lg  hover:bg-secondary transition duration-300 ease-in-out">Registrarse</button>
                       </form>
                     </div>
                   </div>

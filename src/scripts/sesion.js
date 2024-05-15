@@ -32,14 +32,14 @@ document.getElementById("inicioBtn").addEventListener("click", function () {
     console.log('Clickado');
     document.getElementById("formulario-login").style.display = "block"; // Ocultar el formulario de inicio de sesión
     document.getElementById("formulario-register").style.display = "none";
-    document.getElementById("inicioBtn").style.color = "#00d7c0";
+    document.getElementById("inicioBtn").style.color = "var(--secondary-dark)";
     document.getElementById("registroBtn").style.color = "#1f2937";
 });
 
 document.getElementById("registroBtn").addEventListener("click", function () {
     document.getElementById("formulario-register").style.display = "block"; // Ocultar el formulario de registro
     document.getElementById("formulario-login").style.display = "none";
-    document.getElementById("registroBtn").style.color = "#00d7c0";
+    document.getElementById("registroBtn").style.color = "var(--secondary-dark)";
     document.getElementById("inicioBtn").style.color = "#1f2937";
     
 });

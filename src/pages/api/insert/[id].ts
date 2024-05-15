@@ -24,6 +24,8 @@ export const POST = async ({ params, request }:{params:{id:string}, request:Requ
     const allTerminados = await db.select().from(ListaTerminados).where(and(eq(ListaTerminados.idUsuario, idUsuario), eq(ListaTerminados.idLibro, idLibro)));
 
     if(allTerminados.length == 0){
+      const deleteSeguimiento = await db.delete(ListaSeguimiento).where(and(eq(ListaSeguimiento.idUsuario, idUsuario), eq(ListaSeguimiento.idLibro, idLibro)));
+
       consulta = await db.insert(ListaTerminados).values({
         idLibro,
         idUsuario,

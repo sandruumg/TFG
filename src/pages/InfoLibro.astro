@@ -22,8 +22,6 @@ const { userAlias, userId } = Astro.props;
     <InformacionLibro/>
     <Sinopsis/>
    
-      
-
 </Layout>
 
 
@@ -292,12 +290,42 @@ async function getPuntuacion(userId:string, idLibro:string, estrellas:string){
           
       if (response.ok) {
         const data = await response.json();
-        console.log(data);        
+        console.log(data);  
+        let msj = 'Puntuación añadida!';
+        toastValoracion(msj);      
       } else {
         console.log('error');
       }
     } catch (error) {
         console.log('error pero en catch');
+    }
+  }
+
+  function toastValoracion(msj:string){
+    let toast = document.getElementById('toast');
+      let msjT =document.getElementById('msjToast'); 
+      let modal = document.getElementById('my_modal_2');
+      if(msjT){
+        msjT.innerText = msj;
+      }
+      if(toast && modal){
+        toast.style.display = 'block';
+        modal.style.display = 'none';
+        setTimeout(function() {
+          let opacity = 1;
+          let interval = setInterval(function() {
+          if (opacity <= 0) {
+            clearInterval(interval); 
+              toast.style.display = 'none';
+          } else {
+            opacity -= 0.4; 
+            toast.style.opacity = opacity.toString();
+          }
+        }, 100);
+      }, 2000);
+      setTimeout(function() {
+          window.location.reload();
+      }, 2000);
     }
   }
 </script>
