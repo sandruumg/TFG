@@ -20,7 +20,7 @@ for (let i = 0; i < 4; i++) {
 const librosNovedades = await db.select().from(Libros).orderBy(desc(Libros.fechaPubLibro)).limit(3);
 
 ---
-<section class="">
+<section class="bg-secondary">
         <div class="flex justify-around items-center h-[90vh] relative">
             <div class="list">
                 {

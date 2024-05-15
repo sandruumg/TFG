@@ -114,7 +114,16 @@ const { title } = Astro.props;
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
+		animation: showContent 0.5s ease-in-out 1 forwards;
 	} 
+
+	@keyframes showContent {
+		from{
+			clip-path: circle(0% at 70% 50%);
+		}to{
+			clip-path: circle(100% at 70% 50%);
+		}
+	}
 
 	.thumbnail {
 		width: 10vw;
@@ -170,6 +179,7 @@ const { title } = Astro.props;
 	.thumbnail .item a img{
 		width: 100vw;
 	}
+
 	.prev, .next{
 		padding: 1em;
 		border-radius: 50%;
