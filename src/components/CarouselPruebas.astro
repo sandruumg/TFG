@@ -21,48 +21,11 @@ const librosNovedades = await db.select().from(Libros).orderBy(desc(Libros.fecha
 
 ---
 <section class="flex items-center justify-center">
-    <!-- <div class="overflow-x-auto w-2/3 carousel carousel-center bg-slate-900">
-        {
-            listaLibros.map(({portadaLibro, idLibro, fondoLibro})=>(
-            <a href=`InfoLibro?idLibro=${idLibro}`>
-                <div class="carousel-item" style="width: 33.5vw; height:42vw">
-                    <img class="w-80 h-61 object-cover" src={fondoLibro} style="width: 33.5vw;" alt="" />
-                    <img src={portadaLibro} class="rounded-box transition-transform hover:scale-110 relative -left-2/3 -top-10 mt-72" style="margin-top: 285px;left: -209px; ;position: relative; top:-2vw;" />
-
-                </div> 
-            </a>
-            ))
-        }
-    </div>
-    
-    <div class="w-1/3">
-        <h1 class="fuente-1 text-tertiary text-4xl ms-5 ps-8 mb-5 mt-2">Novedades</h1>
-        <ul class="menu w-100 rounded-box">
-        {
-            librosNovedades.map(({tituloLibro, nombreAutor, portadaLibro, idLibro}) =>(
-                <li class="active:bg-tertiary !important">
-                    <a href=`InfoLibro?idLibro=${idLibro}`>
-                        <div class="flex items-center justify-between pb-2">
-                            <div class="" style="margin-left:4vw; width:17vw;">
-                                <p class="fuente-2 uppercase" style="font-size:1.2em">{tituloLibro}</p>
-                                <p class="fuente-2 text-neutral-400">{nombreAutor}</p>
-                            </div>
-                            <div>
-                                <img class="ml-4 mr-16" style="width: 67px;height: 124px;" src={portadaLibro} alt="">
-                            </div>
-                        </div>
-                    </a>
-                </li>
-            ))
-        }
-          </ul>
-    </div> -->
-
     <div class="slider">
         <div class="list">
             {
-            listaLibros.map(({idLibro, fondoLibro, tituloLibro, nombreAutor, sinopsisLibro})=>(
-            <div class="item">
+            listaLibros.slice().reverse().map(({idLibro, fondoLibro, tituloLibro, nombreAutor, sinopsisLibro}, index)=>(
+            <div class={index === 3 ? "item actual" : "item hidden"}>
                 <img src={fondoLibro} alt="">
                 <div class="content">
                     <div class="title">{tituloLibro}</div>
@@ -80,20 +43,20 @@ const librosNovedades = await db.select().from(Libros).orderBy(desc(Libros.fecha
         
         <div class="thumbnail">
             {
-             listaLibros.map(({portadaLibro})=>(
-            <div class="item">
+             listaLibros.map(({portadaLibro}, index)=>(
+            <div class={index === 0 ? "item current":"item"}>
                 <img src={portadaLibro} alt="">
             </div>
             ))
             }
         </div>
         <div class="nextPrev">
-            <button class="prev">
+            <button class="prev" id="prev">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
                 </svg>
             </button>
-            <button class="next">
+            <button class="next" id="next">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
                     <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
                 </svg>
@@ -105,48 +68,72 @@ const librosNovedades = await db.select().from(Libros).orderBy(desc(Libros.fecha
 
 </section>
 <script>
-	let nextBtn = document.querySelector('.next');
-    let prevBtn = document.querySelector('.prev');
+    const slider = document.querySelector('.slider'); //contenedor
+    const list = document.querySelectorAll('.list .item');
+    const thumbnail = document.querySelectorAll('.thumbnail .item');
+    const next = document.getElementById('next');
+    const prev = document.getElementById('prev');
+    const imagenes = Array.from(thumbnail);
+    const items = Array.from(list);
+    let currentItem = items.findIndex(item => item.classList.contains('actual'));
+    let currentImg = imagenes.findIndex(imagen => imagen.classList.contains('current'));
 
-    let slider = document.querySelector('.slider');
-    let sliderList = document.querySelector('.slider .list');
-    let thumbnail = document.querySelector('.thumbnail');
-    let thumbnailItems = document.querySelectorAll('.item');
-
-    /*NEXT*/
-if(nextBtn && prevBtn && slider){
-    nextBtn.addEventListener('click', ()=>{
-        moveSlider('next');
-        slider.classList.remove('prev');
-    });
-
-    prevBtn.addEventListener('click', ()=>{
-        moveSlider('prev');
-        slider.classList.remove('next');
-    });
-}
-    function moveSlider(direction:string){
-        let sliderItems;
-
-        if(sliderList){
-            sliderItems = sliderList.querySelectorAll('.item');
-            let thumbnailItems = document.querySelectorAll('.thumbnail .item');
+    if(next){
+        next.addEventListener('click', function(){
+            console.log(currentItem);
+            console.log(list.length);
             
-            if(sliderList && sliderItems && thumbnail && slider){
-                if(direction === 'next'){
-                    sliderList.appendChild(sliderItems[0]);
-                    thumbnail.appendChild(thumbnailItems[0]);
-                    slider.classList.add('next');                           
+            
+                if(currentItem === 0){
+                    items[currentItem].classList.remove('actual');
+                    items[currentItem].classList.add('hidden');
+                    items[currentItem + 3].classList.add('actual');
+                    currentItem = items.findIndex(item => item.classList.contains('actual'));
+
+                    imagenes[currentImg].classList.remove('current');
+                    imagenes[currentImg-3].classList.add('current');
+                    currentImg = imagenes.findIndex(imagen => imagen.classList.contains('current'));
+
+                }else{
                     
+                    items[currentItem].classList.remove('actual');
+                    items[currentItem].classList.add('hidden');
+                    items[currentItem-1].classList.add('actual');
+                    currentItem = items.findIndex(item => item.classList.contains('actual'));
 
-                }else if(direction === 'prev'){
-                    sliderList.prepend(sliderItems[sliderItems.length-1]);
-                    thumbnail.prepend(thumbnailItems[thumbnailItems.length-1]);
-                    slider.classList.add('prev');
+                    imagenes[currentImg].classList.remove('current');
+                    imagenes[currentImg+1].classList.add('current');
+                    currentImg = imagenes.findIndex(imagen => imagen.classList.contains('current'));
                 }
+        })
+    }
+
+    if(prev){
+        prev.addEventListener('click', function(){
+            console.log(currentImg);
+            console.log(imagenes.length);
             
-            }
-        }   
+                if(currentItem === 3){
+                    items[currentItem].classList.remove('actual');
+                    items[currentItem].classList.add('hidden');
+                    items[currentItem-3].classList.add('actual');
+                    currentItem = items.findIndex(item => item.classList.contains('actual'));
+
+                    imagenes[currentImg].classList.remove('current');
+                    imagenes[currentImg+3].classList.add('current');
+                    currentImg = imagenes.findIndex(imagen => imagen.classList.contains('current'));
+
+                }else{
+                    items[currentItem].classList.remove('actual');
+                    items[currentItem].classList.add('hidden');
+                    items[currentItem+1].classList.add('actual');
+                    currentItem = items.findIndex(item => item.classList.contains('actual'));
+
+                    imagenes[currentImg].classList.remove('current');
+                    imagenes[currentImg-1].classList.add('current');
+                    currentImg = imagenes.findIndex(imagen => imagen.classList.contains('current'));
+                }
+        })
     }
 
 </script>
