@@ -259,6 +259,9 @@ const { userAlias, userId } = Astro.props;
           const data = await response.json();
           console.log(data); 
           createToast(true, libroId);
+          setTimeout(function() {
+            window.location.reload();
+          }, 2000);
         }else{
           createToast(false, libroId);
         }
@@ -379,18 +382,23 @@ const { userAlias, userId } = Astro.props;
        
         if(data.length > 0){
           data.forEach((dato:any) => {
-            const container = document.createElement('div');
-          container.classList.add('flex', 'mx-20', 'my-5', 'z-10');
+          const container = document.createElement('div');
+          container.classList.add('cursor-pointer', 'p-3', 'flex', 'm-5', 'justify-around', 'bg-white', 'border', 'border-gray-200', 'rounded-lg', 'shadow');
           allBooks.appendChild(container);
-
+          
+          const divDerecha = document.createElement('a');
+          divDerecha.href = 'InfoLibro?idLibro='+dato.idLibro;
+          divDerecha.classList.add('flex', 'justify-center', 'items-center', 'w-full', 'mx-[10%]');
+          container.appendChild(divDerecha);
+          
           const divImg = document.createElement('div');
           divImg.classList.add('w-40', 'flex', 'justify-center');
           divImg.innerHTML = `<img class="w-24" src="${dato.Imagen}">`;
-          container.appendChild(divImg);
+          divDerecha.appendChild(divImg);
 
           const div = document.createElement('div');
           div.classList.add('w-full', 'flex', 'flex-col', 'p-4');
-          container.appendChild(div);
+          divDerecha.appendChild(div);
 
           const divText = document.createElement('div');
           divText.classList.add('flex', 'flex-col');
