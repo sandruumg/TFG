@@ -5,7 +5,9 @@ const librosTotales = await db.select({ value: count() }).from(Libros);
 
 var cantidadLibros = librosTotales[0].value;
 
-const librosRankingLectores = await db.select({ cantidad: count(ListaTerminados.idLibro), nombreUsuario: User.nombreUsuario })
+const librosRankingLectores = await db.select({ cantidad: count(ListaTerminados.idLibro), 
+                                                aliasUsuario: User.aliasUsuario,
+                                                generoUsuario: User.generoUsuario})
                         .from(User)
                         .innerJoin(ListaTerminados, eq(ListaTerminados.idUsuario, User.id))
                         .groupBy(User.id)
@@ -18,13 +20,22 @@ const librosRankingLectores = await db.select({ cantidad: count(ListaTerminados.
 
     <div class="grid justify-items-center grid-cols-2 ml-10">
         {
-            librosRankingLectores.map(({cantidad, nombreUsuario}) =>(
+            librosRankingLectores.map(({cantidad, aliasUsuario, generoUsuario}) =>(
                 <div class="flex flex-row items-center mb-8">
-                    <img class="w-20" src="/imagenes/fotoLectora.webp" alt="">
-                    <div class="ml-8 bg-gray-200 rounded-full h-2.5 dark:bg-gray-700" style=" width:25vw">
-                        <div class="bg-tertiary h-2.5 rounded-full" style={`width: ${(cantidad * 100) / cantidadLibros}%`}></div>
+                    <div class="flex flex-col items-center">
+                        {
+                            generoUsuario === "H" ? (
+                            <img class="w-20" src="/users/userChico.png" alt="">
+                            ) : generoUsuario === "M" ? (
+                            <img class="w-20" src="/users/userChica.png" alt="">
+                            ) : null
+                        }
+                        <p>{aliasUsuario}</p>
                     </div>
-                    <p class="ml-8">{cantidad} libros</p>
+                <div class="ml-8 bg-gray-200 rounded-full h-2.5 dark:bg-gray-700" style=" width:25vw">
+                    <div class="bg-tertiary h-2.5 rounded-full" style={`width: ${(cantidad * 100) / cantidadLibros}%`}></div>
+                </div>
+                <p class="ml-8">{cantidad} libros</p>
                 </div>
             ))
         }

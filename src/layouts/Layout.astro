@@ -91,6 +91,14 @@ const { title } = Astro.props;
 		scrollbar-color: var(--secondary-dark) var(--primary);
 	}
 
+	.steps .step-secondary-dark + .step-secondary-dark:before,
+	.steps .step-secondary-dark:after {
+		--tw-bg-opacity: 1;
+		background-color: var(--secondary-dark, oklch(var(--p) / var(--tw-bg-opacity)));
+		--tw-text-opacity: 1;
+		color: var(--fallback-pc, oklch(var(--pc) / var(--tw-text-opacity)));
+	}
+
 	code {
 		font-family:
 			Menlo,

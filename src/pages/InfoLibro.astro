@@ -109,18 +109,26 @@ const { userAlias, userId } = Astro.props;
 
   function mostrarMasLibrosDelAutor(data: any){
     const divLibrosAutor = document.getElementById('divLibrosAutor');
-    if(divLibrosAutor){
+    const divNoLibros = document.getElementById('mensajeNoLibros');
+
+    if(divLibrosAutor && divNoLibros){
       divLibrosAutor.innerHTML = '';
-      data.forEach((libro: any) => {
-        if(libro.idLibro != idLibro){
-          divLibrosAutor.innerHTML += `
-          <div class="carousel-item" data-bs-interval="10000">
-              <a href="InfoLibro?idLibro=${libro.idLibro}">
-                  <img src="${libro.portadaLibro}" class="rounded-box transition-transform hover:scale-110" style="margin-top: 35px;margin-left: 24px;width: 149px;height: 240px;position: relative;z-index: 0;" />
-              </a>
-          </div>`;
-        }
-      });
+      if (data.length == 1) {
+        const mensaje = document.createElement('p');
+        mensaje.innerText = 'No hay más libros del autor';
+        divNoLibros.appendChild(mensaje);
+      }else{
+        data.forEach((libro: any) => {
+          if(libro.idLibro != idLibro){
+            divLibrosAutor.innerHTML += `
+            <div class="carousel-item" data-bs-interval="10000">
+                <a href="InfoLibro?idLibro=${libro.idLibro}">
+                    <img src="${libro.portadaLibro}" class="rounded-box transition-transform hover:scale-110" style="margin-top: 35px;margin-left: 24px;width: 149px;height: 240px;position: relative;z-index: 0;" />
+                </a>
+            </div>`;
+          }
+        });
+      }
     }
   }
 
@@ -135,16 +143,21 @@ const { userAlias, userId } = Astro.props;
     if(boton.id === 'seguir'){
       let userId = boton.getAttribute('data-userId')!;
       boton.addEventListener('click', ()=>{
-        if(idLibro && userId){
+        if(idLibro && userId != null){
           getFollows(userId, idLibro);
+        }else{
+          const modal = document.getElementById('my_modal_3') as HTMLDialogElement;
+          modal.showModal();
         }
       });
     } else if(boton.id === 'fin'){
       let userId = boton.getAttribute('data-userId')!;
       boton.addEventListener('click', ()=>{
-
-        if(idLibro && userId){
-        getFinish(userId, idLibro)
+        if(idLibro && userId != null){
+          getFinish(userId, idLibro)
+        }else{
+          const modal = document.getElementById('my_modal_3') as HTMLDialogElement;
+          modal.showModal();
         }
       });
     }else if(boton.id === 'valoraciones'){

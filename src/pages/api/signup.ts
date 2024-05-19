@@ -13,6 +13,7 @@ export async function POST(context:APIContext): Promise<Response> {
     const nombreUsuario = formData.get("nombreUsuario");
     const apellidoUsuario = formData.get("apellidoUsuario");
     const correoUsuario = formData.get("correoUsuario");
+    const generoUsuario = formData.get("generoUsuario");
     const password = formData.get("password");
     
     //Select para ver si existe el correo o alias
@@ -45,6 +46,11 @@ export async function POST(context:APIContext): Promise<Response> {
           status: 400,
         });
       }
+      if (typeof generoUsuario !== "string") {
+        return new Response("El género no puede contener numeros", {
+          status: 400,
+        });
+      }
 
       //Añadir restriccion para correo 
       if (typeof password !== "string" || password.length < 4) {
@@ -64,6 +70,7 @@ export async function POST(context:APIContext): Promise<Response> {
             nombreUsuario: nombreUsuario,
             apellidoUsuario: apellidoUsuario,
             correoUsuario: correoUsuario,
+            generoUsuario: generoUsuario,
             password: hashedPass,
         }
       ]);

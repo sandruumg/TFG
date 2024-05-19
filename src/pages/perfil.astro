@@ -8,10 +8,13 @@ const usuarios = await db.select().from(User).where(eq(User.id, user.id));
 const [infoUser] = usuarios;
 const alias = infoUser.aliasUsuario;
 const id = infoUser.id;
+const genero = infoUser.generoUsuario;
 Astro.props.userAlias = alias;
 Astro.props.userId = id;
+Astro.props.generoUsuario = genero;
 
-const { userAlias, userId } = Astro.props;
+
+const { userAlias, userId, generoUsuario } = Astro.props;
 
 ---
 
@@ -19,7 +22,13 @@ const { userAlias, userId } = Astro.props;
     <section class="bg-gray-800">
       <div class="flex items-center ml-[11%] p-10">
         <div class="">
-          <img src="/users/userChica.png" alt="">
+          {
+            generoUsuario === "H" ? (
+              <img src="/users/userChico.png" alt="">
+            ) : generoUsuario === "M" ? (
+              <img src="/users/userChica.png" alt="">
+            ) : null
+          }
         </div>
         <div>
           <h1 class="text-white text-4xl ml-10">{userAlias}</h1>
@@ -295,51 +304,61 @@ const { userAlias, userId } = Astro.props;
 
     function mostrarTerminados(data: any, userId: any) {
       const resultadoDiv = document.getElementById('resultadoConsulta');
-      resultadoDiv?.classList.add('flex')
+      resultadoDiv?.classList.add('grid', 'gap-6');
       const titulo = document.createElement('h1');
       titulo.innerText = 'Mis libros terminados';
       titulo.style.fontSize = '5vh';
-      
+
       if (resultadoDiv) {
-        resultadoDiv.innerHTML = '';
-        resultadoDiv.appendChild(titulo);
-        const allBooks = document.createElement('div');
-        allBooks.classList.add('cursor-pointer', 'flex', 'justify-center', 'items-center', 'flex-wrap');
-        resultadoDiv.appendChild(allBooks);
-       
-        if(data.length > 0){
-          data.forEach((dato: any) => {
-          const container = document.createElement('div');
-          container.classList.add('flex', 'flex-col', 'justify-center', 'items-center', 'mx-20', 'my-5', 'z-10');
-          allBooks.appendChild(container);
+          resultadoDiv.innerHTML = '';
+          resultadoDiv.appendChild(titulo);
+          if (data.length > 0) {
+              let contador = 0;
+              let ulActual = document.createElement('ul');
+              data.forEach((dato: any, index: number) => {
+                  // Creamos una nueva lista ul después de cada 6 libros
+                  if (index % 5 === 0) {
+                      ulActual = document.createElement('ul');
+                      ulActual.classList.add('steps');
+                      ulActual.style.paddingTop = '6vw';
+                      ulActual.style.position = 'relative';
+                      ulActual.style.bottom = `${contador}vw`;
+                      resultadoDiv.appendChild(ulActual);
+                      contador +=10;
+                  }
 
-          const divImg = document.createElement('div');
-          divImg.classList.add('w-40', 'flex', 'justify-center');
-          divImg.innerHTML = `<img class="w-24" src="${dato.Imagen}">`;
-          container.appendChild(divImg);
-          let fecha =new Date(dato.Fecha);
-          let anio = fecha.getFullYear();
-          let mes = fecha.getMonth();
-          
-          const nombreMeses = [
-                'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-                'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
-            ];
-            const nombreMes = nombreMeses[mes];
+                  const li = document.createElement('li');
+                  li.classList.add('step', 'step-secondary-dark');
+                  const libroDiv = document.createElement('div');
+                  libroDiv.classList.add('flex', 'flex-col', 'justify-center', 'items-center', 'mx-20', 'my-5', 'z-10', 'relative', 'bottom-28');
+                  li.appendChild(libroDiv);
+                  ulActual?.appendChild(li);
 
-          const divText = document.createElement('div');
-          divText.classList.add('w-full', 'flex', 'flex-col', 'p-4', 'justify-center', 'items-center');
-          divText.innerHTML = `<h5 class="text-lg font-bold text-gray-900">${nombreMes}</h5><h5 class="text-lg font-bold text-gray-900">${anio}</h5>`;
-          container.appendChild(divText);
+                  const divImg = document.createElement('div');
+                  divImg.classList.add('w-40', 'flex', 'justify-center');
+                  divImg.innerHTML = `<img class="w-24" src="${dato.Imagen}">`;
+                  libroDiv.appendChild(divImg);
 
-          });        
-        }else{
-          const msj = document.createElement('div');
-          msj.innerText = 'No se han encontrado libros terminados';
-          resultadoDiv.appendChild(msj);
-        }
+                  let fecha = new Date(dato.Fecha);
+                  let anio = fecha.getFullYear();
+                  let mes = fecha.getMonth();
 
-        
+                  const nombreMeses = [
+                      'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+                      'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+                  ];
+                  const nombreMes = nombreMeses[mes];
+
+                  const divText = document.createElement('div');
+                  divText.classList.add('w-full', 'flex', 'flex-col', 'p-4', 'justify-center', 'items-center');
+                  divText.innerHTML = `<h5 class="text-lg font-bold text-gray-900">${nombreMes}</h5><h5 class="text-lg font-bold text-gray-900">${anio}</h5>`;
+                  libroDiv.appendChild(divText);
+              });
+          } else {
+              const msj = document.createElement('div');
+              msj.innerText = 'No se han encontrado libros terminados';
+              resultadoDiv.appendChild(msj);
+          }
       }
     }
 

@@ -8,6 +8,7 @@ export default async function seed() {
             nombreUsuario: "Prueba",
             apellidoUsuario: "Prueba",
             correoUsuario: "prueba@prueba.com",
+            generoUsuario: "H",
             password: "1234"
         },
         {
@@ -16,6 +17,7 @@ export default async function seed() {
             nombreUsuario: "Prueba2",
             apellidoUsuario: "Prueb2",
             correoUsuario: "prueba2@prueba.com",
+            generoUsuario: "M",
             password: "12344"
         }
     ]);

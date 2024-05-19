@@ -8,6 +8,7 @@ const Usuarios = defineTable({
     nombreUsuario: column.text(),    
     apellidoUsuario: column.text(),
     correoUsuario: column.text({unique: true}),
+    generoUsuario: column.text(),
     password: column.text()
   }
 });
@@ -18,6 +19,7 @@ const User = defineTable({
     nombreUsuario: column.text(),    
     apellidoUsuario: column.text(),
     correoUsuario: column.text({unique: true}),
+    generoUsuario: column.text(),
     password: column.text()
   }
 });
