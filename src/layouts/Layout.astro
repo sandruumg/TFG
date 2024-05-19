@@ -111,11 +111,15 @@ const { title } = Astro.props;
 			monospace;
 	}
 
+	.list{
+	
+	}
 	.list .item{
 		width: 100%;
 		height: 99%;
 		position: absolute;
 		inset: 0 0 0 0;
+	
 	}
 
 	.list .item img{
@@ -123,20 +127,14 @@ const { title } = Astro.props;
 		height: 100%;
 		object-fit: cover;
 		animation: showContent 1s ease-in-out 1 forwards;
-	} 
-
-	@keyframes showContent {
-		from{
-			clip-path: circle(0% at 70% 50%);
-		}to{
-			clip-path: circle(100% at 70% 50%);
-		}
 	}
+
 
 	.thumbnail {
 		width: 10vw;
 		height: 0;
 		margin-bottom: 70vw;
+		
 	}
 	.content{
 		margin-left: 6vw;
@@ -145,19 +143,31 @@ const { title } = Astro.props;
 		top: 10vw; 
 		color:#f6f6f6;
 		width: 50vw;
+		
 	}
+
 	.title{
 		font-size: 3vw;
 		font-weight: bold;
+		opacity: 0;
+		animation: animate 1.2s ease-in-out 1 forwards;
+
 	}
 	.type{
 		font-size: 1.5vw;
 		font-weight: bold;
 		color:#5AC7AA;
+		opacity: 0;
+		animation: animate 1.6s ease-in-out 1 forwards;
+
 	}
 	.description{
 		margin-top: 1.2vw;
 		margin-bottom: 1.2vw;
+		font-family: 'Open Sans', sans-serif;
+		opacity: 0;
+		animation: animate 1.8s ease-in-out 1 forwards;
+
 	}
 	.list .item .content .button{
 		margin-top: 2em;
@@ -189,6 +199,7 @@ const { title } = Astro.props;
 	}
 	.thumbnail .item a img{
 		width: 100vw;
+		animation: animateImg 1s ease-in-out 1 forwards;
 	}
 
 	.prev, .next{
@@ -196,9 +207,12 @@ const { title } = Astro.props;
 		border-radius: 50%;
 		color: white;
 		z-index: 100;
+		
+		animation: animateImg 1s ease-in-out 1 forwards;
 	}
 	.next{
 		margin-left: 25vw;
+
 	}
 	.prev{
 		margin-right: -5vw;
@@ -217,6 +231,40 @@ const { title } = Astro.props;
 	.actual{
 		display: block;
 	}
+
+	.animacion{
+	}
+	@keyframes showContent {
+		from{
+			
+			filter: blur(20px);
+		}to{
+			
+			filter: blur(0);
+		}
+	}
+	@keyframes animate {
+		from{
+			opacity: 0;
+			transform: translate(100px, 0);
+			
+		}to{
+			opacity: 1;
+			transform: translate(0);		
+		}
+	}
+	@keyframes animateImg {
+		from{
+			
+			transform: translate(100px, 0);
+		}to{
+			
+				
+			transform: translate(0);
+		}
+	}
+	
+	
 
 	@media (max-width: 1024px) {
 		

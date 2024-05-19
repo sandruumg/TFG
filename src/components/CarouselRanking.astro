@@ -27,7 +27,7 @@ const librosOrdenadosPorPorcentaje = librosConPorcentaje.sort((a, b) => b.porcen
       {
         librosOrdenadosPorPorcentaje.map(({cantidadEstrellas, cantidadValoraciones, portadaLibro, id, porcentaje}) =>(
             <div class="carousel-item" data-bs-interval="10000" style="position: relative;">
-                <a href=`InfoLibro?idLibro=${id}`>
+                <a href={`InfoLibro?idLibro=${id}`}>
                     <img src={portadaLibro} class="rounded-box transition-transform hover:scale-110" style="margin-top: 35px;margin-left: 24px;width: 149px;height: 240px;position: relative;z-index: 0;" />
                 </a>
                 {

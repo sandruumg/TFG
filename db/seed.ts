@@ -19,6 +19,95 @@ export default async function seed() {
             correoUsuario: "prueba2@prueba.com",
             generoUsuario: "M",
             password: "12344"
+        },
+        {
+            id: '2',
+            aliasUsuario: "Alex",
+            nombreUsuario: "Alejandro",
+            apellidoUsuario: "Algo",
+            correoUsuario: "prueba3@prueba.com",
+            password: "12344"
+        },
+        {
+            id: '3',
+            aliasUsuario: "Monica",
+            nombreUsuario: "Monica",
+            apellidoUsuario: "Algo",
+            correoUsuario: "prueba4@prueba.com",
+            password: "12344"
+        }
+        ,
+        {
+            id: '4',
+            aliasUsuario: "Manuel",
+            nombreUsuario: "Manuel",
+            apellidoUsuario: "Algo",
+            correoUsuario: "prueba5@prueba.com",
+            password: "12344"
+        },
+        {
+            id: '5',
+            aliasUsuario: "Santiago",
+            nombreUsuario: "Santiago",
+            apellidoUsuario: "Algo",
+            correoUsuario: "prueba6@prueba.com",
+            password: "12344"
+        },
+        {
+            id: '6',
+            aliasUsuario: "Javi",
+            nombreUsuario: "Javier",
+            apellidoUsuario: "Algo",
+            correoUsuario: "prueba7@prueba.com",
+            password: "12344"
+        },
+        {
+            id: '7',
+            aliasUsuario: "David",
+            nombreUsuario: "David",
+            apellidoUsuario: "Algo",
+            correoUsuario: "prueba8@prueba.com",
+            password: "12344"
+        },
+        {
+            id: '8',
+            aliasUsuario: "Usuario1",
+            nombreUsuario: "Usuario1",
+            apellidoUsuario: "Algo",
+            correoUsuario: "Usuario1@prueba.com",
+            password: "12344"
+        },
+        {
+            id: '9',
+            aliasUsuario: "Usuario2",
+            nombreUsuario: "Usuario2",
+            apellidoUsuario: "Algo",
+            correoUsuario: "Usuario2@prueba.com",
+            password: "12344"
+        },
+        {
+            id: '10',
+            aliasUsuario: "Usuario3",
+            nombreUsuario: "Usuario3",
+            apellidoUsuario: "Algo",
+            correoUsuario: "Usuario3@prueba.com",
+            password: "12344"
+        },
+        {
+            id: '11',
+            aliasUsuario: "Usuario4",
+            nombreUsuario: "Usuario4",
+            apellidoUsuario: "Algo",
+            correoUsuario: "Usuario4@prueba.com",
+            password: "12344"
+        },
+        {
+            id: '12',
+            aliasUsuario: "Usuario5",
+            nombreUsuario: "Usuario5",
+            apellidoUsuario: "Algo",
+            correoUsuario: "Usuario5@prueba.com",
+            password: "12344"
         }
     ]);
 
@@ -1145,7 +1234,121 @@ export default async function seed() {
             idLibro: 1,
             idUsuario: "1234",
             estrellas: 5
-        }
+        },
+        {
+            id: 2,
+            idLibro: 2,
+            idUsuario: "1234",
+            estrellas: 2
+        },
+        {
+            id: 3,
+            idLibro: 3,
+            idUsuario: "1234",
+            estrellas: 3
+        },
+        {
+            id: 4,
+            idLibro: 4,
+            idUsuario: "1234",
+            estrellas: 2
+        },
+        {
+            id: 5,
+            idLibro: 5,
+            idUsuario: "1234",
+            estrellas: 1
+        },
+        {
+            id: 6,
+            idLibro: 6,
+            idUsuario: "1234",
+            estrellas: 2
+        },
+        {
+            id: 7,
+            idLibro: 7,
+            idUsuario: "1234",
+            estrellas: 3
+        },
+        {
+            id: 8,
+            idLibro: 8,
+            idUsuario: "2",
+            estrellas: 5
+        },
+        {
+            id: 9,
+            idLibro: 16,
+            idUsuario: "3",
+            estrellas: 5
+        },
+        {
+            id: 10,
+            idLibro: 50,
+            idUsuario: "3",
+            estrellas: 3
+        },
+        {
+            id: 11,
+            idLibro: 8,
+            idUsuario: "3",
+            estrellas: 5
+        },
+        {
+            id: 12,
+            idLibro: 23,
+            idUsuario: "4",
+            estrellas: 3
+        },
+        {
+            id: 13,
+            idLibro: 18,
+            idUsuario: "4",
+            estrellas: 1
+        },
+        {
+            id: 14,
+            idLibro: 84,
+            idUsuario: "5",
+            estrellas: 5
+        },
+        {
+            id: 15,
+            idLibro: 62,
+            idUsuario: "5",
+            estrellas: 5
+        },
+        {
+            id: 16,
+            idLibro: 6,
+            idUsuario: "6",
+            estrellas: 2
+        },
+        {
+            id: 17,
+            idLibro: 47,
+            idUsuario: "7",
+            estrellas: 3
+        },
+        {
+            id: 18,
+            idLibro: 68,
+            idUsuario: "7",
+            estrellas: 5
+        },
+        {
+            id: 19,
+            idLibro: 46,
+            idUsuario: "8",
+            estrellas: 4
+        },
+        {
+            id: 20,
+            idLibro: 94,
+            idUsuario: "8",
+            estrellas: 5
+        },
     ]);
     
     await db.insert(ListaSeguimiento).values([
@@ -1203,6 +1406,198 @@ export default async function seed() {
             id: 11,
             idLibro: 2,
             idUsuario: "1234"
+        }
+    ]);
+    await db.insert(ListaTerminados).values([
+        {
+            id: 1,
+            idLibro: 1,
+            idUsuario: "1234",
+            fechaTerminado: new Date("2022-01-01")
+        },
+        {
+            id: 2,
+            idLibro: 2,
+            idUsuario: "1234",
+            fechaTerminado: new Date("2023-02-11")
+        },        {
+            id: 3,
+            idLibro: 3,
+            idUsuario: "1234",
+            fechaTerminado: new Date("2022-05-21")
+        },
+        {
+            id: 4,
+            idLibro: 5,
+            idUsuario: "1234",
+            fechaTerminado: new Date("2019-06-15")
+        },        {
+            id: 5,
+            idLibro: 5,
+            idUsuario: "1234",
+            fechaTerminado: new Date("2023-08-25")
+        },
+        {
+            id: 6,
+            idLibro: 6,
+            idUsuario: "2",
+            fechaTerminado: new Date("2022-03-01")
+        },  
+        {
+            id: 7,
+            idLibro: 1,
+            idUsuario: "2",
+            fechaTerminado: new Date("2022-01-01")
+        },
+        {
+            id: 8,
+            idLibro: 2,
+            idUsuario: "2",
+            fechaTerminado: new Date("2023-02-11")
+        },        
+        {
+            id: 9,
+            idLibro: 3,
+            idUsuario: "2",
+            fechaTerminado: new Date("2022-05-21")
+        },
+        {
+            id: 10,
+            idLibro: 5,
+            idUsuario: "2",
+            fechaTerminado: new Date("2019-06-15")
+        },        
+        {
+            id: 11,
+            idLibro: 7,
+            idUsuario: "2",
+            fechaTerminado: new Date("2023-08-25")
+        },
+        {
+            id: 12,
+            idLibro: 6,
+            idUsuario: "2",
+            fechaTerminado: new Date("2022-03-01")
+        },
+        {
+            id: 13,
+            idLibro: 1,
+            idUsuario: "3",
+            fechaTerminado: new Date("2022-01-01")
+        },
+        {
+            id: 14,
+            idLibro: 2,
+            idUsuario: "3",
+            fechaTerminado: new Date("2023-02-11")
+        },        
+        {
+            id: 15,
+            idLibro: 3,
+            idUsuario: "3",
+            fechaTerminado: new Date("2022-05-21")
+        },
+        {
+            id: 16,
+            idLibro: 5,
+            idUsuario: "3",
+            fechaTerminado: new Date("2019-06-15")
+        },        
+        {
+            id: 17,
+            idLibro: 7,
+            idUsuario: "3",
+            fechaTerminado: new Date("2023-08-25")
+        },
+        {
+            id: 18,
+            idLibro: 6,
+            idUsuario: "3",
+            fechaTerminado: new Date("2022-03-01")
+        },
+        {
+            id: 19,
+            idLibro: 3,
+            idUsuario: "4",
+            fechaTerminado: new Date("2022-05-21")
+        },
+        {
+            id: 20,
+            idLibro: 5,
+            idUsuario: "4",
+            fechaTerminado: new Date("2019-06-15")
+        },        
+        {
+            id: 21,
+            idLibro: 7,
+            idUsuario: "4",
+            fechaTerminado: new Date("2023-08-25")
+        },
+        {
+            id: 22,
+            idLibro: 6,
+            idUsuario: "4",
+            fechaTerminado: new Date("2022-03-01")
+        },
+        {
+            id: 23,
+            idLibro: 10,
+            idUsuario: "5",
+            fechaTerminado: new Date("2023-08-25")
+        },
+        {
+            id: 24,
+            idLibro: 8,
+            idUsuario: "5",
+            fechaTerminado: new Date("2022-03-01")
+        },
+        {
+            id: 25,
+            idLibro: 15,
+            idUsuario: "6",
+            fechaTerminado: new Date("2022-03-01")
+        },
+        {
+            id: 26,
+            idLibro: 18,
+            idUsuario: "7",
+            fechaTerminado: new Date("2022-03-01")
+        },
+        {
+            id: 27,
+            idLibro: 19,
+            idUsuario: "7",
+            fechaTerminado: new Date("2022-03-01")
+        },
+        {
+            id: 28,
+            idLibro: 11,
+            idUsuario: "7",
+            fechaTerminado: new Date("2022-03-01")
+        },
+        {
+            id: 29,
+            idLibro: 21,
+            idUsuario: "7",
+            fechaTerminado: new Date("2022-03-01")
+        },
+        {
+            id: 30,
+            idLibro: 19,
+            idUsuario: "8",
+            fechaTerminado: new Date("2022-03-01")
+        },
+        {
+            id: 31,
+            idLibro: 11,
+            idUsuario: "8",
+            fechaTerminado: new Date("2022-03-01")
+        },
+        {
+            id: 32,
+            idLibro: 50,
+            idUsuario: "8",
+            fechaTerminado: new Date("2022-03-01")
         }
     ]);
       
