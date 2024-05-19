@@ -26,6 +26,7 @@ export default async function seed() {
             nombreUsuario: "Alejandro",
             apellidoUsuario: "Algo",
             correoUsuario: "prueba3@prueba.com",
+            generoUsuario: "H",
             password: "12344"
         },
         {
@@ -34,6 +35,7 @@ export default async function seed() {
             nombreUsuario: "Monica",
             apellidoUsuario: "Algo",
             correoUsuario: "prueba4@prueba.com",
+            generoUsuario: "M",
             password: "12344"
         }
         ,
@@ -43,6 +45,7 @@ export default async function seed() {
             nombreUsuario: "Manuel",
             apellidoUsuario: "Algo",
             correoUsuario: "prueba5@prueba.com",
+            generoUsuario: "H",
             password: "12344"
         },
         {
@@ -51,6 +54,7 @@ export default async function seed() {
             nombreUsuario: "Santiago",
             apellidoUsuario: "Algo",
             correoUsuario: "prueba6@prueba.com",
+            generoUsuario: "H",
             password: "12344"
         },
         {
@@ -59,6 +63,7 @@ export default async function seed() {
             nombreUsuario: "Javier",
             apellidoUsuario: "Algo",
             correoUsuario: "prueba7@prueba.com",
+            generoUsuario: "H",
             password: "12344"
         },
         {
@@ -67,6 +72,7 @@ export default async function seed() {
             nombreUsuario: "David",
             apellidoUsuario: "Algo",
             correoUsuario: "prueba8@prueba.com",
+            generoUsuario: "H",
             password: "12344"
         },
         {
@@ -75,6 +81,7 @@ export default async function seed() {
             nombreUsuario: "Usuario1",
             apellidoUsuario: "Algo",
             correoUsuario: "Usuario1@prueba.com",
+            generoUsuario: "M",
             password: "12344"
         },
         {
@@ -83,6 +90,7 @@ export default async function seed() {
             nombreUsuario: "Usuario2",
             apellidoUsuario: "Algo",
             correoUsuario: "Usuario2@prueba.com",
+            generoUsuario: "M",
             password: "12344"
         },
         {
@@ -91,6 +99,7 @@ export default async function seed() {
             nombreUsuario: "Usuario3",
             apellidoUsuario: "Algo",
             correoUsuario: "Usuario3@prueba.com",
+            generoUsuario: "M",
             password: "12344"
         },
         {
@@ -99,6 +108,7 @@ export default async function seed() {
             nombreUsuario: "Usuario4",
             apellidoUsuario: "Algo",
             correoUsuario: "Usuario4@prueba.com",
+            generoUsuario: "M",
             password: "12344"
         },
         {
@@ -107,6 +117,7 @@ export default async function seed() {
             nombreUsuario: "Usuario5",
             apellidoUsuario: "Algo",
             correoUsuario: "Usuario5@prueba.com",
+            generoUsuario: "H",
             password: "12344"
         }
     ]);
