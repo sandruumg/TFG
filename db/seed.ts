@@ -1,5 +1,4 @@
 import { db, User, Libros, ListaSeguimiento, ListaTerminados, RankingLibros } from 'astro:db';
-
 export default async function seed() {
     await db.insert(User).values([
         {
