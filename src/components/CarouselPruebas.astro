@@ -21,7 +21,7 @@ const librosNovedades = await db.select().from(Libros).orderBy(desc(Libros.fecha
 
 ---
 <section class="bg-secondary">
-        <div class="flex justify-around items-center h-[90vh] relative">
+        <div id="slider" class="flex justify-around items-center h-[90vh] relative">
             <div class="list">
                 {
                 listaLibros.slice().reverse().map(({idLibro, fondoLibro, tituloLibro, nombreAutor, sinopsisLibro}, index)=>(
@@ -79,12 +79,15 @@ const librosNovedades = await db.select().from(Libros).orderBy(desc(Libros.fecha
             console.log(currentItem);
             console.log(list.length);
             
+            
+            
+           
             if(currentItem === 0){
                     items[currentItem].classList.remove('actual');
                     items[currentItem].classList.add('hidden');
                     items[currentItem + 3].classList.add('actual');
                     currentItem = items.findIndex(item => item.classList.contains('actual'));
-
+                   
                     
                     imagenes[currentImg].classList.remove('current');
                     imagenes[currentImg].classList.add('hidden');
