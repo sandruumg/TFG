@@ -1,14 +1,37 @@
-<section>
+<section class="parallax-section" id="parallaxSection">
     <div class="bg-gradient">
-        <h1 class="fuente-1 text-5xl">Unete a nuestra comunidad</h1>
-        <p class="fuente-2 my-5">Lorem ipsum dolor sit amet consectetur adipiscing elit vulputate, laoreet ultrices penatibus nunc dui porta vestibulum. Nisl facilisi conubia enim venenatis ut, dictumst praesent metus bibendum, dapibus eleifend malesuada etiam.</p>
-        <a id="open-modal-link">
-            <button class="btn fuente-1 bg-button-registro">REGISTRATE</button>
+        <h1 class="fuente-1 text-5xl">Únete a nuestra comunidad</h1>
+        <p class="fuente-2 my-5" style="width:90vw;">Lorem ipsum dolor sit amet consectetur adipiscing elit vulputate, laoreet ultrices penatibus nunc dui porta vestibulum. Nisl facilisi conubia enim venenatis ut, dictumst praesent metus bibendum, dapibus eleifend malesuada etiam.</p>
+        <a href="#" id="open-modal-link">
+            <button class="btn fuente-1 bg-button-registro">REGÍSTRATE</button>
         </a>
     </div>
 </section>
 
+
+<style>
+.parallax-section {
+    width: 50%; /* Ancho inicial */
+    margin: 0 auto;
+    overflow: hidden; /* Oculta el contenido que desborda */
+    transition: width 0.3s ease; /* Transición suave del ancho */
+}
+
+.parallax-section .container {
+    margin: 0 -10vw 0 -10vw; /* Márgenes negativos para expandirse a ambos lados */
+    width: auto;
+}
+</style>
+
 <script>
+window.addEventListener('scroll', () => {
+    const parallaxSection = document.getElementById('parallaxSection');
+    if (parallaxSection) {
+        const scrollPosition = window.scrollY;
+        const newWidth = 50 + scrollPosition * 0.05 + '%'; // Ajuste el factor según sea necesario
+        parallaxSection.style.width = newWidth;
+    }
+});
     const openModal = document.getElementById('open-modal-link');
     const modal = document.getElementById('my_modal_3') as HTMLDialogElement;
 
