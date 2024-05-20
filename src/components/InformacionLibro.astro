@@ -25,15 +25,15 @@ const puntuacionLibro = await db.select({ estrellas: count(RankingLibros.estrell
         <div class="flex flex-col gap-5">
             <button id="botonVolver" class="btn btn-outline border-white w-[10em]">
                 <p class="text-lg text-white">Volver</p>
-                <svg class="w-5 ml-3 fill-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                <svg class="w-5 ml-3 fill-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                     <path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z"/>
                 </svg>
             </button>
-            <div class="mt-10">
+            <div id="autor" class="mt-10">
                 <h1 id="nombreLibro" class="text-4xl text-white mt-5"></h1>
                 <h3 id="nombreAutor" class="text-2xl text-white fuente-2"></h3>
             </div>
-            <div class="flex flex-row items-center mt-10">
+            <div id="puntuacion" class="flex flex-row items-center mt-10">
                 <div id="estrellas" class="radial-progress bg-neutral-content text-secondary-dark border-4 border-neutral-content mr-5" role="progressbar"></div>
                 <p id="cantidadValoraciones" class="fuente-2 text-white"></p>            
                     <dialog id="my_modal_2" class="modal">
@@ -51,7 +51,7 @@ const puntuacionLibro = await db.select({ estrellas: count(RankingLibros.estrell
                         </form>
                     </dialog>   
             </div>
-            <div class="flex flex-col gap-5">
+            <div id="botones" class="flex flex-col gap-5">
                 <div class="flex items-center mt-5 gap-5">
                     {userId !== undefined &&
                         <button id="fin" data-userId={userId} class="boton p-3 rounded-full bg-primary border-primary  hover:bg-secondary-dark hover:border-secondary-dark tooltip tooltip-bottom" data-tip="Añade este libro a terminados" >
