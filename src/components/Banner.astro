@@ -28,8 +28,14 @@ window.addEventListener('scroll', () => {
     const parallaxSection = document.getElementById('parallaxSection');
     if (parallaxSection) {
         const scrollPosition = window.scrollY;
-        const newWidth = 50 + scrollPosition * 0.05 + '%'; // Ajuste el factor según sea necesario
-        parallaxSection.style.width = newWidth;
+        const maxWidth = 100; // Establecer el ancho máximo deseado en porcentaje
+        const newWidth = 50 + scrollPosition * 0.05; // Ajuste el factor según sea necesario
+        if (newWidth <= maxWidth) {
+            parallaxSection.style.width = newWidth + '%';
+        }else {
+            // Si newWidth está muy cerca de maxWidth, ajusta manualmente a 100%
+            parallaxSection.style.width = '100%';
+        }
     }
 });
     const openModal = document.getElementById('open-modal-link');
