@@ -5,6 +5,22 @@ import Sinopsis from '../components/Sinopsis.astro';
 import { db, User, Session, Libros, ListaSeguimiento, ListaTerminados } from 'astro:db';
 import { eq } from 'astro:db';
 
+const params = new URLSearchParams(Astro.request.url.split('?')[1]);
+const idLibro = Number(params.get('idLibro'));
+let tituloLibro = '';
+let autorLibro = '';
+
+if (idLibro) {
+  // Consultar la información del libro desde la base de datos
+  const [libro] = await db.select({
+    titulo: Libros.tituloLibro
+  }).from(Libros).where(eq(Libros.idLibro, idLibro));
+
+  if (libro) {
+    tituloLibro = libro.titulo;
+  }
+}
+
 if(Astro.locals.user){
     const user = Astro.locals.user!;
     const usuarios = await db.select().from(User).where(eq(User.id, user.id));
@@ -14,10 +30,11 @@ if(Astro.locals.user){
     Astro.props.userAlias = alias;
     Astro.props.userId = id;
 }
-const { userAlias, userId } = Astro.props;
+Astro.props.tituloLibro = tituloLibro;
+const { userAlias, userId} = Astro.props;
 ---
 
-<Layout title="Información del libro">
+<Layout title={tituloLibro}>
   
     <InformacionLibro/>
     <Sinopsis/>
@@ -106,11 +123,11 @@ const { userAlias, userId } = Astro.props;
       console.error('Error en la solicitud:', error);
     }
   }
-
+  
   function mostrarMasLibrosDelAutor(data: any){
     const divLibrosAutor = document.getElementById('divLibrosAutor');
     const divNoLibros = document.getElementById('mensajeNoLibros');
-
+   
     if(divLibrosAutor && divNoLibros){
       divLibrosAutor.innerHTML = '';
       if (data.length == 1) {
@@ -123,7 +140,7 @@ const { userAlias, userId } = Astro.props;
             divLibrosAutor.innerHTML += `
             <div class="carousel-item" data-bs-interval="10000">
                 <a href="InfoLibro?idLibro=${libro.idLibro}">
-                    <img src="${libro.portadaLibro}" class="rounded-box transition-transform hover:scale-110" style="margin-top: 35px;margin-left: 24px;width: 149px;height: 240px;position: relative;z-index: 0;" />
+                    <img src="${libro.portadaLibro}" class="imagen rounded-box transition-transform hover:scale-110" style="margin-top: 35px;margin-left: 24px;width: 149px;height: 240px;position: relative;z-index: 0;" />
                 </a>
             </div>`;
           }
