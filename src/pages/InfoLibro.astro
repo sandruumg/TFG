@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import InformacionLibro from '../components/InformacionLibro.astro';
 import Sinopsis from '../components/Sinopsis.astro';
+import ComentariosLibro from '../components/ComentariosLibro.astro';
 import { db, User, Session, Libros, ListaSeguimiento, ListaTerminados } from 'astro:db';
 import { eq } from 'astro:db';
 
@@ -38,6 +39,7 @@ const { userAlias, userId} = Astro.props;
   
     <InformacionLibro/>
     <Sinopsis/>
+    <ComentariosLibro/>
    
 </Layout>
 
@@ -179,8 +181,22 @@ const { userAlias, userId} = Astro.props;
       });
     }else if(boton.id === 'valoraciones'){
       let userId = boton.getAttribute('data-userId')!;
-      boton.addEventListener('click', ()=>{});
-    }
+      let estrellas:any;
+        const puntuacion = document.querySelectorAll<HTMLInputElement>('input[type="radio"][name="rating-8"]');
+        puntuacion.forEach(input => {
+          input.addEventListener('change', () => {
+              estrellas = input.value;
+          });// evento change
+        });//foreach
+      boton.addEventListener('click', ()=>{
+
+        let comentario = document.getElementById('comentario') as HTMLTextAreaElement;
+        if (comentario && idLibro && estrellas && estrellas != null) {
+          const comentString = comentario.value;
+          getPuntuacion(userId, idLibro, estrellas, comentString);
+        }
+      });// evento click
+    }//else
   });
 
   function toastSuccess(msj:string){
@@ -290,28 +306,28 @@ const { userAlias, userId} = Astro.props;
 /*******************ESTRELLAS**********************/
 
 
-const puntuacion = document.querySelectorAll<HTMLInputElement>('input[type="radio"][name="rating-8"]');
-puntuacion.forEach(input => {
-    input.addEventListener('change', () => {
-      let userId = input.getAttribute('data-userId')!;
-        const estrellas = input.value;
-        console.log(estrellas);
-        console.log(userId);
-        console.log(idLibro);
+// const puntuacion = document.querySelectorAll<HTMLInputElement>('input[type="radio"][name="rating-8"]');
+// puntuacion.forEach(input => {
+//     input.addEventListener('change', () => {
+//       let userId = input.getAttribute('data-userId')!;
+//         const estrellas = input.value;
+//         console.log(estrellas);
+//         console.log(userId);
+//         console.log(idLibro);
 
-        if(idLibro){
-          getPuntuacion(userId, idLibro, estrellas);
-        }
+//         if(idLibro){
+//           // getPuntuacion(userId, idLibro, estrellas);
+//         }
         
-    });
-});
+//     });
+// });
 
-async function getPuntuacion(userId:string, idLibro:string, estrellas:string){
+async function getPuntuacion(userId:string, idLibro:string, estrellas:string, comentario:string){
     try {
       const response = await fetch(`/api/insertPuntuacion/${userId}`, 
       { 
         method: 'POST', 
-        body: JSON.stringify({idLibro, estrellas}),
+        body: JSON.stringify({idLibro, estrellas, comentario}),
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'

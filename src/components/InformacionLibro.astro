@@ -39,11 +39,16 @@ const puntuacionLibro = await db.select({ estrellas: count(RankingLibros.estrell
                     <dialog id="my_modal_2" class="modal">
                         <div class="modal-box w-96">
                             <div class="rating rating-lg">
-                                <input data-userId={userId} type="radio" name="rating-8" class="mask mask-star-2 bg-orange-400 ml-10 mr-3" value="1"/>
-                                <input data-userId={userId} type="radio" name="rating-8" class="mask mask-star-2 bg-orange-400 mr-3" value="2" />
-                                <input data-userId={userId} type="radio" name="rating-8" class="mask mask-star-2 bg-orange-400 mr-3" value="3"/>
-                                <input data-userId={userId} type="radio" name="rating-8" class="mask mask-star-2 bg-orange-400 mr-3" value="4"/>
-                                <input data-userId={userId} type="radio" name="rating-8" class="mask mask-star-2 bg-orange-400 mr-3" value="5"/>
+                                <input type="radio" name="rating-8" class="mask mask-star-2 bg-orange-400 ml-10 mr-3" value="1"/>
+                                <input type="radio" name="rating-8" class="mask mask-star-2 bg-orange-400 mr-3" value="2" />
+                                <input type="radio" name="rating-8" class="mask mask-star-2 bg-orange-400 mr-3" value="3"/>
+                                <input type="radio" name="rating-8" class="mask mask-star-2 bg-orange-400 mr-3" value="4"/>
+                                <input type="radio" name="rating-8" class="mask mask-star-2 bg-orange-400 mr-3" value="5"/>
+                            </div>
+                            <p class="text-sm text-center mt-5 mb-5">¿Quieres dejar algún comentario sobre el libro?</p>
+                            <div class="flex flex-col gap-2">
+                                <textarea id="comentario" class="textarea textarea-bordered" placeholder="Este libro me ha parecido..."></textarea>
+                                <button id="valoraciones" data-userId={userId} class="boton btn bg-primary text-secondary hover:bg-secondary hover:text-white">Comentar!</button>
                             </div>
                         </div>
                         <form method="dialog" class="modal-backdrop">

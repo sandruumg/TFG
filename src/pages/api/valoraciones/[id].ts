@@ -16,7 +16,8 @@ export const GET = async ({ params }:{params:{id:string}}) => {
             Autor: Libros.nombreAutor,
             Imagen: Libros.portadaLibro,
             idLibro: Libros.idLibro,
-            estrellas: RankingLibros.estrellas
+            estrellas: RankingLibros.estrellas,
+            comentario: RankingLibros.comentario
         }).from(RankingLibros).innerJoin(Libros, eq(RankingLibros.idLibro, Libros.idLibro)).where(eq(RankingLibros.idUsuario, params.id)).orderBy(desc(RankingLibros.estrellas));
     }
     console.log(valoraciones);

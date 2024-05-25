@@ -416,9 +416,9 @@ const { userAlias, userId, generoUsuario } = Astro.props;
           divDerecha.appendChild(divImg);
 
           const div = document.createElement('div');
-          div.classList.add('w-full', 'flex', 'flex-col', 'p-4');
+          div.classList.add('w-96', 'flex', 'flex-col', 'p-4');
           divDerecha.appendChild(div);
-
+          
           const divText = document.createElement('div');
           divText.classList.add('flex', 'flex-col');
           divText.innerHTML = `<h5 class="text-lg font-bold text-gray-900">${dato.Titulo}</h5><p class="text-sm text-gray-500">${dato.Autor}</p>`;
@@ -444,6 +444,19 @@ const { userAlias, userId, generoUsuario } = Astro.props;
           }
          
           div.appendChild(divEstrellas);
+          const divComentario = document.createElement('div');
+          divComentario.classList.add('w-full');
+          divComentario.style.width = '38vw';
+          const tituloComentario = document.createElement('h5');
+          tituloComentario.classList.add('fuente-2','pb-2');
+          tituloComentario.innerHTML = 'Esto has opinado sobre el libro ' + dato.Titulo;
+          const comentario = document.createElement('p');
+          comentario.classList.add('p-5','bg-slate-100','border','border-slate-200','rounded-lg','max-w-full', 'break-words')
+          comentario.innerHTML = '"'+dato.comentario+'"';
+          divComentario.appendChild(tituloComentario);
+          divComentario.appendChild(comentario);
+          divDerecha.appendChild(divComentario);
+
           });        
         }else{
           const msj = document.createElement('div');

@@ -50,7 +50,8 @@ const RankingLibros = defineTable({
     id: column.number({ primaryKey: true }),
     idLibro: column.number({ references: () => Libros.columns.idLibro}),
     idUsuario: column.text({ references: () => User.columns.id}),
-    estrellas: column.number()
+    estrellas: column.number(),
+    comentario: column.text({ default: '' })
   }
 });
 

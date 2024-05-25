@@ -17,13 +17,15 @@ export const POST = async ({ params, request }:{params:{id:string}, request:Requ
     const idUsuario = params.id;
     const idLibro = body.idLibro;
     const estrellas = body.estrellas;
+    const comentario = body.comentario;
     const puntuacion = await db.select().from(RankingLibros).where(and(eq(RankingLibros.idUsuario, idUsuario), eq(RankingLibros.idLibro, idLibro)));
     
     if(puntuacion.length == 0){
       consulta = await db.insert(RankingLibros).values({
         idLibro,
         idUsuario, 
-        estrellas
+        estrellas,
+        comentario
       }).execute();
 
       return new Response(
@@ -35,7 +37,7 @@ export const POST = async ({ params, request }:{params:{id:string}, request:Requ
         }
       );
     }else if(puntuacion.length > 0){
-      consulta = await db.update(RankingLibros).set({estrellas: estrellas}).where(and(eq(RankingLibros.idUsuario, idUsuario), eq(RankingLibros.idLibro, idLibro)));
+      consulta = await db.update(RankingLibros).set({estrellas: estrellas, comentario: comentario}).where(and(eq(RankingLibros.idUsuario, idUsuario), eq(RankingLibros.idLibro, idLibro)));
 
       return new Response(
         JSON.stringify({Respuesta:'Puntuacion modificada'}), {
