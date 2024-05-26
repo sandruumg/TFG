@@ -442,20 +442,26 @@ const { userAlias, userId, generoUsuario } = Astro.props;
             svg.appendChild(path);
             divEstrellas.appendChild(svg);
           }
-         
           div.appendChild(divEstrellas);
-          const divComentario = document.createElement('div');
-          divComentario.classList.add('w-full');
-          divComentario.style.width = '38vw';
-          const tituloComentario = document.createElement('h5');
-          tituloComentario.classList.add('fuente-2','pb-2');
-          tituloComentario.innerHTML = 'Esto has opinado sobre el libro ' + dato.Titulo;
-          const comentario = document.createElement('p');
-          comentario.classList.add('p-5','bg-slate-100','border','border-slate-200','rounded-lg','max-w-full', 'break-words')
-          comentario.innerHTML = '"'+dato.comentario+'"';
-          divComentario.appendChild(tituloComentario);
-          divComentario.appendChild(comentario);
-          divDerecha.appendChild(divComentario);
+
+          if (dato.comentario != "") {
+            const divComentario = document.createElement('div');
+            divComentario.classList.add('w-full');
+            divComentario.style.width = '38vw';
+            const tituloComentario = document.createElement('h5');
+            tituloComentario.classList.add('fuente-2','pb-2');
+            tituloComentario.innerHTML = 'Esto has opinado sobre el libro ' + dato.Titulo;
+            const comentario = document.createElement('p');
+            comentario.classList.add('p-5','bg-slate-100','border','border-slate-200','rounded-lg','max-w-full', 'break-words')
+            comentario.innerHTML = '"'+dato.comentario+'"';
+            divComentario.appendChild(tituloComentario);
+            divComentario.appendChild(comentario);
+            divDerecha.appendChild(divComentario);
+          }else{
+            div.classList.add('w-full');
+          }
+
+          
 
           });        
         }else{

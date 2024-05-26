@@ -1,30 +1,42 @@
+---
+import { db, User, eq, RankingLibros, not, and } from 'astro:db';
+const params = new URLSearchParams(Astro.request.url.split('?')[1]);
+const idLibro = Number(params.get('idLibro'));
+
+  // select que recoja los comentarios de un libro
+  const comentariosLibro = await db.select({aliasUsuario: User.aliasUsuario,
+                                            generoUsuario: User.generoUsuario,
+                                            comentario:RankingLibros.comentario})
+                        .from(RankingLibros)
+                        .innerJoin(User, eq(User.id, RankingLibros.idUsuario))
+                        .where(and(eq(RankingLibros.idLibro, idLibro),
+                                  not(eq(RankingLibros.comentario, ""))));
+
+---
 <section class="bg-secondary text-white p-40 py-10 m-16 rounded-xl">
     <h1 class="text-4xl text-primary" >Comentarios</h1>
-    <div class="flex flex-row mt-10 p-8 ">
-        <div class="flex flex-col items-center mr-5">
-            <img src="/public/users/userChica.png" class="w-20" alt="">
-            <p class="mt-4">NombreUsuario</p>  
-        </div>
-        <div class="chat chat-start">
-            <div class="chat-bubble bg-slate-700">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod ipsam et quisquam! Mollitia earum odio quisquam laboriosam consequuntur sed fugiat ducimus, sunt incidunt hic! Excepturi minus aperiam nulla. Laboriosam, unde?</div>
-        </div>  
-    </div>
-    <div class="flex flex-row mt-10 p-8">
-        <div class="flex flex-col items-center mr-5">
-            <img src="/public/users/userChica.png" class="w-20" alt="">
-            <p class="mt-4">NombreUsuario</p>  
-        </div>
-        <div class="chat chat-start">
-            <div class="chat-bubble bg-slate-700">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod ipsam et quisquam! Mollitia earum odio quisquam laboriosam consequuntur sed fugiat ducimus, sunt incidunt hic! Excepturi minus aperiam nulla. Laboriosam, unde?</div>
-        </div>  
-    </div>
-    <div class="flex flex-row mt-10 p-8 ">
-        <div class="flex flex-col items-center mr-5">
-            <img src="/public/users/userChica.png" class="w-20" alt="">
-            <p class="mt-4">NombreUsuario</p>  
-        </div>
-        <div class="chat chat-start">
-            <div class="chat-bubble bg-slate-700">Me ha parecido muy bien</div>
-        </div>  
-    </div>
+    {
+        comentariosLibro.length > 0 ? (
+            comentariosLibro.map(({ aliasUsuario, generoUsuario, comentario }) => (
+                <div class="flex flex-row items-center mt-10 p-8">
+                    <div class="flex flex-col items-center mr-5" style="width:24vw;">
+                        {
+                            generoUsuario === "H" ? (
+                                <img class="w-20" src="/users/userChico.png" alt="Usuario masculino">
+                            ) : generoUsuario === "M" ? (
+                                <img class="w-20" src="/users/userChica.png" alt="Usuario femenino">
+                            ) : null
+                        }
+                        <p class="mt-4">{aliasUsuario}</p>
+                    </div>
+                    <div class="chat chat-start">
+                        <div class="chat-bubble bg-slate-700" style="width: 53vw;">{comentario}</div>
+                    </div>
+                </div>
+            ))
+        ) : (
+            <p class="mt-10">No hay comentarios de los usuarios.</p>
+        )
+    }
+    
 </section>

@@ -5,11 +5,13 @@ import Sinopsis from '../components/Sinopsis.astro';
 import ComentariosLibro from '../components/ComentariosLibro.astro';
 import { db, User, Session, Libros, ListaSeguimiento, ListaTerminados } from 'astro:db';
 import { eq } from 'astro:db';
+import { RankingLibros } from 'astro:db';
 
 const params = new URLSearchParams(Astro.request.url.split('?')[1]);
 const idLibro = Number(params.get('idLibro'));
 let tituloLibro = '';
 let autorLibro = '';
+let comentariosLibro;
 
 if (idLibro) {
   // Consultar la información del libro desde la base de datos
@@ -30,6 +32,8 @@ if(Astro.locals.user){
     const id = infoUser.id;
     Astro.props.userAlias = alias;
     Astro.props.userId = id;
+    Astro.props.idLibro = idLibro;
+
 }
 Astro.props.tituloLibro = tituloLibro;
 const { userAlias, userId} = Astro.props;
@@ -374,4 +378,6 @@ async function getPuntuacion(userId:string, idLibro:string, estrellas:string, co
       }, 2000);
     }
   }
+
+
 </script>
