@@ -9,16 +9,11 @@ export const GET = async ({ params }:{params:{buscador:string}}) => {
             statusText: 'Not found'
         });
     }else{
-        librosEncontrados = await db.select().from(Libros).where(like(Libros.tituloLibro, `%${params.buscador}%`));
-
-        if(librosEncontrados.length == 0){
-            librosEncontrados = await db.select().from(Libros).where(like(Libros.nombreAutor, `%${params.buscador}%`));
-        }
-
-        if(librosEncontrados.length == 0){
-            librosEncontrados = await db.select().from(Libros).where(like(Libros.categoriaLibro, `%${params.buscador}%`));
-        }
-
+        const librosTitulo = await db.select().from(Libros).where(like(Libros.tituloLibro, `%${params.buscador}%`));
+        const librosAutor = await db.select().from(Libros).where(like(Libros.nombreAutor, `%${params.buscador}%`));
+        const librosCategoria = await db.select().from(Libros).where(like(Libros.categoriaLibro, `%${params.buscador}%`));
+        
+        librosEncontrados = [...librosTitulo, ...librosAutor, ...librosCategoria];
     }
     return new Response(
         JSON.stringify(librosEncontrados), {
