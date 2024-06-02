@@ -11,7 +11,12 @@ document.getElementById('login-form').addEventListener('submit', async function(
         });
     
         if (!response.ok) {
-            throw new Error('Error al enviar el formulario');
+            const mensajeError = await response.json();
+            const divAlertError = document.getElementById('alertErrorInicioSesion');
+            divAlertError.style.display = 'flex';
+            const mensajeErrorInicioSesion = document.getElementById('mensajeErrorInicioSesion');
+            mensajeErrorInicioSesion.innerText = mensajeError;
+            // throw new Error('Error al enviar el formulario');
         }
     
         const login = await response.json();

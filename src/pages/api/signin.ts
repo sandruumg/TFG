@@ -23,7 +23,7 @@ export async function POST(context: APIContext):Promise<Response> {
     const usuariosEncontrados = (await db.select().from(User).where(eq(User.aliasUsuario, aliasUsuario))).at(0);
 
     if (!usuariosEncontrados) {
-        return new Response("Usuario o contraseña incorrectos", {
+        return new Response(JSON.stringify("Usuario o contraseña incorrectos"), {
           status: 400,
         });
     }

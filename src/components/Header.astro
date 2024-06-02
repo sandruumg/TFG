@@ -34,14 +34,15 @@ const { user } = Astro.props;
             <div class="flex items-center lg:order-2">
               {user !== undefined && <a href="perfil" id="lista" class="boton flex justify-center items-center text-white hover:bg-gray-500 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg px-4 py-3 m-2">Lista de seguimiento <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m17 21-5-4-5 4V3.889a.92.92 0 0 1 .244-.629.808.808 0 0 1 .59-.26h8.333a.81.81 0 0 1 .589.26.92.92 0 0 1 .244.63V21Z"/></svg>
-              </a>}
+              </a>
+              }
               {
-                cantidadLibros === 0 ? (
+                cantidadLibros === 0 && user !== undefined ? (
                 <div class="bg-red-800 text-white rounded-3xl" style="display: none; position:relative; right: 1.5vw; top:-1vw; padding:0.2em 0.5em 0.2em 0.5em;">{cantidadLibros}</div>
-                ) : cantidadLibros !== 0 ? (
+                ) : cantidadLibros !== 0 && user !== undefined ? (
                 <div class="bg-red-800 text-white rounded-3xl" style="position:relative; right: 1.5vw; top:-1vw; padding:0.2em 0.5em 0.2em 0.5em;">{cantidadLibros}</div>
                 ) : null
-            }
+              }
               {user !== undefined && <a href="perfil" id="perfil" class="boton text-white m-2">{user}</a>}
               {user === undefined &&  <button id="btn-login" class="btn" onclick="my_modal_3.showModal()">Log in</button>}
               {user !== undefined && <form  method="post" action="/api/signout">
@@ -68,6 +69,12 @@ const { user } = Astro.props;
                       <form id="login-form" class="flex flex-col justify-center	content-center gap-5">
                         <input type="text" id="aliasUsuario" name="aliasUsuario" placeholder="Nombre de usuario" class="border-b-2 border-gray-200 hover:border-secondary-dark fuente-2 text-base" required>
                         <input type="password" id="password" name="password" placeholder="Contraseña" class="border-b-2 border-gray-200 hover:border-secondary-dark fuente-2 text-base" required>
+                        <div id="alertErrorInicioSesion" style="display:none;" role="alert" class="alert alert-error flex items-center p-4 bg-red-100 text-red-800 rounded-lg">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          <p class="text-sm" id="mensajeErrorInicioSesion">Mensaje de error</p>
+                        </div>
                         <button type="submit" class="bg-secondary-dark text-white mt-10 p-3 rounded-lg hover:bg-secondary transition duration-300 ease-in-out">Iniciar sesion</button>
                       </form>
                     </div>
