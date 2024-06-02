@@ -7,7 +7,7 @@ var cantidadLibros = librosTotales[0].value;
 const listaLibros = [];
 let numRandom: any[] = [];
 var random = 0;
-for (let i = 0; i < 4; i++) {
+for (let i = 0; i < 8; i++) {
     do {
         random = Math.floor(Math.random() * cantidadLibros) + 1;
     } while (numRandom.includes(random));
@@ -25,7 +25,7 @@ const librosNovedades = await db.select().from(Libros).orderBy(desc(Libros.fecha
             <div class="list">
                 {
                 listaLibros.slice().reverse().map(({idLibro, fondoLibro, tituloLibro, nombreAutor, sinopsisLibro}, index)=>(
-                <div class={index === 3 ? "item actual" : "item hidden"}>
+                <div class={index === 7 ? "item actual" : "item hidden"}>
                    <img src={fondoLibro} alt="">
                     <div class="content">
                         <div class="title">{tituloLibro}</div>
@@ -85,14 +85,14 @@ const librosNovedades = await db.select().from(Libros).orderBy(desc(Libros.fecha
             if(currentItem === 0){
                     items[currentItem].classList.remove('actual');
                     items[currentItem].classList.add('hidden');
-                    items[currentItem + 3].classList.add('actual');
+                    items[currentItem + 7].classList.add('actual');
                     currentItem = items.findIndex(item => item.classList.contains('actual'));
                    
                     
                     imagenes[currentImg].classList.remove('current');
                     imagenes[currentImg].classList.add('hidden');
-                    imagenes[currentImg-3].classList.add('current');
-                    imagenes[currentImg-3].classList.remove('hidden');
+                    imagenes[currentImg-7].classList.add('current');
+                    imagenes[currentImg-7].classList.remove('hidden');
                     currentImg = imagenes.findIndex(imagen => imagen.classList.contains('current'));
 
                 }else{
@@ -118,16 +118,16 @@ const librosNovedades = await db.select().from(Libros).orderBy(desc(Libros.fecha
             console.log(currentImg);
             console.log(imagenes.length);
             
-                if(currentItem === 3){
+                if(currentItem === 7){
                     items[currentItem].classList.remove('actual');
                     items[currentItem].classList.add('hidden');
-                    items[currentItem-3].classList.add('actual');
+                    items[currentItem-7].classList.add('actual');
                     currentItem = items.findIndex(item => item.classList.contains('actual'));
 
                     imagenes[currentImg].classList.remove('current');
                     imagenes[currentImg].classList.add('hidden');
-                    imagenes[currentImg+3].classList.add('current');
-                    imagenes[currentImg+3].classList.remove('hidden');
+                    imagenes[currentImg+7].classList.add('current');
+                    imagenes[currentImg+7].classList.remove('hidden');
                     currentImg = imagenes.findIndex(imagen => imagen.classList.contains('current'));
 
                 }else{
