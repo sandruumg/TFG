@@ -48,3 +48,5 @@ document.getElementById("registroBtn").addEventListener("click", function () {
     document.getElementById("inicioBtn").style.color = "#1f2937";
     
 });
+
+//hacer comprobaciones registro
