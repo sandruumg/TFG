@@ -1410,7 +1410,7 @@ export default async function seed() {
             nPaginasLibro: 264,
             categoriaLibro: "Autoayuda",
             fechaPubLibro: new Date("2023-02-22") // date no sé si es correcto	
-        },
+        }
 
 
     ]);
