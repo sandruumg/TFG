@@ -4,7 +4,7 @@ import InformacionLibro from '../components/InformacionLibro.astro';
 import Sinopsis from '../components/Sinopsis.astro';
 import ComentariosLibro from '../components/ComentariosLibro.astro';
 import { db, User, Session, Libros, ListaSeguimiento, ListaTerminados } from 'astro:db';
-import { eq } from 'astro:db';
+import { eq, and } from 'astro:db';
 import { RankingLibros } from 'astro:db';
 
 const params = new URLSearchParams(Astro.request.url.split('?')[1]);
@@ -12,6 +12,7 @@ const idLibro = Number(params.get('idLibro'));
 let tituloLibro = '';
 let autorLibro = '';
 let comentariosLibro;
+
 
 if (idLibro) {
   // Consultar la información del libro desde la base de datos
@@ -23,6 +24,7 @@ if (idLibro) {
     tituloLibro = libro.titulo;
   }
 }
+
 
 if(Astro.locals.user){
     const user = Astro.locals.user!;
@@ -37,6 +39,7 @@ if(Astro.locals.user){
 }
 Astro.props.tituloLibro = tituloLibro;
 const { userAlias, userId} = Astro.props;
+
 ---
 
 <Layout title={tituloLibro}>
@@ -185,7 +188,7 @@ const { userAlias, userId} = Astro.props;
       });
     }else if(boton.id === 'valoraciones'){
       let userId = boton.getAttribute('data-userId')!;
-      let estrellas:any;
+      let estrellas = '1';
         const puntuacion = document.querySelectorAll<HTMLInputElement>('input[type="radio"][name="rating-8"]');
         puntuacion.forEach(input => {
           input.addEventListener('change', () => {
@@ -311,24 +314,6 @@ const { userAlias, userId} = Astro.props;
 
 /*****************************************/
 /*******************ESTRELLAS**********************/
-
-
-// const puntuacion = document.querySelectorAll<HTMLInputElement>('input[type="radio"][name="rating-8"]');
-// puntuacion.forEach(input => {
-//     input.addEventListener('change', () => {
-//       let userId = input.getAttribute('data-userId')!;
-//         const estrellas = input.value;
-//         console.log(estrellas);
-//         console.log(userId);
-//         console.log(idLibro);
-
-//         if(idLibro){
-//           // getPuntuacion(userId, idLibro, estrellas);
-//         }
-        
-//     });
-// });
-
 async function getPuntuacion(userId:string, idLibro:string, estrellas:string, comentario:string){
     try {
       const response = await fetch(`/api/insertPuntuacion/${userId}`, 
