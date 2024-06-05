@@ -11,7 +11,7 @@ export const GET = async ({ params }:{params:{nombreAutor:string}}) => {
     }else{
         masDelAutor = await db.select().from(Libros).where(eq(Libros.nombreAutor, params.nombreAutor));
     }
-    console.log(masDelAutor);
+  
     return new Response(
         JSON.stringify(masDelAutor), {
           status: 200,

@@ -34,7 +34,9 @@ export async function POST(context: APIContext):Promise<Response> {
 
     const validarPassword = await new Argon2id().verify(usuariosEncontrados.password, password);
     if(!validarPassword){
-      return new Response('Contraseña incorrecta', { status: 400,});
+      return new Response(JSON.stringify("Cotraseña invalida"), {
+        status: 400,
+      });
     }
    
    

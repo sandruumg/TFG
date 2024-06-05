@@ -2,7 +2,7 @@ import type { APIContext, APIRoute } from 'astro';
 import { lucia } from "../../auth";
 import { Cookie, generateId } from "lucia";
 import { Argon2id } from "oslo/password";
-import { db, User, Session} from 'astro:db';
+import { db, User, Session, eq} from 'astro:db';
 
 
 
@@ -58,7 +58,14 @@ export async function POST(context:APIContext): Promise<Response> {
           status: 400,
         });
       }
-    
+      const usuariosEncontrados = (await db.select().from(User).where(eq(User.aliasUsuario, aliasUsuario)));
+
+      if (usuariosEncontrados.length > 0) {
+          return new Response(JSON.stringify("Este usuario ya existe"), {
+            status: 400,
+          });
+      }
+
       //Insert 
       const userId = generateId(15);
       const hashedPass = await new Argon2id().hash(password);
@@ -83,7 +90,10 @@ export async function POST(context:APIContext): Promise<Response> {
         sessionCookie.attributes
       );
 
-      return context.redirect("/");
+      return new Response(JSON.stringify("Usuario registrado"), {
+        status: 200,
+      });
+    
       //Si el usuario existe, sale mensjae de error
 
 

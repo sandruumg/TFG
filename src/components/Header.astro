@@ -29,7 +29,7 @@ const { user } = Astro.props;
     <nav class="border-gray-200 px-4 lg:px-6 py-6 bg-gray-800">
         <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
             <a href="/" class="flex items-center">
-                <img src="/imagenes/logo.png" class="h-20" alt="Flowbite Logo" />
+                <img class="h-20" src="/imagenes/logo.png" alt="Flowbite Logo" />
             </a>
             <div class="flex items-center lg:order-2">
               {user !== undefined && <a href="perfil" id="lista" class="boton flex justify-center items-center text-white hover:bg-gray-500 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg px-4 py-3 m-2">Lista de seguimiento <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -56,7 +56,7 @@ const { user } = Astro.props;
              
               <dialog id="my_modal_3" class="modal text-xl">
                 <div class="modal-box flex flex-col items-center gap-2 py-24">
-                    <img src="/imagenes/logo-2.png" class="h-30" alt="Flowbite Logo" />
+                    <img id="logo" src="/imagenes/logo-2.png" class="h-30" alt="Flowbite Logo" />
                   <form method="dialog">
                     <button id="close-modal" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
                   </form>
@@ -66,9 +66,9 @@ const { user } = Astro.props;
                   </div>
                   <div class="flex justify-around w-[90%]">
                     <div id="formulario-login" class="w-[90%]">
-                      <form id="login-form" class="flex flex-col justify-center	content-center gap-5">
-                        <input type="text" id="aliasUsuario" name="aliasUsuario" placeholder="Nombre de usuario" class="border-b-2 border-gray-200 hover:border-secondary-dark fuente-2 text-base" required>
-                        <input type="password" id="password" name="password" placeholder="Contraseña" class="border-b-2 border-gray-200 hover:border-secondary-dark fuente-2 text-base" required>
+                      <form id="login-form" class="flex flex-col justify-center	content-center gap-5 ">
+                        <input type="text" id="aliasUsuario" name="aliasUsuario" placeholder="Nombre de usuario" class="bg-transparent border-b-2 border-gray-200 hover:border-secondary-dark fuente-2 text-base" required>
+                        <input type="password" id="password" name="password" placeholder="Contraseña" class="bg-transparent border-b-2 border-gray-200 hover:border-secondary-dark fuente-2 text-base" required>
                         <div id="alertErrorInicioSesion" style="display:none;" role="alert" class="alert alert-error flex items-center p-4 bg-red-100 text-red-800 rounded-lg">
                           <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -80,10 +80,18 @@ const { user } = Astro.props;
                     </div>
                     <div id="formulario-register" class="w-[90%] hidden">
                       <form id="register-form" method="post" action="/api/signup" class="flex flex-col justify-center	content-center gap-5">
-                        <input type="text" id="aliasUsuarioR" name="aliasUsuario" placeholder="Nombre de usuario" class="border-b-2 border-gray-200 hover:border-secondary-dark caret-transparent fuente-2 text-base" required>
-                        <input type="text" id="nombreUsuarioR" name="nombreUsuario" placeholder="Nombre" class="border-b-2 border-gray-200 hover:border-secondary-dark fuente-2 text-base" required>
-                        <input type="text" id="apellidoUsuarioR" name="apellidoUsuario" placeholder="Apellidos" class="border-b-2 border-gray-200 hover:border-secondary-dark fuente-2 text-base" required>
-                        <input type="email" id="correoUsuarioR" name="correoUsuario" placeholder="Correo electrónico" class="border-b-2 border-gray-200 hover:border-secondary-dark fuente-2 text-base" required>
+                        <input type="text" id="aliasUsuarioR" name="aliasUsuario" placeholder="Nombre de usuario" class="bg-transparent border-b-2 border-gray-200 hover:border-secondary-dark caret-transparent fuente-2 text-base" required>
+                        <span id="invalidAlias" class="hidden"></span>
+
+                        <input type="text" id="nombreUsuarioR" name="nombreUsuario" placeholder="Nombre" class="bg-transparent border-b-2 border-gray-200 hover:border-secondary-dark fuente-2 text-base" required>
+                        <span id="invalidName" class="hidden"></span>
+
+                        <input type="text" id="apellidoUsuarioR" name="apellidoUsuario" placeholder="Apellidos" class="bg-transparent border-b-2 border-gray-200 hover:border-secondary-dark fuente-2 text-base" required>
+                        <span id="invalidApellido" class="hidden"></span>
+                        
+                        <input type="email" id="correoUsuarioR" name="correoUsuario" placeholder="Correo electrónico" class="bg-transparent border-b-2 border-gray-200 hover:border-secondary-dark fuente-2 text-base" required>
+                        <span id="invalidCorreo" class="hidden"></span>
+
                         <div class="flex justify-between items-center text-gray-400 border-b-2 border-gray-200 hover:border-secondary-dark gap-5">
                           <label for="Genero" class="fuente-2 text-base">Género:</label>
                           <label for="Hombre" class="fuente-2 text-base">Hombre
@@ -91,10 +99,14 @@ const { user } = Astro.props;
                           </label>
                           </label>
                           <label for="Mujer" class="fuente-2 text-base">Mujer
-                            <input type="radio" id="generoUsuarioMR" name="generoUsuario" value="M" class="form-radio focus:border-secondary-dark focus:ring-secondary-dark" style="checked:before: background-color:red">
+                            <input type="radio" id="generoUsuarioMR"  name="generoUsuario" value="M" class="form-radio focus:border-secondary-dark focus:ring-secondary-dark" style="checked:before: background-color:red">
                           </label>
                         </div>
-                        <input type="password" id="passwordR" name="password" placeholder="Contraseña" class="border-b-2 border-gray-200 hover:border-secondary-dark fuente-2 text-base" required>
+                        <span id="invalidGender" class="hidden"></span>
+
+                        <input type="password" id="passwordR" name="password" placeholder="Contraseña" class="border-b-2 border-gray-200 bg-transparent hover:border-secondary-dark fuente-2 text-base" required>
+                        <span id="invalidPass" class="hidden"></span>
+
                         <button type="submit" class="bg-secondary-dark text-white mt-10 p-3 rounded-lg  hover:bg-secondary transition duration-300 ease-in-out">Registrarse</button>
                       </form>
                     </div>

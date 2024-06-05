@@ -1,4 +1,4 @@
-import { db, eq, and, ListaSeguimiento} from 'astro:db';
+import { db, eq, and, ListaSeguimiento, ListaTerminados} from 'astro:db';
 
 //Boton para añadir un libro al seguimiento del usuario
 export const POST = async ({ params, request }:{params:{id:string}, request:Request}) => {
@@ -19,6 +19,7 @@ export const POST = async ({ params, request }:{params:{id:string}, request:Requ
     const allSeguimiento = await db.select().from(ListaSeguimiento).where(and(eq(ListaSeguimiento.idUsuario, idUsuario), eq(ListaSeguimiento.idLibro, idLibro)));
     
     if(allSeguimiento.length == 0){
+      const deleteTerminado = await db.delete(ListaTerminados).where(and(eq(ListaTerminados.idUsuario, idUsuario), eq(ListaTerminados.idLibro, idLibro)));
       consulta = await db.insert(ListaSeguimiento).values({
         idLibro,
         idUsuario

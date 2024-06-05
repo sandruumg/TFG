@@ -23,32 +23,32 @@ const puntuacionLibro = await db.select({ estrellas: count(RankingLibros.estrell
 const params = new URLSearchParams(Astro.request.url.split('?')[1]);
 const idLibro = Number(params.get('idLibro'));
 
-let añadido;
+let aniadido;
 let terminado;
 let puntuado;
-if(idLibro){
-  const libroAñadido = await db.select().from(ListaSeguimiento).where(and(eq(ListaSeguimiento.idUsuario, userId), eq(ListaSeguimiento.idLibro, idLibro)));
-  if(libroAñadido.length === 0){
-    añadido = false;
+if(idLibro && userId){
+  let libroAniadido = await db.select().from(ListaSeguimiento).where(and(eq(ListaSeguimiento.idUsuario, userId), eq(ListaSeguimiento.idLibro, idLibro)));
+  if(libroAniadido.length === 0){
+    aniadido = false;
   }else{
-    añadido = true;
+    aniadido = true;
   }
   
-
-  const libroTerminado = await db.select().from(ListaTerminados).where(and(eq(ListaTerminados.idUsuario, userId), eq(ListaTerminados.idLibro, idLibro)));
+  let libroTerminado = await db.select().from(ListaTerminados).where(and(eq(ListaTerminados.idUsuario, userId), eq(ListaTerminados.idLibro, idLibro)));
   if(libroTerminado.length === 0){
     terminado = false;
   }else{
     terminado = true;
   }
 
-  const libroValorado = await db.select().from(RankingLibros).where(and(eq(RankingLibros.idUsuario, userId), eq(RankingLibros.idLibro, idLibro)));
+  let libroValorado = await db.select().from(RankingLibros).where(and(eq(RankingLibros.idUsuario, userId), eq(RankingLibros.idLibro, idLibro)));
   if(libroValorado.length === 0){
     puntuado = false;
   }else{
     puntuado = true;
   }
 
+  console.log(aniadido, terminado, libroAniadido);
 
 }
 ---
@@ -95,8 +95,8 @@ if(idLibro){
                         <button id="fin" data-userId={userId} class={`boton p-3 rounded-full bg-primary border-primary hover:bg-secondary-dark ${terminado ? "bg-secondary-dark" : "bg-primary"} tooltip tooltip-bottom`} data-tip="Añade este libro a terminados" >
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 fill-slate-900 hover:fill-white"  viewBox="0 0 512 512"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z"  fill={terminado ? 'white' : 'slate-900'}/></svg>        
                         </button>
-                        <button id="seguir" data-userId={userId} class={`boton p-3 rounded-full bg-primary border-primary hover:bg-secondary-dark ${añadido ? "bg-secondary-dark" : "bg-primary"} tooltip tooltip-bottom`} data-tip="Añade este libro a tu lista de seguimiento" >
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 fill-slate-900 hover:fill-white" viewBox="0 0 384 512"><path d="M0 48V487.7C0 501.1 10.9 512 24.3 512c5 0 9.9-1.5 14-4.4L192 400 345.7 507.6c4.1 2.9 9 4.4 14 4.4c13.4 0 24.3-10.9 24.3-24.3V48c0-26.5-21.5-48-48-48H48C21.5 0 0 21.5 0 48z" fill={añadido ? 'white' : 'slate-900'}/></svg>
+                        <button id="seguir" data-userId={userId} class={`boton p-3 rounded-full bg-primary border-primary hover:bg-secondary-dark ${aniadido ? "bg-secondary-dark" : "bg-primary"} tooltip tooltip-bottom`} data-tip="Añade este libro a tu lista de seguimiento" >
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 fill-slate-900 hover:fill-white" viewBox="0 0 384 512"><path d="M0 48V487.7C0 501.1 10.9 512 24.3 512c5 0 9.9-1.5 14-4.4L192 400 345.7 507.6c4.1 2.9 9 4.4 14 4.4c13.4 0 24.3-10.9 24.3-24.3V48c0-26.5-21.5-48-48-48H48C21.5 0 0 21.5 0 48z" fill={aniadido ? 'white' : 'slate-900'}/></svg>
                         </button> 
                         <button data-userId={userId} class={`boton p-3 rounded-full bg-slate-400 hover:bg-yellow-200  ${puntuado ? "bg-yellow-200" : "bg-slate-400"}`} onclick="my_modal_2.showModal()">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 fill-slate-500 hover:fill-yellow-500" viewBox="0 0 576 512">
