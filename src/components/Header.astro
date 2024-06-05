@@ -79,7 +79,7 @@ const { user } = Astro.props;
                       </form>
                     </div>
                     <div id="formulario-register" class="w-[90%] hidden">
-                      <form id="register-form" method="post" action="/api/signup" class="flex flex-col justify-center	content-center gap-5">
+                      <form id="register-form" class="flex flex-col justify-center	content-center gap-5">
                         <input type="text" id="aliasUsuarioR" name="aliasUsuario" placeholder="Nombre de usuario" class="bg-transparent border-b-2 border-gray-200 hover:border-secondary-dark caret-transparent fuente-2 text-base" required>
                         <span id="invalidAlias" class="hidden"></span>
 
@@ -106,6 +106,13 @@ const { user } = Astro.props;
 
                         <input type="password" id="passwordR" name="password" placeholder="Contraseña" class="border-b-2 border-gray-200 bg-transparent hover:border-secondary-dark fuente-2 text-base" required>
                         <span id="invalidPass" class="hidden"></span>
+
+                        <div id="alertErrorRegistroSesion" style="display:none;" role="alert" class="alert alert-error flex items-center p-4 bg-red-100 text-red-800 rounded-lg">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          <p class="text-sm" id="mensajeErrorRegistroSesion">Mensaje de error</p>
+                        </div>
 
                         <button type="submit" class="bg-secondary-dark text-white mt-10 p-3 rounded-lg  hover:bg-secondary transition duration-300 ease-in-out">Registrarse</button>
                       </form>

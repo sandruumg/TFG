@@ -158,10 +158,7 @@ let valid = isValid();
 //hacer comprobaciones registro
 document.getElementById('register-form').addEventListener('submit', async function(event) {
     event.preventDefault(); // Evita que el formulario se envíe de forma tradicional
-    
     const formData = new FormData(this);
-   
-
     try {
         if(valid){
             const response = await fetch('/api/signup', {
@@ -169,10 +166,10 @@ document.getElementById('register-form').addEventListener('submit', async functi
                 body: formData
             });
         
-            if (!response.ok) {
+            if (response.status == 400) {
                 const mensajeError = await response.json();
                 const divAlertError = document.getElementById('alertErrorRegistroSesion');
-                divAlertError.style.display = 'flex';
+                alertErrorRegistroSesion.style.display = 'flex';
                 const mensajeErrorInicioSesion = document.getElementById('mensajeErrorRegistroSesion');
                 mensajeErrorInicioSesion.innerText = mensajeError;
             }
