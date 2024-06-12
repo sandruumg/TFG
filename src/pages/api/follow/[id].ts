@@ -17,7 +17,7 @@ export const GET = async ({ params }:{params:{id:string}}) => {
             idLibro: Libros.idLibro,
         }).from(ListaSeguimiento).innerJoin(Libros, eq(ListaSeguimiento.idLibro, Libros.idLibro)).where(eq(ListaSeguimiento.idUsuario, params.id));
     }
-    console.log(seguimiento);
+    
     return new Response(
         JSON.stringify(seguimiento), {
           status: 200,

@@ -59,9 +59,13 @@ const { userAlias, userId} = Astro.props;
       const response = await fetch(`/api/informacionLibro/${idLibro}`);
       if (response.ok) {
         const data = await response.json();
-        mostrarLibroEnPantalla(data);
-        obtenerMasLibrosAutor(data[0].nombreAutor);
-      } else {
+        if(data == ''){
+          window.location.href = '/404';
+        }else{
+          mostrarLibroEnPantalla(data);
+          obtenerMasLibrosAutor(data[0].nombreAutor);
+        }
+      }else {
         console.error('Error en la solicitud:', response.statusText);
       }
   } catch (error) {
@@ -327,8 +331,7 @@ async function getPuntuacion(userId:string, idLibro:string, estrellas:string, co
       });
           
       if (response.ok) {
-        const data = await response.json();
-        console.log(data);  
+        const data = await response.json();  
         let msj = 'Puntuación añadida!';
         toastValoracion(msj);      
       } else {

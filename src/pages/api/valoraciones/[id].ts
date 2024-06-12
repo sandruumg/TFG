@@ -20,7 +20,7 @@ export const GET = async ({ params }:{params:{id:string}}) => {
             comentario: RankingLibros.comentario
         }).from(RankingLibros).innerJoin(Libros, eq(RankingLibros.idLibro, Libros.idLibro)).where(eq(RankingLibros.idUsuario, params.id)).orderBy(desc(RankingLibros.estrellas));
     }
-    console.log(valoraciones);
+  
     return new Response(
         JSON.stringify(valoraciones), {
           status: 200,

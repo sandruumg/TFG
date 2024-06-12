@@ -17,13 +17,11 @@ if(Astro.locals.user){
   const usuarios = await db.select().from(User).where(eq(User.id, user.id));
   const [infoUser] = usuarios;
   const alias = infoUser.aliasUsuario;
-  
-  console.log(sesion);
 }
 
 ---
 
-<Layout title="Welcome to Astro.">
+<Layout title="BooKIFY">
 	<main id="main">
     <section class="bg-white dark:bg-gray-900">
       <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">

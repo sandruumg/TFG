@@ -30,7 +30,6 @@ document.getElementById('login-form').addEventListener('submit', async function(
 });
 
 document.getElementById("inicioBtn").addEventListener("click", function () {
-    console.log('Clickado');
     document.getElementById("formulario-login").style.display = "block"; // Ocultar el formulario de inicio de sesión
     document.getElementById("formulario-register").style.display = "none";
     document.getElementById("inicioBtn").style.color = "var(--secondary-dark)";

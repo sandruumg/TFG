@@ -16,7 +16,7 @@ export const GET = async ({ params }:{params:{id:string}}) => {
             Fecha: ListaTerminados.fechaTerminado
         }).from(ListaTerminados).innerJoin(Libros, eq(ListaTerminados.idLibro, Libros.idLibro)).where(eq(ListaTerminados.idUsuario, params.id)).orderBy(ListaTerminados.fechaTerminado);
     }
-    console.log(terminados);
+    
     return new Response(
         JSON.stringify(terminados), {
           status: 200,

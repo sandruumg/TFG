@@ -29,7 +29,7 @@ export const GET = async ({ params }:{params:{idLibro:number}}) => {
           libroEncontrado = await db.select().from(Libros).where(eq(Libros.idLibro, params.idLibro));
         }
     }
-    console.log(libroEncontrado);
+    
     return new Response(
         JSON.stringify(libroEncontrado), {
           status: 200,

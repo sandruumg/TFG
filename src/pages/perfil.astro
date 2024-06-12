@@ -269,7 +269,6 @@ const { userAlias, userId, generoUsuario } = Astro.props;
             
         if (response.ok) {
           const data = await response.json();
-          console.log(data); 
           createToast(true, libroId);
           setTimeout(function() {
             window.location.reload();
@@ -504,7 +503,6 @@ const { userAlias, userId, generoUsuario } = Astro.props;
         if (response.ok) {
           const data = await response.json();
           mostrarValoraciones(data, userId);
-          console.log(data);
         }  else {
           console.error('Error en la solicitud:', response.statusText);
         }
