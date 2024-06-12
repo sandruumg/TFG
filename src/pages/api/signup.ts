@@ -16,8 +16,7 @@ export async function POST(context:APIContext): Promise<Response> {
     const generoUsuario = formData.get("generoUsuario");
     const password = formData.get("password");
     
-    //Select para ver si existe el correo o alias
-    //si no existe se crea, se hacen las validaciones se inserta y se crea la cookie
+  
     //Validaciones datos formulario
     if (!aliasUsuario || !password || !correoUsuario) {
         return new Response("El nombre de usuario, contraseña y correo son obligatorios", { 
@@ -66,7 +65,8 @@ export async function POST(context:APIContext): Promise<Response> {
           });
       }
 
-      //Insert 
+     //Select para ver si existe el correo o alias
+    //si no existe se crea, se hacen las validaciones se inserta y se crea la cookie
       const userId = generateId(15);
       const hashedPass = await new Argon2id().hash(password);
 

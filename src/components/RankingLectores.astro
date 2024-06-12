@@ -4,7 +4,7 @@ import { db, User, eq, desc, count, ListaTerminados, Libros } from 'astro:db';
 const librosTotales = await db.select({ value: count() }).from(Libros);
 
 var cantidadLibros = librosTotales[0].value;
-
+//sacamos los usuarios con mas cantidad de libros leidos y los ordenamos
 const librosRankingLectores = await db.select({ cantidad: count(ListaTerminados.idLibro), 
                                                 aliasUsuario: User.aliasUsuario,
                                                 generoUsuario: User.generoUsuario})
@@ -20,7 +20,7 @@ const librosRankingLectores = await db.select({ cantidad: count(ListaTerminados.
 
     <div class="grid justify-items-center grid-cols-2 ml-10">
         {
-            librosRankingLectores.map(({cantidad, aliasUsuario, generoUsuario}) =>(
+            librosRankingLectores.map(({cantidad, aliasUsuario, generoUsuario}) =>(//recorremos todos los lectores obtenidos en la select y mostramos
                 <div class="flex flex-row items-center mb-8">
                     <div class="flex flex-col items-center">
                         {

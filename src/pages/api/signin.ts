@@ -8,6 +8,7 @@ export async function POST(context: APIContext):Promise<Response> {
     const aliasUsuario = formData.get("aliasUsuario");
     const password = formData.get("password");
 
+    //validamos datos del formulario
     if (typeof aliasUsuario !== "string") {
         return new Response("Nombre no valido", {
           status: 400,
@@ -19,7 +20,7 @@ export async function POST(context: APIContext):Promise<Response> {
           status: 400,
         });
     }
-    
+    //comprobamos si el usuario existe
     const usuariosEncontrados = (await db.select().from(User).where(eq(User.aliasUsuario, aliasUsuario))).at(0);
 
     if (!usuariosEncontrados) {
@@ -27,11 +28,7 @@ export async function POST(context: APIContext):Promise<Response> {
           status: 400,
         });
     }
-
-    //Este if es por si queremos poner validacion por google u otra plataforma
-    //Si te logeas con google no tienes contraseña por eso en la tabla la contraseña es opcional
-   
-
+    //Comprobamos contraseña
     const validarPassword = await new Argon2id().verify(usuariosEncontrados.password, password);
     if(!validarPassword){
       return new Response(JSON.stringify("Usuario o contraseña incorrectos"), {
@@ -39,7 +36,7 @@ export async function POST(context: APIContext):Promise<Response> {
       });
     }
    
-   
+   //creamos cookie de sesion e introducimos en la db
     const session = await lucia.createSession(usuariosEncontrados.id,{});
     const sessionCookie = lucia.createSessionCookie(session.id);
     context.cookies.set(
@@ -49,7 +46,7 @@ export async function POST(context: APIContext):Promise<Response> {
     );
 
     const nombreUsuario = usuariosEncontrados.aliasUsuario;
-
+  //Enviamos datos del usuario
     return new Response(JSON.stringify(usuariosEncontrados.aliasUsuario), {
     status: 200,
     statusText: "OK",

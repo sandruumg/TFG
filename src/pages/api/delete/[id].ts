@@ -1,7 +1,7 @@
 import { db, eq, and, Libros, ListaSeguimiento} from 'astro:db';
 
 
-//Boton para añadir un libro al seguimiento del usuario
+//Boton para eliminar un libro de la lista de seguimiento del usuario
 export const DELETE = async ({ params, request }:{params:{id:string}, request:Request}) => {
   //Comprobar que se han enviado datos en el body
   const body = await request.json();

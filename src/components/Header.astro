@@ -13,13 +13,8 @@ if(Astro.locals.user){
   const [infoUser] = usuarios;
   const alias = infoUser.aliasUsuario;
   Astro.props.user = alias;
-  // notificacion = await db.select({numeroDeLibros: count(ListaSeguimiento.idLibro)})
-  //                                   .from(ListaSeguimiento)
-  //                                   .where(eq(ListaSeguimiento.idUsuario, user.id));
   const notificacion = await db.select({ value: count() }).from(ListaSeguimiento).where(eq(ListaSeguimiento.idUsuario, user.id));
-
   cantidadLibros = notificacion[0].value;
-
 }
 const { user } = Astro.props;
 

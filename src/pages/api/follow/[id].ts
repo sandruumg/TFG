@@ -35,8 +35,6 @@ export const POST = async ({ params, request }:{params:{id:string}, request:Requ
     //Coger el id de usuario
     //Hacer consulta para guardar el libro que quiere meter en seguimiento
     const body = await request.json();
-    console.log(body)
-    console.log(params.id)
     return new Response(
         JSON.stringify('nada'), {
           status: 200,

@@ -166,7 +166,7 @@ document.getElementById('register-form').addEventListener('submit', async functi
                 body: formData
             });
         
-            if (response.status == 400) {
+            if (response.status == 400) { //si la respuesta es error mostramos mensaje
                 const mensajeError = await response.json();
                 const divAlertError = document.getElementById('alertErrorRegistroSesion');
                 alertErrorRegistroSesion.style.display = 'flex';
@@ -177,8 +177,6 @@ document.getElementById('register-form').addEventListener('submit', async functi
             const login = await response.json();
             // Actualiza el DOM para mostrar los datos recibidos
             window.location.reload();
-         }else{
-             //mensaje error
          }
     
     } catch (error) {

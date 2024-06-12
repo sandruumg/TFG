@@ -46,8 +46,5 @@ export const POST = async ({ params, request }:{params:{id:string}, request:Requ
         statusText: 'Not found'
       });
     }
-   
-
-   
   }
 }

@@ -1,6 +1,6 @@
 ---
 import { db, sum, eq, desc, count, RankingLibros, Libros, asc, User, ListaSeguimiento, ListaTerminados } from 'astro:db';
-
+//sacamos los usuarios mas lectores
 const librosMasPopulares = await db.select({ cantidadEstrellas: sum(RankingLibros.estrellas), 
                                              cantidadValoraciones: count(RankingLibros.idLibro),
                                              portadaLibro: Libros.portadaLibro, 
@@ -14,6 +14,7 @@ const librosMasPopulares = await db.select({ cantidadEstrellas: sum(RankingLibro
                         .orderBy(desc(sum(RankingLibros.estrellas)))
                         .limit(10);
 
+//sacamos el porcentaje de aceptacion del libro
 const librosConPorcentaje = librosMasPopulares.map(libro => {
     const porcentaje = parseInt(libro.cantidadEstrellas || '0') / (libro.cantidadValoraciones * 5) * 100;
     return { ...libro, porcentaje };
@@ -37,7 +38,7 @@ const { userAlias, userId } = Astro.props;
   <h1 class="fuente-1 text-secondary-dark text-4xl ml-32 my-5 py-5">Lo más popular</h1>
     <div class="carousel carousel-center p-3 space-x-10 rounded-box pb-12" style="width:100%; padding-left: 57px;">
       {
-        librosOrdenadosPorPorcentaje.map(({cantidadEstrellas, cantidadValoraciones, portadaLibro, id, porcentaje, titulo, autor}) =>(
+        librosOrdenadosPorPorcentaje.map(({cantidadEstrellas, cantidadValoraciones, portadaLibro, id, porcentaje, titulo, autor}) =>( //recorremos el mapa para sacar los datos de los libros y mostrarlos
             <div class="carousel-item" data-bs-interval="10000" style="position: relative;">
                 <a href={`InfoLibro?idLibro=${id}`}>
                     <img src={portadaLibro} class="imagen rounded-box transition-transform hover:scale-110" style="margin-top: 35px;margin-left: 24px;width: 149px;height: 240px;position: relative;z-index: 0;" />
@@ -55,7 +56,7 @@ const { userAlias, userId } = Astro.props;
                     </div>
                 </a>
                 {
-                  cantidadValoraciones > 0 && cantidadEstrellas != null && (
+                  cantidadValoraciones > 0 && cantidadEstrellas != null && ( //mostramos porcentaje de valoraciones
                     <div class="radial-progress bg-neutral-content text-secondary-dark border-4 border-neutral-content" style={{ '--value': porcentaje.toString() , left: '-200px', top: '85%', transform: 'translateY(-50%)' }} role="progressbar">
                       {porcentaje.toFixed(0)}%
                     </div>
@@ -71,7 +72,7 @@ const { userAlias, userId } = Astro.props;
 <script>
   
 
-
+  //Lógica paara el popover
   const imageContainers = document.querySelectorAll('.carousel-item');
 
   imageContainers.forEach(container => {
@@ -84,7 +85,7 @@ const { userAlias, userId } = Astro.props;
       });
 
       image.addEventListener('mouseout', function() {
-        // Espera un breve momento antes de ocultar el popover para ver si el mouse está sobre el popover
+        // Espera un momento antes de ocultar el popover 
         setTimeout(() => {
           if (!popover.matches(':hover')) {
             popover.style.display = 'none';
@@ -103,7 +104,7 @@ const { userAlias, userId } = Astro.props;
   });
 
 
-
+//logica para mostrar toast de exito o error
   function toastSuccess(msj:string){
       let toast = document.getElementById('toast');
       let msjT =document.getElementById('msjToast'); 
@@ -149,14 +150,14 @@ const { userAlias, userId } = Astro.props;
       }, 3000);
     }
   }
-
+//lógica para añadir libros a seguimiento y termninados
   document.querySelectorAll('.boton').forEach(boton => {
     if(boton.id === 'seguir'){
       let userId = boton.getAttribute('data-userId')!;
       let idLibro = boton.getAttribute('data-libroId')!;
       boton.addEventListener('click', ()=>{
         if(idLibro && userId != null){
-          getFollows(userId, idLibro);
+          getFollows(userId, idLibro); //llamamos a la funcion para la peticion a la api
         }else{
           const modal = document.getElementById('my_modal_3') as HTMLDialogElement;
           modal.showModal();
@@ -167,18 +168,15 @@ const { userAlias, userId } = Astro.props;
       let idLibro = boton.getAttribute('data-libroId')!;
       boton.addEventListener('click', ()=>{
         if(idLibro && userId != null){
-          getFinish(userId, idLibro)
+          getFinish(userId, idLibro) //llamamos a la funcion para la peticion a la api
         }else{
           const modal = document.getElementById('my_modal_3') as HTMLDialogElement;
           modal.showModal();
         }
       });
-    }else if(boton.id === 'valoraciones'){
-      let userId = boton.getAttribute('data-userId')!;
-      boton.addEventListener('click', ()=>{});
     }
   });
-
+  //funcion para la peticion a la  para añadir a seguimiento
   async function getFollows(userId:string, idLibro:string){
     try {
       const response = await fetch(`/api/insertSeguimiento/${userId}`, 
@@ -190,7 +188,7 @@ const { userAlias, userId } = Astro.props;
           'Content-Type': 'application/json'
         }
       });
-          
+          //motramos mensajes de exito o error segun la respuesta
       if (response.ok) {
         const data = await response.json();
         let msj = 'Añadido a lista de seguimiento!'
@@ -207,7 +205,7 @@ const { userAlias, userId } = Astro.props;
         toastError(errorMessage);
     }
   }
-
+//funcion para la peticion a la api para añadir a terminados
   async function getFinish(userId:string, idLibro:string){
     try {
       const response = await fetch(`/api/insert/${userId}`, { 
@@ -218,7 +216,7 @@ const { userAlias, userId } = Astro.props;
           'Content-Type': 'application/json'
         }
       });
-          
+          //motramos mensajes de exito o error segun la respuesta
       if (response.ok) {
         const data = await response.json();
         let msj = 'Añadido a lista de terminados!'

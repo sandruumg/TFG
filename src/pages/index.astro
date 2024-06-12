@@ -17,8 +17,6 @@ if(Astro.locals.user){
   const usuarios = await db.select().from(User).where(eq(User.id, user.id));
   const [infoUser] = usuarios;
   const alias = infoUser.aliasUsuario;
-  
-  console.log(sesion);
 }
 
 ---
@@ -33,45 +31,11 @@ if(Astro.locals.user){
     <Banner/>
     <Categ/>
     <Lectores/>
-
-    
-       <!-- {
-            usuarios.map(({nombreUsuario}) => (
-              <article>
-                <p>Usuario: {nombreUsuario}</p>
-              </article>
-            ))
-        } 
-        {
-            libros.map(({tituloLibro, nombreAutor, portadaLibro, fechaPubLibro, fondoLibro}) => (
-              <article>
-                <p>Titulo: {tituloLibro}</p>
-                <p>Autor: {nombreAutor}</p>
-                <img src={portadaLibro} alt={`Portada de ${tituloLibro}`}>
-                <img src={fondoLibro} alt={`Portada de ${fondoLibro}`}>
-                <p>Fecha: {fechaPubLibro}</p>
-              </article>
-            ))
-        } -->
-        
-        
-        <!-- esto habra que ponerlo en el header para que aparezcan cerrar sesion en su perfil si hay usuario  -->
         
 	</main>
 
     
 </Layout>
-<script>
-  //   function getAllBooks() {
-  //       fetch('/api/books')
-  //       .then(response => response.json())
-  //       .then(data => {
-  //       	console.log(data);
-  //       })
-  //       .catch(error => console.error('Error:', error));
-  //   }
-	// getAllBooks();
-</script>
 
 <script src="../scripts/buscador.js"></script>
 <script src="/src/scripts/sesion.js"></script>

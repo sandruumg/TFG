@@ -1,6 +1,7 @@
 ---
 import { db, Libros, eq, desc, count } from 'astro:db';
 
+//para visualizar los libros del carrusel de manera aleatoria
 const librosTotales = await db.select({ value: count() }).from(Libros);
 
 var cantidadLibros = librosTotales[0].value;
@@ -24,7 +25,7 @@ const librosNovedades = await db.select().from(Libros).orderBy(desc(Libros.fecha
         <div id="slider" class="flex justify-around items-center h-[90vh] relative">
             <div class="list">
                 {
-                listaLibros.slice().reverse().map(({idLibro, fondoLibro, tituloLibro, nombreAutor, sinopsisLibro}, index)=>(
+                listaLibros.slice().reverse().map(({idLibro, fondoLibro, tituloLibro, nombreAutor, sinopsisLibro}, index)=>( //recorremos el mapa y mostramos información del libro
                 <div class={index === 7 ? "item actual" : "item hidden"}>
                    <img src={fondoLibro} alt="">
                     <div class="content">
@@ -46,7 +47,7 @@ const librosNovedades = await db.select().from(Libros).orderBy(desc(Libros.fecha
                 </button>
                 <div class="thumbnail">
                     {
-                    listaLibros.map(({portadaLibro, idLibro}, index)=>(
+                    listaLibros.map(({portadaLibro, idLibro}, index)=>( //recorremos el mapa y mostramos portada
                     <div class={index === 0 ? "item current":"item hidden"} >
                          <a href={`InfoLibro?idLibro=${idLibro}`}><img src={portadaLibro} alt=""></a>
                     </div>
@@ -64,6 +65,7 @@ const librosNovedades = await db.select().from(Libros).orderBy(desc(Libros.fecha
 
 </section>
 <script>
+    //Logica para el carrusel 
     const slider = document.querySelector('.slider'); //contenedor
     const list = document.querySelectorAll('.list .item');
     const thumbnail = document.querySelectorAll('.thumbnail .item');
@@ -74,15 +76,10 @@ const librosNovedades = await db.select().from(Libros).orderBy(desc(Libros.fecha
     let currentItem = items.findIndex(item => item.classList.contains('actual'));
     let currentImg = imagenes.findIndex(imagen => imagen.classList.contains('current'));
 
-    if(next){
-        next.addEventListener('click', function(){
-            console.log(currentItem);
-            console.log(list.length);
-            
-            
-            
-           
-            if(currentItem === 0){
+    if(next){ //si pulsa >
+        next.addEventListener('click', function(){           
+            if(currentItem === 0){ //si es el primero
+                    //añadimos estilos para mostrar los libros en orden
                     items[currentItem].classList.remove('actual');
                     items[currentItem].classList.add('hidden');
                     items[currentItem + 7].classList.add('actual');
@@ -95,8 +92,8 @@ const librosNovedades = await db.select().from(Libros).orderBy(desc(Libros.fecha
                     imagenes[currentImg-7].classList.remove('hidden');
                     currentImg = imagenes.findIndex(imagen => imagen.classList.contains('current'));
 
-                }else{
-                    
+                }else{ //si es del 2 al 7
+                    //añadimos estilos para mostrar los libros en orden
                     items[currentItem].classList.remove('actual');
                     items[currentItem].classList.add('hidden');
                     items[currentItem-1].classList.add('actual');
@@ -113,12 +110,10 @@ const librosNovedades = await db.select().from(Libros).orderBy(desc(Libros.fecha
         })
     }
 
-    if(prev){
-        prev.addEventListener('click', function(){
-            console.log(currentImg);
-            console.log(imagenes.length);
-            
-                if(currentItem === 7){
+    if(prev){//si pulsa <
+        prev.addEventListener('click', function(){            
+                if(currentItem === 7){//si es el ultimo libro
+                    //añadimos estilos para mostrar los libros en orden
                     items[currentItem].classList.remove('actual');
                     items[currentItem].classList.add('hidden');
                     items[currentItem-7].classList.add('actual');
@@ -131,6 +126,7 @@ const librosNovedades = await db.select().from(Libros).orderBy(desc(Libros.fecha
                     currentImg = imagenes.findIndex(imagen => imagen.classList.contains('current'));
 
                 }else{
+                    //añadimos estilos para mostrar los libros en orden
                     items[currentItem].classList.remove('actual');
                     items[currentItem].classList.add('hidden');
                     items[currentItem+1].classList.add('actual');
