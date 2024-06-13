@@ -33,9 +33,9 @@ const { user } = Astro.props;
               }
               {
                 cantidadLibros === 0 && user !== undefined ? (
-                <div class="bg-red-800 text-white rounded-3xl" style="display: none; position:relative; right: 1.5vw; top:-1vw; padding:0.2em 0.5em 0.2em 0.5em;">{cantidadLibros}</div>
+                <div class="bg-red-800 text-white rounded-3xl" style="display: none; position:relative; right: 1.5vw; top:-1vw; padding:0.1em 0.5em 0.0em 0.5em;">{cantidadLibros}</div>
                 ) : cantidadLibros !== 0 && user !== undefined ? (
-                <div class="bg-red-800 text-white rounded-3xl" style="position:relative; right: 1.5vw; top:-1vw; padding:0.2em 0.5em 0.2em 0.5em;">{cantidadLibros}</div>
+                <div class="bg-red-800 text-white rounded-3xl" style="position:relative; right: 1.5vw; top:-1vw; padding:0.1em 0.5em 0.0em 0.5em;">{cantidadLibros}</div>
                 ) : null
               }
               {user !== undefined && <a href="perfil" id="perfil" class="boton text-white m-2">{user}</a>}
