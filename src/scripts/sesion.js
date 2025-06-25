@@ -15,8 +15,15 @@ document.getElementById('login-form').addEventListener('submit', async function(
             const divAlertError = document.getElementById('alertErrorInicioSesion');
             divAlertError.style.display = 'flex';
             const mensajeErrorInicioSesion = document.getElementById('mensajeErrorInicioSesion');
-            mensajeErrorInicioSesion.innerText = mensajeError;
-        }
+        
+            // Aquí reemplazas la asignación del texto con este código:
+            mensajeErrorInicioSesion.innerText = 
+                (typeof mensajeError === 'string') 
+                ? mensajeError 
+                : (mensajeError.message || mensajeError.error || 'Error desconocido');
+        
+            return;
+        }        
     
         const login = await response.json();
         
@@ -164,16 +171,19 @@ document.getElementById('register-form').addEventListener('submit', async functi
                 method: 'POST',
                 body: formData
             });
-        
-            if (response.status == 400) { //si la respuesta es error mostramos mensaje
+
+            const data = await response.json();
+
+            if (response.status == 400) { 
                 const mensajeError = await response.json();
                 const divAlertError = document.getElementById('alertErrorRegistroSesion');
-                alertErrorRegistroSesion.style.display = 'flex';
+                divAlertError.style.display = 'flex';
                 const mensajeErrorInicioSesion = document.getElementById('mensajeErrorRegistroSesion');
-                mensajeErrorInicioSesion.innerText = mensajeError;
+                mensajeErrorInicioSesion.innerText = mensajeError.message || mensajeError.error || 'Error desconocido';
+                return;
             }
+            
         
-            const login = await response.json();
             // Actualiza el DOM para mostrar los datos recibidos
             window.location.reload();
          }
