@@ -1,30 +1,61 @@
 ---
-import { db, sum, eq, desc, count, RankingLibros, Libros, asc, User, ListaSeguimiento, ListaTerminados } from 'astro:db';
+// import { db, sum, eq, desc, count, RankingLibros, Libros, asc, User, ListaSeguimiento, ListaTerminados } from 'astro:db';
+import { turso } from '../turso'; // nuevo
+
 //sacamos los usuarios mas lectores
-const librosMasPopulares = await db.select({ cantidadEstrellas: sum(RankingLibros.estrellas), 
-                                             cantidadValoraciones: count(RankingLibros.idLibro),
-                                             portadaLibro: Libros.portadaLibro, 
-                                             id: RankingLibros.idLibro,
-                                             titulo: Libros.tituloLibro,
-                                             autor: Libros.nombreAutor
-                                            })
-                        .from(RankingLibros)
-                        .innerJoin(Libros, eq(RankingLibros.idLibro, Libros.idLibro))
-                        .groupBy(RankingLibros.idLibro)
-                        .orderBy(desc(sum(RankingLibros.estrellas)))
-                        .limit(10);
+// const librosMasPopulares = await db.select({ cantidadEstrellas: sum(RankingLibros.estrellas), 
+//                                              cantidadValoraciones: count(RankingLibros.idLibro),
+//                                              portadaLibro: Libros.portadaLibro, 
+//                                              id: RankingLibros.idLibro,
+//                                              titulo: Libros.tituloLibro,
+//                                              autor: Libros.nombreAutor
+//                                             })
+//                         .from(RankingLibros)
+//                         .innerJoin(Libros, eq(RankingLibros.idLibro, Libros.idLibro))
+//                         .groupBy(RankingLibros.idLibro)
+//                         .orderBy(desc(sum(RankingLibros.estrellas)))
+//                         .limit(10);
+
+const { rows } = await turso.execute({
+  sql: `
+    SELECT 
+      RankingLibros.idLibro AS id,
+      Libros.portadaLibro,
+      Libros.tituloLibro AS titulo,
+      Libros.nombreAutor AS autor,
+      SUM(RankingLibros.estrellas) AS cantidadEstrellas,
+      COUNT(RankingLibros.idLibro) AS cantidadValoraciones
+    FROM RankingLibros
+    INNER JOIN Libros ON RankingLibros.idLibro = Libros.idLibro
+    GROUP BY RankingLibros.idLibro, Libros.portadaLibro, Libros.tituloLibro, Libros.nombreAutor
+    ORDER BY cantidadEstrellas DESC
+    LIMIT 10;
+  `,
+});
+
+const librosMasPopulares = rows;
 
 //sacamos el porcentaje de aceptacion del libro
 const librosConPorcentaje = librosMasPopulares.map(libro => {
-    const porcentaje = parseInt(libro.cantidadEstrellas || '0') / (libro.cantidadValoraciones * 5) * 100;
-    return { ...libro, porcentaje };
+  // Convertimos cantidadEstrellas a número (puede ser string, number, bigint)
+  const estrellas = Number(libro.cantidadEstrellas) || 0;
+  const valoraciones = Number(libro.cantidadValoraciones) || 1; // evitar división por 0
+
+  const porcentaje = (estrellas / (valoraciones * 5)) * 100;
+
+  return { ...libro, porcentaje };
 });
+
 
 // Ordenar la lista de libros por el porcentaje
 const librosOrdenadosPorPorcentaje = librosConPorcentaje.sort((a, b) => b.porcentaje - a.porcentaje);
 if(Astro.locals.user){
     const user = Astro.locals.user!;
-    const usuarios = await db.select().from(User).where(eq(User.id, user.id));
+    //const usuarios = await db.select().from(User).where(eq(User.id, user.id));
+      const { rows: usuarios } = await turso.execute({
+        sql: 'SELECT * FROM User WHERE id = ?',
+        args: [user.id],
+      });
     const [infoUser] = usuarios;
     const alias = infoUser.aliasUsuario;
     const id = infoUser.id;
@@ -38,33 +69,39 @@ const { userAlias, userId } = Astro.props;
   <h1 class="fuente-1 text-secondary-dark text-4xl ml-32 my-5 py-5">Lo más popular</h1>
     <div class="carousel carousel-center p-3 space-x-10 rounded-box pb-12" style="width:100%; padding-left: 57px;">
       {
-        librosOrdenadosPorPorcentaje.map(({cantidadEstrellas, cantidadValoraciones, portadaLibro, id, porcentaje, titulo, autor}) =>( //recorremos el mapa para sacar los datos de los libros y mostrarlos
+        librosOrdenadosPorPorcentaje.map((libro: any) => {
+          const { cantidadEstrellas, cantidadValoraciones, portadaLibro, id, porcentaje, titulo, autor } = libro;
+          return (
             <div class="carousel-item" data-bs-interval="10000" style="position: relative;">
-                <a href={`InfoLibro?idLibro=${id}`}>
-                    <img src={portadaLibro} class="imagen rounded-box transition-transform hover:scale-110" style="margin-top: 35px;margin-left: 24px;width: 149px;height: 240px;position: relative;z-index: 0;" />
-                    <div class="popover">
-                      <div class="text-sm font-bold">{titulo}</div>
-                      <div class="text-sm italic">{autor}</div>
-                      <div class="flex justify-center items-center gap-2">
-                        <button id="fin" data-userId={userId} data-libroId={id} class="boton p-3 rounded- tooltip tooltip-bottom" data-tip="Añade este libro a terminados" >
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 fill-primary hover:fill-white transition duration-150 hover:ease-in-out" viewBox="0 0 512 512"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z"/></svg>        
-                        </button>
-                        <button id="seguir" data-userId={userId} data-libroId={id} class="boton p-3 rounded-full tooltip tooltip-bottom" data-tip="Añade este libro a tu lista de seguimiento" >
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 fill-primary hover:fill-white transition duration-150 hover:ease-in-out " viewBox="0 0 384 512"><path d="M0 48V487.7C0 501.1 10.9 512 24.3 512c5 0 9.9-1.5 14-4.4L192 400 345.7 507.6c4.1 2.9 9 4.4 14 4.4c13.4 0 24.3-10.9 24.3-24.3V48c0-26.5-21.5-48-48-48H48C21.5 0 0 21.5 0 48z"/></svg>
-                        </button>
-                      </div>
-                    </div>
-                </a>
-                {
-                  cantidadValoraciones > 0 && cantidadEstrellas != null && ( //mostramos porcentaje de valoraciones
-                    <div class="radial-progress bg-neutral-content text-secondary-dark border-4 border-neutral-content" style={{ '--value': porcentaje.toString() , left: '-200px', top: '85%', transform: 'translateY(-50%)' }} role="progressbar">
-                      {porcentaje.toFixed(0)}%
-                    </div>
-                  )
-                }
-            </div> 
-        ))
+              <a href={`InfoLibro?idLibro=${id}`}>
+                <img src={portadaLibro} class="imagen rounded-box transition-transform hover:scale-110" style={{marginTop: '35px', marginLeft: '24px', width: '149px', height: '240px', position: 'relative', zIndex: 0}} />
+                <div class="popover">
+                  <div class="text-sm font-bold">{titulo}</div>
+                  <div class="text-sm italic">{autor}</div>
+                  <div class="flex justify-center items-center gap-2">
+                    <button id="fin" data-userId={userId} data-libroId={id} class="boton p-3 rounded tooltip tooltip-bottom" data-tip="Añade este libro a terminados">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 fill-primary hover:fill-white transition duration-150 hover:ease-in-out" viewBox="0 0 512 512">
+                        <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z"/>
+                      </svg>
+                    </button>
+                    <button id="seguir" data-userId={userId} data-libroId={id} class="boton p-3 rounded-full tooltip tooltip-bottom" data-tip="Añade este libro a tu lista de seguimiento">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 fill-primary hover:fill-white transition duration-150 hover:ease-in-out" viewBox="0 0 384 512">
+                        <path d="M0 48V487.7C0 501.1 10.9 512 24.3 512c5 0 9.9-1.5 14-4.4L192 400 345.7 507.6c4.1 2.9 9 4.4 14 4.4c13.4 0 24.3-10.9 24.3-24.3V48c0-26.5-21.5-48-48-48H48C21.5 0 0 21.5 0 48z"/>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </a>
+              {cantidadValoraciones > 0 && cantidadEstrellas != null && (
+                <div class="radial-progress bg-neutral-content text-secondary-dark border-4 border-neutral-content" style={{ '--value': porcentaje.toString(), left: '-200px', top: '85%', transform: 'translateY(-50%)' }} role="progressbar">
+                  {porcentaje.toFixed(0)}%
+                </div>
+              )}
+            </div>
+          );
+        })
       }
+
     </div>
   
 </section>

@@ -1,5 +1,5 @@
 ---
-import { db, Libros, eq, desc, count } from 'astro:db';
+// import { db, Libros, eq, desc, count } from 'astro:db';
 import { turso } from '../turso'; // nuevo
 
 //para visualizar los libros del carrusel de manera aleatoria
@@ -32,7 +32,7 @@ for (let i = 0; i < 8; i++) {
     listaLibros.push(rows[0]);
 }
 
-const librosNovedades = await db.select().from(Libros).orderBy(desc(Libros.fechaPubLibro)).limit(3);
+// const librosNovedades = await db.select().from(Libros).orderBy(desc(Libros.fechaPubLibro)).limit(3);
 
 ---
 <section class="bg-secondary">
