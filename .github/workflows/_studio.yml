@@ -3,6 +3,7 @@ name: Astro Studio
 env:
   TURSO_DB_URL: ${{ secrets.TURSO_DB_URL }}
   TURSO_DB_TOKEN: ${{ secrets.TURSO_DB_TOKEN }}
+  ASTRO_STUDIO_APP_TOKEN: ${{secrets.ASTRO_STUDIO_APP_TOKEN }}
 
 on:
   push:
