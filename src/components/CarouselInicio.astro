@@ -1,10 +1,19 @@
 ---
 import { db, Libros, eq, desc, count } from 'astro:db';
+import { turso } from '../turso'; // nuevo
 
 //para visualizar los libros del carrusel de manera aleatoria
-const librosTotales = await db.select({ value: count() }).from(Libros);
 
-var cantidadLibros = librosTotales[0].value;
+// const librosTotales = await db.select({ value: count() }).from(Libros);
+
+// nueva consulta turso
+const { rows } = (await turso.execute({
+  sql: 'SELECT COUNT(*) AS value FROM Libros;',
+}) as unknown as { rows: { value: number }[] });
+
+const cantidadLibros = rows[0]?.value ?? 0;
+
+
 const listaLibros = [];
 let numRandom: any[] = [];
 var random = 0;
@@ -14,8 +23,13 @@ for (let i = 0; i < 8; i++) {
     } while (numRandom.includes(random));
     
     numRandom.push(random);
-    const libro = await db.select().from(Libros).where(eq(Libros.idLibro, random));
-    listaLibros.push(libro[0]);
+    // const libro = await db.select().from(Libros).where(eq(Libros.idLibro, random));
+    // nueva consulta turso
+      const { rows } = await turso.execute({
+        sql: 'SELECT * FROM Libros WHERE idLibro = ?;',
+        args: [random],
+    });
+    listaLibros.push(rows[0]);
 }
 
 const librosNovedades = await db.select().from(Libros).orderBy(desc(Libros.fechaPubLibro)).limit(3);
@@ -27,11 +41,11 @@ const librosNovedades = await db.select().from(Libros).orderBy(desc(Libros.fecha
                 {
                 listaLibros.slice().reverse().map(({idLibro, fondoLibro, tituloLibro, nombreAutor, sinopsisLibro}, index)=>( //recorremos el mapa y mostramos información del libro
                 <div class={index === 7 ? "item actual" : "item hidden"}>
-                   <img src={fondoLibro} alt="">
+                   <img src={String(fondoLibro)} alt="">
                     <div class="content">
-                        <div class="title">{tituloLibro}</div>
-                        <div class="type">{nombreAutor}</div>
-                        <div class="description">{sinopsisLibro}</div>
+                        <div class="title">{String(tituloLibro)}</div>
+                        <div class="type">{String(nombreAutor)}</div>
+                        <div class="description">{String(sinopsisLibro)}</div>
                     </div>
                     
                 </div>
@@ -49,7 +63,7 @@ const librosNovedades = await db.select().from(Libros).orderBy(desc(Libros.fecha
                     {
                     listaLibros.map(({portadaLibro, idLibro}, index)=>( //recorremos el mapa y mostramos portada
                     <div class={index === 0 ? "item current":"item hidden"} >
-                         <a href={`InfoLibro?idLibro=${idLibro}`}><img src={portadaLibro} alt=""></a>
+                         <a href={`InfoLibro?idLibro=${idLibro}`}><img src={String(portadaLibro)} alt=""></a>
                     </div>
                     ))
                     }
